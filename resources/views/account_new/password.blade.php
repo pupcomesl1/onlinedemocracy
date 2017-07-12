@@ -1,6 +1,6 @@
 @extends('layouts_new.profileBase')
 
-@section('title', $fullName)
+@section('title', $displayName)
 
 @section('form')
 

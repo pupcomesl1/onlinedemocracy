@@ -5,7 +5,8 @@
 @section('form')
 
 <div class="panel-group" id="propositions" role="tablist" aria-multiselectable="true" aria-expanded="true">
-      
+
+@if (!empty($propositions))
 @foreach ($propositions as $proposition)
 <div class="panel panel-default">
 	<div class="panel-heading" role="tab" id="heading{{ $proposition['id'] }}">
@@ -24,12 +25,12 @@
 					
 					<p class="text-muted"><span class="label label-warning">{{ Lang::choice('messages.moderator.flags.offensive_count', $proposition['offensiveCount'], ['flags' => $proposition['offensiveCount']]) }}</span> <span class="label label-info">{{ Lang::choice('messages.moderator.flags.incomprehensible_count', $proposition['incomprehensibleCount'], ['flags' => $proposition['incomprehensibleCount']]) }}</span></p>
 					
-					<p><a class="btn btn-sm btn-danger" data-toggle="collapse" href="#proposition{{$proposition['id']}}" aria-expanded="false" aria-controls="proposition{{$proposition['id']}}">{{Lang::get('messages.moderator.block')}}</a></p>
+					<p><a class="btn btn-sm btn-danger" data-toggle="collapse" href="#proposition{{$proposition['id']}}" aria-expanded="false" aria-controls="proposition{{$proposition['id']}}">@lang('messages.moderator.block')</a></p>
 					
 					<div class="list-group-form collapse" id="proposition{{$proposition['id']}}">
 						<form class="form-inline" method="post" action="{{ route('moderator.block') }}">
 							  <div class="form-group">
-							    <input type="text" name="reason" class="form-control input-sm" id="reason" placeholder="{{Lang::get('messages.moderator.reason_placeholder')}}">
+							    <input type="text" name="reason" class="form-control input-sm" id="reason" placeholder="@lang('messages.moderator.reason_placeholder')">
 							  </div>
 							  <input type="hidden" name="propositionId" value="{{$proposition['id']}}">
 							  {!! csrf_field() !!}
@@ -46,4 +47,7 @@
 	</div>
 </div>
 @endforeach
+@else
+	@lang('messages.moderator.all_ok')
+@endif
 @stop

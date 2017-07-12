@@ -7,15 +7,13 @@
   	<div class="container">
         <div class="row">
           <div class="col-md-7 col-sm-12 padding-top">
-          	<h1>{{Lang::get('messages.website.home.title')}}</h1>
-            <p class="lead">{{Lang::get('messages.website.home.subtitle')}}</p>
+          	<h1>@lang('messages.website.home.title')</h1>
+            <p class="lead">@lang('messages.website.home.subtitle')</p>
             <div class="justify hidden-xs">
-	            <a href="{{ route('auth.getSocialAuth', ['provider' => 'facebook']) }}" class="btn btn-info btn-lg">{{Lang::get('messages.session.sign_up.use_fb')}}</a>
-	            <a href="{{ route('register') }}" class="btn btn-default btn-secondary btn-lg">{{Lang::get('messages.session.sign_up.sign_up')}}</a>
+	            <a href="{{ route('o365login') }}" class="btn btn-info btn-lg">@lang('messages.session.login.use_msgraph')</a>
             </div>
             <div class="justify visible-xs">
-            	<a href="{{ route('auth.getSocialAuth', ['provider' => 'facebook']) }}" class="btn btn-info btn-lg btn-block">{{Lang::get('messages.session.sign_up.use_fb')}}</a>
-            	<a href="{{ route('register') }}" class="btn btn-default btn-secondary btn-lg btn-block">{{Lang::get('messages.session.sign_up.sign_up')}}</a>
+            	<a href="{{ route('o365login') }}" class="btn btn-info btn-lg btn-block">@lang('messages.session.login.use_msgraph')</a>
             </div>
           </div>
           <div class="col-md-5 visible-lg visible-md"><img src="{{ asset('img/screenshot.png') }}" class="img-header" alt="DirectDemocracy screenshot"></div>
@@ -30,11 +28,11 @@
                 <div class="panel panel-default">
                   <div class="panel-heading"></div>
                   <div class="panel-body">
-                    <p class="panel-title">{{Lang::get('messages.website.home.able_to')}}</p>
-                    <h2>{{Lang::get('messages.website.home.vote')}}</h2>
+                    <p class="panel-title">@lang('messages.website.home.able_to')</p>
+                    <h2>@lang('messages.website.home.vote')</h2>
                     <hr/>
                     <img src="{{ asset('img/vote.svg') }}">
-                    <p>{{Lang::get('messages.website.home.vote_text')}}</p>
+                    <p>@lang('messages.website.home.vote_text')</p>
                   </div>
                 </div>
             </div>
@@ -42,11 +40,11 @@
                 <div class="panel panel-default">
                   <div class="panel-heading"></div>
                   <div class="panel-body">
-                    <p class="panel-title">{{Lang::get('messages.website.home.able_to')}}</p>
-                    <h2>{{Lang::get('messages.website.home.suggest')}}</h2>
+                    <p class="panel-title">@lang('messages.website.home.able_to')</p>
+                    <h2>@lang('messages.website.home.suggest')</h2>
                     <hr/>
                     <img src="{{ asset('img/suggest.svg') }}">
-                    <p>{{Lang::get('messages.website.home.suggest_text')}}</p>
+                    <p>@lang('messages.website.home.suggest_text')</p>
                   </div>
                 </div>
             </div>
@@ -54,11 +52,11 @@
                 <div class="panel panel-default">
                   <div class="panel-heading"></div>
                   <div class="panel-body">
-                    <p class="panel-title">{{Lang::get('messages.website.home.able_to')}}</p>
-                    <h2>{{Lang::get('messages.website.home.comment')}}</h2>
+                    <p class="panel-title">@lang('messages.website.home.able_to')</p>
+                    <h2>@lang('messages.website.home.comment')</h2>
                     <hr/>
                     <img src="{{ asset('img/comment.svg') }}">
-                    <p>{{Lang::get('messages.website.home.comment_text')}}</p>
+                    <p>@lang('messages.website.home.comment_text')</p>
                   </div>
                 </div>
             </div>

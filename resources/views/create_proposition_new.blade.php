@@ -11,7 +11,7 @@
   	  <div class="col-md-8 col-md-offset-2 scene_element scene_element--fadein">
   	  
   	  	@if (count($errors) > 0)<div class="alert alert-danger">
-	      	<p class="text-center">{{Lang::get('messages.profile.create_proposition.errors')}}</p>
+	      	<p class="text-center">@lang('messages.profile.create_proposition.errors')</p>
 	      	<p><ul>
 	      	@foreach ($errors->all() as $error)
 	      		<li>{{ $error }}</li>
@@ -28,28 +28,28 @@
                   <div class="text-center bs-wizard-stepnum">{{ Lang::choice('messages.profile.create_proposition.step', 1, ['step' => 1]) }}</div>
                   <div class="progress no-animation"><div class="progress-bar"></div></div>
                   <a href="#" class="bs-wizard-dot step-btn" data-target-step="1"></a>
-                  <div class="bs-wizard-info text-center @if ($errors->has('proposition')) text-danger @endif">{{Lang::get('messages.profile.create_proposition.proposition_sort')}}</div>
+                  <div class="bs-wizard-info text-center @if ($errors->has('proposition')) text-danger @endif">@lang('messages.profile.create_proposition.proposition_sort')</div>
                 </div>
                 
                 <div id="progress-2" class="col-xs-3 bs-wizard-step disabled">
                   <div class="text-center bs-wizard-stepnum">{{ Lang::choice('messages.profile.create_proposition.step', 2, ['step' => 2]) }}</div>
                   <div class="progress no-animation"><div class="progress-bar"></div></div>
                   <a href="#" class="bs-wizard-dot step-btn" data-target-step="2"></a>
-                  <div class="bs-wizard-info text-center @if ($errors->has('proposition_description')) text-danger @endif">{{Lang::get('messages.profile.create_proposition.proposition_long')}}</div>
+                  <div class="bs-wizard-info text-center @if ($errors->has('proposition_description')) text-danger @endif">@lang('messages.profile.create_proposition.proposition_long')</div>
                 </div>
                 
                 <div id="progress-3" class="col-xs-3 bs-wizard-step disabled">
                   <div class="text-center bs-wizard-stepnum">{{ Lang::choice('messages.profile.create_proposition.step', 3, ['step' => 3]) }}</div>
                   <div class="progress no-animation"><div class="progress-bar"></div></div>
                   <a href="#" class="bs-wizard-dot step-btn" data-target-step="3"></a>
-                  <div class="bs-wizard-info text-center @if ($errors->has('deadline')) text-danger @endif">{{Lang::get('messages.profile.create_proposition.deadline')}}</div>
+                  <div class="bs-wizard-info text-center @if ($errors->has('deadline')) text-danger @endif">@lang('messages.profile.create_proposition.deadline')</div>
                 </div>
                 
                 <div id="progress-4" class="col-xs-3 bs-wizard-step disabled">
                   <div class="text-center bs-wizard-stepnum">{{ Lang::choice('messages.profile.create_proposition.step', 4, ['step' => 4]) }}</div>
                   <div class="progress no-animation"><div class="progress-bar"></div></div>
                   <a href="#" class="bs-wizard-dot step-btn" data-target-step="4"></a>
-                  <div class="bs-wizard-info text-center">{{Lang::get('messages.profile.create_proposition.confirm')}}</div>
+                  <div class="bs-wizard-info text-center">@lang('messages.profile.create_proposition.confirm')</div>
                 </div>
             </div>
         
@@ -58,22 +58,23 @@
     <form method="post" action="{{ route('profile.propositions.store') }}">
       <div id="step1">	
   	    <div class="proposition section">
-            <textarea name="proposition" id="preview_heading_entry" class="form-control input-lg input-proposition" rows="4" placeholder="{{Lang::get('messages.profile.create_proposition.proposition_sort')}}">{{ old('proposition') }}</textarea>
+            <textarea name="proposition" id="preview_heading_entry" class="form-control input-lg input-proposition" rows="4" placeholder="@lang('messages.profile.create_proposition.proposition_sort')">{{ old('proposition') }}</textarea>
         </div>
         
         <div class="btn-group btn-group-justified section">
-          <a href="#" class="btn btn-info step-btn" data-target-step="2">{{Lang::get('messages.profile.create_proposition.next')}} <i class="fa fa-angle-right"></i></a>
+          <a href="#" class="btn btn-info step-btn" data-target-step="2">@lang('messages.profile.create_proposition.next') <i class="fa fa-angle-right"></i></a>
         </div>
       </div>
       
       <div id="step2">
       	<div class="proposition section">
-            <textarea name="proposition_description" id="preview_subheading_entry" class="form-control input-lg input-proposition" rows="4" placeholder="{{Lang::get('messages.profile.create_proposition.proposition_long')}}">{{ old('proposition_description') }}</textarea>
+						@lang('messages.profile.create_proposition.include_hashtag')
+            <textarea name="proposition_description" id="preview_subheading_entry" class="form-control input-lg input-proposition" rows="4" placeholder="@lang('messages.profile.create_proposition.proposition_long')">{{ old('proposition_description') }}</textarea>
         </div>
         
         <div class="btn-group btn-group-justified section">
-          <a href="#" class="btn btn-info step-btn" data-target-step="1"><i class="fa fa-angle-left"></i> {{Lang::get('messages.profile.create_proposition.previous')}}</a>
-          <a href="#" class="btn btn-info step-btn" data-target-step="3">{{Lang::get('messages.profile.create_proposition.next')}} <i class="fa fa-angle-right"></i></a>
+          <a href="#" class="btn btn-info step-btn" data-target-step="1"><i class="fa fa-angle-left"></i> @lang('messages.profile.create_proposition.previous')</a>
+          <a href="#" class="btn btn-info step-btn" data-target-step="3">@lang('messages.profile.create_proposition.next') <i class="fa fa-angle-right"></i></a>
         </div>
       </div>
       
@@ -88,8 +89,8 @@
         </div>
         
         <div class="btn-group btn-group-justified section">
-          <a href="#" class="btn btn-info step-btn" data-target-step="2"><i class="fa fa-angle-left"></i> {{Lang::get('messages.profile.create_proposition.previous')}}</a>
-          <a href="#" class="btn btn-info step-btn" data-target-step="4">{{Lang::get('messages.profile.create_proposition.next')}} <i class="fa fa-angle-right"></i></a>
+          <a href="#" class="btn btn-info step-btn" data-target-step="2"><i class="fa fa-angle-left"></i> @lang('messages.profile.create_proposition.previous')</a>
+          <a href="#" class="btn btn-info step-btn" data-target-step="4">@lang('messages.profile.create_proposition.next') <i class="fa fa-angle-right"></i></a>
         </div>
       </div>
       
@@ -104,13 +105,13 @@
         </div>
         
         <div class="btn-group btn-group-justified section">
-          <a href="#" class="btn btn-info step-btn" data-target-step="3"><i class="fa fa-angle-left"></i> {{Lang::get('messages.profile.create_proposition.previous')}}</a>
+          <a href="#" class="btn btn-info step-btn" data-target-step="3"><i class="fa fa-angle-left"></i> @lang('messages.profile.create_proposition.previous')</a>
           <div class="btn-group" role="group">
-          	<button type="submit" class="btn btn-success"><i class="fa fa-check"></i> {{Lang::get('messages.profile.create_proposition.submit')}}</button>
+          	<button type="submit" class="btn btn-success"><i class="fa fa-check"></i> @lang('messages.profile.create_proposition.submit')</button>
           </div>
         </div>
         
-        <small class="text-muted">{{Lang::get('messages.profile.create_proposition.agree')}} <a href="{{ route('terms') }}" target="_blank">{{Lang::get('messages.profile.create_proposition.more')}}</a>.</small>
+        <small class="text-muted">@lang('messages.profile.create_proposition.agree') <a href="{{ route('terms') }}" target="_blank">@lang('messages.profile.create_proposition.more')</a>.</small>
       </div>
       {!! csrf_field() !!}
       </form>
@@ -123,7 +124,7 @@
 	
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<h1>{{Lang::get('messages.profile.create_proposition.inactive')}}</h1>
+			<h1>@lang('messages.profile.create_proposition.inactive')</h1>
 			<p class="lead">{{ Lang::get('messages.profile.account.school_link_help') }}</p>
 			<br/>
 			<a href="{{ route('getLinkAuth') }}" class="btn btn-lg btn-info btn-block">{{ Lang::get('messages.profile.account.school_link_actions.link_now') }}</a>

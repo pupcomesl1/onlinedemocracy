@@ -15,6 +15,8 @@ return [
 
     'debug' => env('APP_DEBUG', false),
 
+    'env' => env('APP_ENV', 'production'),
+
     /*
     |--------------------------------------------------------------------------
     | Application URL
@@ -25,6 +27,8 @@ return [
     | your application so that it is used when running Artisan tasks.
     |
     */
+
+    'name' => env('APP_NAME', 'DirectDemocracy'),
 
     'url' => 'http://localhost',
 
@@ -119,7 +123,6 @@ return [
         Illuminate\Bus\BusServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
         Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
-        Illuminate\Routing\ControllerServiceProvider::class,
         Illuminate\Cookie\CookieServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
         Illuminate\Encryption\EncryptionServiceProvider::class,
@@ -127,6 +130,7 @@ return [
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
         Illuminate\Hashing\HashServiceProvider::class,
         Illuminate\Mail\MailServiceProvider::class,
+        Illuminate\Notifications\NotificationServiceProvider::class,
         Illuminate\Pagination\PaginationServiceProvider::class,
         Illuminate\Pipeline\PipelineServiceProvider::class,
         Illuminate\Queue\QueueServiceProvider::class,
@@ -142,9 +146,12 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-    	
-    	Laravel\Socialite\SocialiteServiceProvider::class,
+
+        \SocialiteProviders\Manager\ServiceProvider::class,
     	Chencha\Share\ShareServiceProvider::class,
+
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
     ],
 
     /*
@@ -179,6 +186,7 @@ return [
         'Lang'      => Illuminate\Support\Facades\Lang::class,
         'Log'       => Illuminate\Support\Facades\Log::class,
         'Mail'      => Illuminate\Support\Facades\Mail::class,
+        'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password'  => Illuminate\Support\Facades\Password::class,
         'Queue'     => Illuminate\Support\Facades\Queue::class,
         'Redirect'  => Illuminate\Support\Facades\Redirect::class,
@@ -188,14 +196,15 @@ return [
         'Route'     => Illuminate\Support\Facades\Route::class,
         'Schema'    => Illuminate\Support\Facades\Schema::class,
         'Session'   => Illuminate\Support\Facades\Session::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Storage'   => Illuminate\Support\Facades\Storage::class,
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
 		'Form' 		=> 'Collective\Html\FormFacade',
 		'Html' 		=> 'Collective\Html\HtmlFacade',
-    	'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     	'Share' 	=> Chencha\Share\ShareFacade::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 
     ],
 

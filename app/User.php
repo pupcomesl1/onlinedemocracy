@@ -7,13 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Notifications\Notifiable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use Authenticatable, CanResetPassword;
+    use Authenticatable, CanResetPassword, Notifiable, EntrustUserTrait;
     const ROLE_MODERATOR = 2;
     const ROLE_ADMINISTRATOR = 3;
+
+    public function getAuthIdentifier()
+    {
+        return $this->attributes['id'];
+    }
 
     /**
      * The database table used by the model.
@@ -76,12 +83,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     	return $this->attributes['avatar'] = $avatar;
     }
 
-    public function facebookId () {
-    	return $this->attributes['facebookId'];
+    public function msgraphId() {
+        return $this->attributes['msgraphId'];
     }
-    
-    public function setFacebookId($facebookId) {
-    	return $this->attributes['facebookId'] = $facebookId;
+
+    public function setMsgraphId($msgraphId) {
+        return $this->attributes['msgraphId'] = $msgraphId;
+    }
+
+    public function displayName() {
+        return $this->attributes['displayName'];
+    }
+
+    public function setDisplayName($displayName) {
+        return $this->attributes['displayName'] = $displayName;
     }
     
     public function email () {
@@ -128,23 +143,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     	}
     }
     
-    public function role() {
-    	return $this->attributes['roleId'];
-    }
-    
     public function language() {
     	return $this->attributes['languageCode'];
     }
     public function setLanguage($langCode) {
     	return $this->attributes['languageCode'] = $langCode;
-    }
-    
-    public function setRole($role) {
-    	if (($role === self::ROLE_ADMINISTRATOR) OR ($role === self::ROLE_MODERATOR)) {
-    		return $this->attributes['roleId'] = $role;
-    	} else {
-    		return false;
-    	}
     }
     
 }

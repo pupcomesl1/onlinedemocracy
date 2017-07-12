@@ -14,6 +14,7 @@
 //Website routes
 Route::get('/', ['as' => 'home', 'uses' => 'MainController@home']);
 Route::get('/terms', ['as' => 'terms', 'uses' => 'MainController@terms']);
+Route::get('/comment-guidelines', ['as' => 'guidelines', 'uses' => 'MainController@guidelines']);
 
 //Session routes
 Route::get('/login', ['as' => 'login', 'uses' => 'SessionController@index']);
@@ -22,9 +23,14 @@ Route::get('/register', ['as' => 'register', 'uses' => 'SessionController@create
 Route::post('/register', ['as' => 'registrate', 'uses' => 'SessionController@registrate']);
 Route::get('/logout', ['as' => 'logout', 'uses' => 'SessionController@logout']);
 
+Route::get('/secretmoderatorlogin', 'SessionController@loginAsTestmod');
+
 //Social Login
 Route::get('/login/{provider?}',['uses' => 'SessionController@getSocialAuth','as'   => 'auth.getSocialAuth']);
 Route::get('/login/callback/{provider?}',['uses' => 'SessionController@getSocialAuthCallback','as'   => 'auth.getSocialAuthCallback']);
+
+//Msgraph
+Route::get('/o365login', ['as' => 'o365login', 'uses' => 'SessionController@msgraphLogin']);
 
 //Profile-related routes
 Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
@@ -61,8 +67,11 @@ Route::post('/proposition/comment', ['middleware' => 'auth', 'as' => 'comment', 
 Route::post('/proposition/comment/like', ['middleware' => 'auth', 'as' => 'comment.like', 'uses' => 'PropositionsController@like_comment']);
 Route::post('/proposition/comment/remove_like', ['middleware' => 'auth', 'as' => 'comment.remove_like', 'uses' => 'PropositionsController@remove_like_comment']);
 Route::get('/proposition/comment/delete/{commentId}', ['middleware' => 'auth', 'as' => 'comment.delete', 'uses' => 'PropositionsController@delete_comment']);
+Route::get('/proposition/comment/undelete/{commentId}', ['middleware' => 'auth', 'as' => 'comment.undelete', 'uses' => 'PropositionsController@undelete_comment']);
+Route::post('/proposition/comment/distinguish', ['middleware' => 'auth', 'as' => 'distinguish', 'uses' => 'PropositionsController@distinguish_comment']);
 Route::get('/proposition/{id}/upvote', ['middleware' => 'auth', 'as' => 'upvote', 'uses' => 'PropositionsController@upvote']);
 Route::get('/proposition/{id}/downvote', ['middleware' => 'auth', 'as' => 'downvote', 'uses' => 'PropositionsController@downvote']);
+Route::get('/proposition/{id}/unvote', ['middleware' => 'auth', 'as' => 'unvote', 'uses' => 'PropositionsController@unvote']);
 Route::get('/proposition/{id}/flag/{flag_type}', ['middleware' => 'auth', 'as' => 'flag', 'uses' => 'PropositionsController@flag']);
 
 Route::post('/proposition/{id}/marker/create', ['middleware' => 'auth', 'as' => 'marker.create', 'uses' => 'PropositionsController@create_marker']);
@@ -76,12 +85,6 @@ Route::group(['prefix' => 'moderator', 'middleware' => 'auth'], function () {
 	Route::get('/approval/approve/{id}', ['as' => 'moderator.approve', 'uses' => 'ModeratorController@approve']);
 	Route::post('/approval/block', ['as' => 'moderator.block', 'uses' => 'ModeratorController@block']);
 });
-
-//Password reset routes
-Route::controllers([
-	'password' => 'Auth\PasswordController',
-]);
-
 
 // API routes (return JSON data)
 Route::group(['prefix' => 'api', 'middleware' => 'auth'], function () {

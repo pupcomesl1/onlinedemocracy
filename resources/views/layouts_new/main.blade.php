@@ -17,8 +17,9 @@
         <link href="{{ asset('css_new/bootstrap.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('css_new/sandstone.min.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('css_new/font-awesome.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('css_new/app.css') }}" rel="stylesheet" type="text/css">
-        
+
         @yield('header_scripts')
         
 	    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -36,9 +37,6 @@
 	    <script src="{{ asset('js/jquery.js') }}" type="text/javascript"></script>
 	    <script src="{{ asset('js/jquery-ui.js') }}" type="text/javascript"></script>
 	    <script src="{{ asset('js/bootstrap.min.js') }}" type="text/javascript"></script>
-		
-		<script src="https://use.typekit.net/tnm4gzi.js"></script>
-		<script>try{Typekit.load({ async: true });}catch(e){}</script>
 
 		<script type="text/javascript">
 	    $('.popover-info').popover({

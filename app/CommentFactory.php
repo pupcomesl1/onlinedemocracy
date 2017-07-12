@@ -19,6 +19,18 @@ class CommentFactory extends Model {
 	public function deleteComment($id) {
 		return Comments::destroy($id);
 	}
+
+	public function moderatorDeleteComment($user, $id) {
+	    $comment = Comments::find($id);
+	    $comment->deleted_by = $user;
+	    return $comment->save();
+    }
+
+    public function moderatorUndeleteComment($id) {
+        $comment = Comments::find($id);
+        $comment->deleted_by = null;
+        return $comment->save();
+    }
 	
 	public function createComment($userId, $propositionId, $body) {
 		
@@ -61,5 +73,15 @@ class CommentFactory extends Model {
 	public function removeLike(Like $like) {
 		return Like::destroy($like->likeId());
 	}
+
+	public function distinguishComment(Comments $comment, Role $distinguish) {
+	    $comment->distinguish = $distinguish->id;
+	    return $comment->save();
+    }
+
+    public function undistinguishComment(Comments $comment) {
+	    $comment->distinguish = null;
+	    return $comment->save();
+    }
 	
 }

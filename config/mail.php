@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'no-reply@directdemocracy.online', 'name' => 'DirectDemocracy'],
+    'from' => ['address' => 'petitions-contact@pupilscom-esl1.eu', 'name' => 'Pupils\' Committee Petitions'],
 
     /*
     |--------------------------------------------------------------------------

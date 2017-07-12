@@ -15,31 +15,31 @@
 		     	</div>
 	   			@endif
 				<div class="panel panel-default">
-					<div class="panel-heading"><h1 class="panel-title"><strong><center>{{Lang::get('messages.session.reset.reset')}}</center></strong></h1></div>
+					<div class="panel-heading"><h1 class="panel-title"><strong><center>@lang('messages.session.reset.reset')</center></strong></h1></div>
 					<div class="panel-body">
 						<form role="form" action="/password/reset" method="POST">
 							<div class="form-group @if ($errors->has('email')) has-error @endif">
 								@if ($errors->has('email')) <small class="text-danger pull-right">{{ $errors->first('email') }}</small>@endif
-								<label for="email">{{Lang::get('messages.session.sign_up.email')}}</label>
-								<input type="email" name="email" class="form-control" id="email" placeholder="{{Lang::get('messages.session.sign_up.email_placeholder')}}" value="{{ old('email') }}">
+								<label for="email">@lang('messages.session.sign_up.email')</label>
+								<input type="email" name="email" class="form-control" id="email" placeholder="@lang('messages.session.sign_up.email_placeholder')" value="{{ old('email') }}">
 							</div>
 							
 							<div class="form-group @if ($errors->has('password')) has-error @endif">
 								@if ($errors->has('password')) <small class="text-danger pull-right">{{ $errors->first('password') }}</small>@endif
-								<label for="password">{{Lang::get('messages.session.reset.new_pass')}}</label>
-								<input type="password" name="password" class="form-control" id="password" placeholder="{{Lang::get('messages.session.reset.new_pass_placeholder')}}" value="{{ old('password') }}">
+								<label for="password">@lang('messages.session.reset.new_pass')</label>
+								<input type="password" name="password" class="form-control" id="password" placeholder="@lang('messages.session.reset.new_pass_placeholder')" value="{{ old('password') }}">
 							</div>
 							
 							<div class="form-group @if ($errors->has('password_confirmation')) has-error @endif">
 								@if ($errors->has('password_confirmation')) <small class="text-danger pull-right">{{ $errors->first('password_confirmation') }}</small>@endif
-								<label for="password_confirmation">{{Lang::get('messages.session.reset.new_pass_confirm')}}</label>
-								<input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="{{Lang::get('messages.session.reset.new_pass_confirm_placeholder')}}" value="{{ old('password_confirmation') }}">
+								<label for="password_confirmation">@lang('messages.session.reset.new_pass_confirm')</label>
+								<input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="@lang('messages.session.reset.new_pass_confirm_placeholder')" value="{{ old('password_confirmation') }}">
 							</div>
 							
 							{!! csrf_field() !!}
 							<input type="hidden" name="token" value="{{ $token }}">
 							
-							<button type="submit" class="btn btn-default btn-block">{{Lang::get('messages.session.reset.submit')}}</button>
+							<button type="submit" class="btn btn-default btn-block">@lang('messages.session.reset.submit')</button>
 						</form>
 					</div>
 				</div>

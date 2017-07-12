@@ -44,15 +44,15 @@
 		@endif
       
       	<div class="section">
-        	<a href="#" class="btn btn-default btn-sm" disabled><i class="fa fa-angle-left"></i> {{Lang::get('messages.proposition.back')}}</a>
+        	<a href="#" class="btn btn-default btn-sm" disabled><i class="fa fa-angle-left"></i> @lang('messages.proposition.back')</a>
             <span class="pull-right">
                 <div class="btn-group">
-                  <a href="#" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-share"></i> {{Lang::get('messages.proposition.share.share')}} <span class="badge" id="shares-count">0</span></a>
+                  <a href="#" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-share"></i> @lang('messages.proposition.share.share') <span class="badge" id="shares-count">0</span></a>
                   <ul class="dropdown-menu" id="social_links">
-                    <li><a href="{{ $shareLinks['facebook'] }}"><i class="fa fa-facebook-square"></i> {{Lang::get('messages.proposition.share.facebook')}}</a></li>
-                    <li><a href="{{ $shareLinks['twitter'] }}"><i class="fa fa-twitter-square"></i> {{Lang::get('messages.proposition.share.twitter')}}</a></li>
-                    <li><a href="{{ $shareLinks['gplus'] }}"><i class="fa fa-google-plus-square"></i> {{Lang::get('messages.proposition.share.gplus')}}</a></li>
-                    <li><a href="{{ $shareLinks['pinterest'] }}"><i class="fa fa-pinterest-square"></i> {{Lang::get('messages.proposition.share.pin')}}</a></li>
+                    <li><a href="{{ $shareLinks['facebook'] }}"><i class="fa fa-facebook-square"></i> @lang('messages.proposition.share.facebook')</a></li>
+                    <li><a href="{{ $shareLinks['twitter'] }}"><i class="fa fa-twitter-square"></i> @lang('messages.proposition.share.twitter')</a></li>
+                    <li><a href="{{ $shareLinks['gplus'] }}"><i class="fa fa-google-plus-square"></i> @lang('messages.proposition.share.gplus')</a></li>
+                    <li><a href="{{ $shareLinks['pinterest'] }}"><i class="fa fa-pinterest-square"></i> @lang('messages.proposition.share.pin')</a></li>
                   </ul>
                 </div>
                 <div class="btn-group">
@@ -81,15 +81,15 @@
         	@if (empty($proposition['marker']) == false)
         	@if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)
 	        <div class="alert alert-success">
-				<strong>{{Lang::get('messages.proposition.marker.1')}}!</strong> {{ $proposition['marker']->markerText() }}
+				<strong>@lang('messages.proposition.marker.1')!</strong> {{ $proposition['marker']->markerText() }}
 			</div>
 			@elseif ($proposition['marker']->relationMarkerId() == \App\Marker::UNDER_DISCUSSION)
 	        <div class="alert alert-info">
-				<strong>{{Lang::get('messages.proposition.marker.2')}}!</strong> {{ $proposition['marker']->markerText() }}
+				<strong>@lang('messages.proposition.marker.2')!</strong> {{ $proposition['marker']->markerText() }}
 			</div>
 			@elseif ($proposition['marker']->relationMarkerId() == \App\Marker::FAILED)
 			<div class="alert alert-warning">
-				<strong>{{Lang::get('messages.proposition.marker.3')}}!</strong> {{ $proposition['marker']->markerText() }}
+				<strong>@lang('messages.proposition.marker.3')!</strong> {{ $proposition['marker']->markerText() }}
 			</div>
 			@endif
 			@endif
@@ -114,7 +114,7 @@
         <div class="section">
         	<div class="thumbnail section">
             	<div class="caption">
-                	<small class="text-muted" style="font-size: 90%;">{{ Lang::get('messages.proposition.voting.credits') }} <a href="#"><img class="img-circle text-sized-picture" src="{{ $proposition['proposer']['avatar'] }}"> {{ $proposition['proposer']['fullName'] }}</a> {{ $proposition['date_created'] }}</small>
+                	<small class="text-muted" style="font-size: 90%;">{{ Lang::get('messages.proposition.voting.credits') }} <a href="#"><img class="img-circle text-sized-picture" src="{{ $proposition['proposer']['avatar'] }}"> {{ $proposition['proposer']['displayName'] }}</a> {{ $proposition['date_created'] }}</small>
                 </div>
             </div>
         </div>
@@ -124,15 +124,29 @@
         		
         		@if ($comments ==! 0)
         			@foreach ($comments as $comment)
-                	<div class="comment">
-                        <small class="name"><strong><img class="img-circle text-sized-picture" src="{{ $comment['commenter']['avatar'] }}"> {{ $comment['commenter']['fullName'] }}</strong></small>
+                	<div class="comment @if (isset($comment['distinguish'])) distinguish distinguish-{{ $comment['distinguish']['name'] }} @endif">
+                        <small class="name">
+													<strong>
+														@if (!$comment['modDeleted'] || (Auth::check() && Auth::user()->can('deleteComments')))
+															<img class="img-circle text-sized-picture" src="{{ $comment['commenter']['avatar'] }}">
+															{{ $comment['commenter']['displayName'] }}
+														@endif
+														@if (isset($comment['distinguish']))
+															<em class="role">{{ $comment['distinguish']['display_name'] }}</em>
+														@endif
+													</strong>
+												</small>
                         <small class="pull-right text-muted">{{ $comment['date_created'] }}</small>
-                        <p>{{ $comment['commentBody'] }}</p>
+												@if (!$comment['modDeleted'])
+													<p>{{ $comment['commentBody'] }}</p>
+												@else
+													<p><em>@lang('messages.proposition.comments.deleted')</em></p>
+												@endif
                     </div>
                 	@endforeach
                 @else
 	            	<div class="caption">
-	                	<small class="text-muted">{{Lang::get('messages.proposition.comments.no_comments')}}.</small>
+	                	<small class="text-muted">@lang('messages.proposition.comments.no_comments').</small>
 	                </div>
                 @endif
                 

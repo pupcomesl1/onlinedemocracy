@@ -1,2 +1,35 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+$distinguish-colors: (
+  moderator: #F47C3D,
+  pc_member: #2AABE0,
+  banned: #D32F2F
+);
+
+.comment {
+  &.distinguish {
+    .header a {
+      color: #3F403B;
+    }
+    .role {}
+  }
+  @each $role, $color in $distinguish-colors {
+    &.distinguish-#{$role} {
+      background-color: #{lighten($color, 20%)};
+      border: 1px solid #{$color};
+      border-bottom-color: #{$color} !important;
+      .role {
+        color: #{$color};
+        margin-left: 1em;
+      }
+    }
+  }
+  &.deleted {
+    background-color: #a1a1a1;
+    color: #212121;
+    a {
+      color: #fff;
+    }
+  }
+}
+

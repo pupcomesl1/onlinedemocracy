@@ -83,7 +83,7 @@ class PropositionFactory extends Model {
 		return Proposition::whereProposerId($userId)->count();
 	}
 	
-	public function getProposition($id) {
+	public function getProposition($id): Proposition {
 		return Proposition::find($id);
 	}
 	
@@ -107,7 +107,7 @@ class PropositionFactory extends Model {
 		$userHasVoted = false;
 		
 		if ($user->belongsToSchool() == true) {
-			if (Votes::wherePropositionIdAndVoteSchoolEmail($proposition->propositionId(), $user->googleEmail())->count() == 1) {
+			if (Votes::wherePropositionIdAndVoteUser($proposition->propositionId(), $userId)->count() != 0) {
 				$userHasVoted = true;
 			}
 		}
@@ -121,7 +121,6 @@ class PropositionFactory extends Model {
 				"proposition_id" => $propositionId,
 				"vote_user" => $userId,
 				"vote_value" => 1,
-				"vote_school_email" => $schoolEmail,
 		]);
 	}
 	
@@ -140,13 +139,12 @@ class PropositionFactory extends Model {
 		return $upvotesSum;
 	}
 	
-	public function downvote($propositionId, $userId, $schoolEmail) {
+	public function downvote($propositionId, $userId) {
 	
 		return Votes::create([
 				"proposition_id" => $propositionId,
 				"vote_user" => $userId,
 				"vote_value" => 0,
-				"vote_school_email" => $schoolEmail,
 		]);
 	}
 	
@@ -164,6 +162,10 @@ class PropositionFactory extends Model {
 		
 		return $downvotesSum;
 	}
+
+    public function unvote($propositionId, $userId) {
+        return Votes::where(['proposition_id' => $propositionId, 'vote_user' => $userId])->delete();
+    }
 	
 	public function getComments($id) {
 		return Comments::wherePropositionId($id)->orderBy('created_at', 'desc')->get();

@@ -1,6 +1,6 @@
 @extends('layouts_new.profileBase')
 
-@section('title', $fullName)
+@section('title', $displayName)
 
 @section('form')
 
@@ -102,10 +102,10 @@
 		      <div class="modal-body">
 		        <form id="editForm{{ $proposition['id'] }}">
 				  <div class="form-group">
-				    <textarea name="proposition" data-field="proposition" class="form-control" rows="4" placeholder="{{Lang::get('messages.profile.create_proposition.proposition_sort')}}">{{{ $proposition['propositionSort'] }}}</textarea>
+				    <textarea name="proposition" data-field="proposition" class="form-control" rows="4" placeholder="@lang('messages.profile.create_proposition.proposition_sort')">{{{ $proposition['propositionSort'] }}}</textarea>
 				  </div>
 				  <div class="form-group">
-				    <textarea name="description" data-field="description" class="form-control" rows="4" placeholder="{{Lang::get('messages.profile.create_proposition.proposition_long')}}">{{{ $proposition['propositionLong'] }}}</textarea>
+				    <textarea name="description" data-field="description" class="form-control" rows="4" placeholder="@lang('messages.profile.create_proposition.proposition_long')">{{{ $proposition['propositionLong'] }}}</textarea>
 				  </div>
 				  <div class="form-group">
 				    <select class="form-control" disabled>
@@ -206,7 +206,7 @@ $('button[data-form-id]').click( function(e) {
 
 			$( '.errors' ).html( errorsHtml );
 		} else {
-			$( '.errors' ).html( '<div class="alert alert-success"><p>{{Lang::get('messages.profile.propositions.updated')}}</p></div>');
+			$( '.errors' ).html( '<div class="alert alert-success"><p>@lang('messages.profile.propositions.updated')</p></div>');
 			setTimeout(function(){
 				$('[data-edit-proposition]').modal('hide');
 				location.reload();

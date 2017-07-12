@@ -27,6 +27,9 @@ class MainController extends Controller
 	public function terms() {
 		return view('guest.terms');
 	}
+    public function guidelines() {
+        return view('guest.comment-guidelines');
+    }
 	
 	public function feedback() {
 
@@ -35,7 +38,7 @@ class MainController extends Controller
 		$propositionFactory = new PropositionFactory();
 		 
 		$viewUser = [
-				'fullName' => $user->firstName() . " " . $user->lastName(),
+				'displayName' => $user->displayName(),
 				'firstName' => $user->firstName(),
 				'lastName' => $user->lastName(),
 				'contactEmail' => $user->contactEmail(),
@@ -43,11 +46,11 @@ class MainController extends Controller
 				'avatar' => $user->avatar(),
 				'belongsToSchool' => $user->belongsToSchool(),
 				'schoolEmail' => $user->googleEmail(),
-				'role' => $user->role(),
+				'roles' => $user->roles(),
 				'propositionsCount' => $propositionFactory->getPropositionsCountByUser($user->userId()),
 		];
 		 
-		return view('feedback', ['fullName' => $user->firstName() . " " . $user->lastName(), 'user' => $viewUser]);
+		return view('feedback', ['displayName' => $user->displayName(), 'user' => $viewUser]);
 	}
 	
 	public function feedback_send(Request $request) {
@@ -68,9 +71,9 @@ class MainController extends Controller
 			
 			$user = Auth::user();
 			 
-			\Mail::send('emails.feedback', ['feedback' => $request->input('feedback'), 'user' => ['first' => $user->firstName(), 'last' => $user->lastName(), 'email' => $user->email(), 'id' => $user->userId()]], function($message)
+			\Mail::send('emails.feedback', ['feedback' => $request->input('feedback'), 'user' => ['displayName' => $user->displayName(), 'email' => $user->email(), 'id' => $user->userId()]], function($message)
 			{
-				$message->from('no-reply@directdemocracy.online', 'DirectDemocracy')->to(env('FEEDBACK_EMAIL'))->subject('Feedback Submission');
+				$message->from('dd-feedback@pupilscom-esl1.eu', 'DirectDemocracy')->to(env('FEEDBACK_EMAIL'))->subject('Feedback Submission');
 			});
 		
 			if ($request->ajax()){

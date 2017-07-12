@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PropositionApproved;
 use Illuminate\Http\Request;
 
 use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -39,13 +41,13 @@ class ModeratorController extends Controller
     public function index()
     {
     	$user = Auth::user();
-    	if ($user->role() !== User::ROLE_MODERATOR) {
+    	if (!$user->can(['approveOrBlockPropositions', 'handleFlags'])) {
     		abort(404);
     	}
     	
     	$propositionsFactory = new PropositionFactory();
     	$viewUser = [
-    			'fullName' => $user->firstName() . " " . $user->lastName(),
+    			'displayName' => $user->displayName(),
     			'firstName' => $user->firstName(),
     			'lastName' => $user->lastName(),
     			'contactEmail' => $user->contactEmail(),
@@ -53,7 +55,6 @@ class ModeratorController extends Controller
     			'avatar' => $user->avatar(),
     			'belongsToSchool' => $user->belongsToSchool(),
     			'schoolEmail' => $user->googleEmail(),
-    			'role' => $user->role(),
     			'propositionsCount' =>  $propositionsFactory->getPropositionsCountByUser($user->userId()),
     	];
 
@@ -73,15 +74,15 @@ class ModeratorController extends Controller
     		];
     	}
     	
-    	return view('moderator.approval_new', ['fullName' => $user->firstName() . " " . $user->lastName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
+    	return view('moderator.approval_new', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
     }
 
     
     public function approve($id)
     {
     	$user = Auth::user();
-    	if ($user->role() !== User::ROLE_MODERATOR) {
-    		abort(403, 'Unothorized action.');
+    	if (!$user->can('approveOrBlockPropositions')) {
+    		abort(403, 'Unauthorized action.');
     	}
         
     	$propositionsFactory = new PropositionFactory();
@@ -91,11 +92,11 @@ class ModeratorController extends Controller
     	$proposition->save();
     	
     	\App::setLocale($proposition->proposer()->language());
-    	Mail::send('emails.approved', ['proposition' => $proposition, 'shareLinks' => Share::load(route('proposition', [$proposition->propositionId()]), $proposition->propositionSort())->services()], function($message) use ($proposition)
-    	{
-    		$message->from('no-reply@directdemocracy.online', 'DirectDemocracy')->subject(trans('messages.emails.approved-proposition.subject'));
-    		$message->to($proposition->proposer()->email());
-    	});
+
+    	Log::debug($proposition->proposer()->email());
+
+    	Mail::to($proposition->proposer()->email())
+            ->send(new PropositionApproved($proposition));
     	
     	return redirect()->back();
     }
@@ -103,8 +104,8 @@ class ModeratorController extends Controller
     public function block(Request $request)
     {
     	$user = Auth::user();
-    	if ($user->role() !== User::ROLE_MODERATOR) {
-    		abort(403, 'Unothorized action.');
+        if (!$user->can('approveOrBlockPropositions')) {
+    		abort(403, 'Unauthorized action.');
     	}
     	
     	$validator = Validator::make($request->all(), [
@@ -133,13 +134,13 @@ class ModeratorController extends Controller
     public function handle_flags()
     {
     	$user = Auth::user();
-    	if ($user->role() !== User::ROLE_MODERATOR) {
+    	if (!$user->can('handleFlags')) {
     		abort(404);
     	}
     	 
     	$propositionsFactory = new PropositionFactory();
     	$viewUser = [
-    			'fullName' => $user->firstName() . " " . $user->lastName(),
+    			'displayName' => $user->displayName(),
     			'firstName' => $user->firstName(),
     			'lastName' => $user->lastName(),
     			'contactEmail' => $user->contactEmail(),
@@ -147,7 +148,6 @@ class ModeratorController extends Controller
     			'avatar' => $user->avatar(),
     			'belongsToSchool' => $user->belongsToSchool(),
     			'schoolEmail' => $user->googleEmail(),
-    			'role' => $user->role(),
     			'propositionsCount' =>  $propositionsFactory->getPropositionsCountByUser($user->userId()),
     	];
     
@@ -174,6 +174,6 @@ class ModeratorController extends Controller
     		];
     	}
     	 
-    	return view('moderator.flags', ['fullName' => $user->firstName() . " " . $user->lastName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
+    	return view('moderator.flags', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
     }
 }

@@ -29,15 +29,15 @@
 
 	          		<ul class="nav navbar-nav navbar-right">
 						<li>
-						<a href="{{ route('profile.propositions.create') }}" class="btn btn-teal"><i class="material-icons" style="font-size: 15px; vertical-align: sub;">create</i><span class="hidden-sm"> {{Lang::get('messages.navigation.create_proposition')}}</span></a></li>
-	            		<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img alt="profile picture of {{ $user['fullName'] }}" src="{{ $user['avatar'] }}" class="profile-picture-navbar img-circle"> {{ $user['fullName'] }}<span class="caret"></span></a>
+						<a href="{{ route('profile.propositions.create') }}" class="btn btn-teal"><i class="material-icons" style="font-size: 15px; vertical-align: sub;">create</i><span class="hidden-sm"> @lang('messages.navigation.create_proposition')</span></a></li>
+	            		<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img alt="profile picture of {{ $user['displayName'] }}" src="{{ $user['avatar'] }}" class="profile-picture-navbar img-circle"> {{ $user['displayName'] }}<span class="caret"></span></a>
 		              		<ul class="dropdown-menu" role="menu">
-		                		<li><a href="{{ route('profile.propositions') }}">{{Lang::get('messages.navigation.propositions')}}</a></li>
-		                		<li><a href="{{ route('profile.main') }}">{{Lang::get('messages.navigation.profile')}}</a></li>
+		                		<li><a href="{{ route('profile.propositions') }}">@lang('messages.navigation.propositions')</a></li>
+		                		<li><a href="{{ route('profile.main') }}">@lang('messages.navigation.profile')</a></li>
 		                		<li class="divider"></li>
-		                		<li><a href="{{ route('profile.language') }}">{{Lang::get('messages.navigation.language')}}</a></li>
+		                		<li><a href="{{ route('profile.language') }}">@lang('messages.navigation.language')</a></li>
 		                		<li class="divider"></li>
-		                		<li><a href="{{ route('logout') }}">{{Lang::get('messages.navigation.logout')}}</a></li>
+		                		<li><a href="{{ route('logout') }}">@lang('messages.navigation.logout')</a></li>
 		             		</ul>
 	            		</li>
 	          		</ul>
@@ -50,10 +50,10 @@
 
 	<div style="padding-bottom:40px; padding-top: 90px;">
 	<div class="container">
-		@if ($user['belongsToSchool'] == false)
+		@if (!Auth::user()->can('postPropositions'))
 		<div class="alert alert-info" role="alert" id="link-info" style="display: none;">
 			<button type="button" class="close" data-dismiss="alert" data-alert-box="link-info" style="margin-top: -6px;" aria-label="Close"><span aria-hidden="true"><i class="material-icons">close</i></span></button>
-			<p>{{ Lang::get('messages.notifications.welcome_link_alert_1') }} <a href="{{ route('getLinkAuth') }}" class="alert-link">{{ Lang::get('messages.notifications.welcome_link_alert_2') }}</a> {{ Lang::get('messages.notifications.welcome_link_alert_3') }}</p>
+			<p>@lang('messages.notifications.not_belongs_to_school')</p>
 		</div>
 		@endif
 
@@ -93,7 +93,7 @@
 	<div id="footer">
 		<div class="container">
 			<p class="text-center" style="display: none;" id="footer-app-iphone-link"><a href="#">Save on your home screen.</a></p>
-			<p class="text-center"><small><small class="text-muted">{{Lang::get('messages.website.footer')}}</small></small></p>
+			<p class="text-center"><small><small class="text-muted">@lang('messages.website.footer')</small></small></p>
 		</div>
 	</div>
 
@@ -189,30 +189,24 @@ $('#footer-app-iphone-link').click(function( e ){
     border: none;
 	" data-toggle="collapse" data-target="#feedback-floating" aria-expanded="false" aria-controls="collapseExample"><i class="material-icons" style="
 	    vertical-align: sub;
-	">message</i><span> {{Lang::get('messages.feedback.feedback')}}</span></button>
+	">message</i><span> @lang('messages.feedback.feedback')</span></button>
 	<div class="collapse" id="feedback-floating">
 	  <div class="well" style="display: inline-block; margin: 0 30px; border-radius: 0; border-top-left-radius: 4px; background: #78909c; color: #fff; min-width: 200px; max-width: 500px; text-align: left;">
 	    
 	    <form class="form-vertical" id="floating-feedback-form" method="POST" action="{{ route('feedback.send') }}">
 			
-			<p>{{Lang::get('messages.feedback.reason')}}</p>
+			<p>@lang('messages.feedback.reason')</p>
 			
 			<div class="alert-populate"></div>
 		 
 			<div class="form-group @if ($errors->has('feedback')) has-error @endif">
-				<textarea class="form-control" name="feedback" style="max-height: 120px;" placeholder="{{Lang::get('messages.feedback.placeholder')}}" required>{{ old('feedback') }}</textarea>
-			</div>
-			
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="anonymous"> {{Lang::get('messages.feedback.anonymous')}}
-				</label>
+				<textarea class="form-control" name="feedback" style="max-height: 120px;" placeholder="@lang('messages.feedback.placeholder')" required>{{ old('feedback') }}</textarea>
 			</div>
 			
 			{{ csrf_field() }}
 			
 			<div class="form-group">
-				<button type="submit" class="btn btn-default">{{Lang::get('messages.feedback.submit')}}</button>
+				<button type="submit" class="btn btn-default">@lang('messages.feedback.submit')</button>
 			</div>
 			
 		</form>

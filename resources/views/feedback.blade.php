@@ -17,10 +17,10 @@
 	@endif
  
 	<div class="form-group form-group-sm @if ($errors->has('feedback')) has-error @endif">
-		<label for="feedback" class="col-sm-2 control-label">{{Lang::get('messages.feedback.feedback')}}</label>
+		<label for="feedback" class="col-sm-2 control-label">@lang('messages.feedback.feedback')</label>
 		<div class="col-sm-10">
 			<textarea class="form-control" name="feedback" id="feedback" rows="5" placeholder="Enter your feedback">{{ old('feedback') }}</textarea>
-			<p class="help-block">{{Lang::get('messages.feedback.reason')}}</p>
+			<p class="help-block">@lang('messages.feedback.reason')</p>
 		</div>
 	</div>
     
@@ -28,7 +28,7 @@
        
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
-			<button type="submit" class="btn btn-default">{{Lang::get('messages.feedback.submit')}}</button>
+			<button type="submit" class="btn btn-default">@lang('messages.feedback.submit')</button>
 		</div>
 	</div>
 </form>

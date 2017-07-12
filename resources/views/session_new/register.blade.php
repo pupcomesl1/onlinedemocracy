@@ -16,39 +16,39 @@
 							<div class="form-group @if ($errors->has('first_name')) has-error @endif @if ($errors->has('last_name')) has-error @endif">
 								@if ($errors->has('last_name')) <small class="text-danger pull-right"> {{ $errors->first('last_name') }}</small>@endif
 								@if ($errors->has('first_name')) <small class="text-danger pull-right">{{ $errors->first('first_name') }} </small>@endif
-								<label for="first_name">{{Lang::get('messages.session.sign_up.name')}}</label>
+								<label for="first_name">@lang('messages.session.sign_up.name')</label>
 								<div class="row">
-									<div class="col-md-6"><input type="text" name="first_name" class="form-control" id="first_name" placeholder="{{Lang::get('messages.session.sign_up.first_placeholder')}}" value="{{ old('first_name') }}"></div>
-									<div class="col-md-6"><input type="text" name="last_name" class="col-md-6 form-control" id="last_name" placeholder="{{Lang::get('messages.session.sign_up.last_placeholder')}}" value="{{ old('last_name') }}"></div>
+									<div class="col-md-6"><input type="text" name="first_name" class="form-control" id="first_name" placeholder="@lang('messages.session.sign_up.first_placeholder')" value="{{ old('first_name') }}"></div>
+									<div class="col-md-6"><input type="text" name="last_name" class="col-md-6 form-control" id="last_name" placeholder="@lang('messages.session.sign_up.last_placeholder')" value="{{ old('last_name') }}"></div>
 								</div>
 							</div>
 							
 							<div class="form-group @if ($errors->has('email')) has-error @endif @if ($errors->has('password_confirmation')) has-error @endif">
 								@if ($errors->has('email')) <small class="text-danger pull-right">{{ $errors->first('email') }}</small>@endif
-								<label for="email">{{Lang::get('messages.session.sign_up.email')}}</label>
-								<input type="email" name="email" class="form-control" id="email" placeholder="{{Lang::get('messages.session.sign_up.email_placeholder')}}" value="{{ old('email') }}">
+								<label for="email">@lang('messages.session.sign_up.email')</label>
+								<input type="email" name="email" class="form-control" id="email" placeholder="@lang('messages.session.sign_up.email_placeholder')" value="{{ old('email') }}">
 							</div>
 							
 							<div class="form-group @if ($errors->has('password')) has-error @endif">
 								@if ($errors->has('password_confirmation')) <small class="text-danger pull-right">{{ $errors->first('password_confirmation') }}</small>@endif
 								@if ($errors->has('password')) <small class="text-danger pull-right">{{ $errors->first('password') }}</small>@endif
-								<label for="password">{{Lang::get('messages.session.sign_up.password')}}</label>
+								<label for="password">@lang('messages.session.sign_up.password')</label>
 								<div class="row">
 								
-									<div class="col-md-6"><input type="password" name="password" class="form-control" id="password" placeholder="{{Lang::get('messages.session.sign_up.password_placeholder')}}" value="{{ old('password') }}"></div>
-									<div class="col-md-6"><input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="{{Lang::get('messages.session.sign_up.password_confirm')}}" value="{{ old('password_confirmation') }}"></div>
+									<div class="col-md-6"><input type="password" name="password" class="form-control" id="password" placeholder="@lang('messages.session.sign_up.password_placeholder')" value="{{ old('password') }}"></div>
+									<div class="col-md-6"><input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="@lang('messages.session.sign_up.password_confirm')" value="{{ old('password_confirmation') }}"></div>
 								</div>
 								
 							</div>
 							
 							{!! csrf_field() !!}
-							<p class="text-center"><small class="text-muted">{{Lang::get('messages.session.sign_up.accept_terms')}} <a href="{{ route('terms') }}" target="_blank">{{Lang::get('messages.website.terms')}}</a></small></p>
+							<p class="text-center"><small class="text-muted">@lang('messages.session.sign_up.accept_terms')}} <a href="{{ route('terms') }}" target="_blank">{{Lang::get('messages.website.terms')</a></small></p>
 							
 							
-							<button type="submit" class="btn btn-default btn-block">{{Lang::get('messages.session.sign_up.sign_up')}}</button>
-							<a href="{{ route('auth.getSocialAuth', ['provider' => 'facebook']) }}" class="btn btn-primary btn-block">{{Lang::get('messages.session.sign_up.use_fb')}}</a>
+							<button type="submit" class="btn btn-default btn-block">@lang('messages.session.sign_up.sign_up')</button>
+							<a href="{{ route('auth.getSocialAuth', ['provider' => 'facebook']) }}" class="btn btn-primary btn-block">@lang('messages.session.sign_up.use_fb')</a>
 							
-							<a class="btn btn-block btn-link" href="{{ route('login') }}">{{Lang::get('messages.session.return_to_login')}}</a>
+							<a class="btn btn-block btn-link" href="{{ route('login') }}">@lang('messages.session.return_to_login')</a>
 						</form>
 					</div>
 				</div>

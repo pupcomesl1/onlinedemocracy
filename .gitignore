@@ -4,3 +4,6 @@ vendor/
 /.project
 /.DS_Store
 /.buildpath
+.idea/
+.env
+_ide_helper.php

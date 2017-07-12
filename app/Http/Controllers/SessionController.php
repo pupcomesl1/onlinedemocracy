@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
-use Laravel\Socialite\Contracts\Factory as Socialite;
+use Socialite;
 
 use App\User;
 use App\UserFactory;
@@ -18,10 +18,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class SessionController extends Controller
 {
-	
-	public function __construct(Socialite $socialite){
-		$this->socialite = $socialite;
-	}
 	
     /**
      * Display a listing of the resource.
@@ -115,54 +111,51 @@ class SessionController extends Controller
     public function logout()
     {
     	Auth::logout();
-    	return redirect()->route('login');
+    	return redirect()->route('home');
     }
 
 
     public function getSocialAuth($provider=null)
     {
     	if(!config("services.$provider")) abort('404'); //just to handle providers that doesn't exist
-    
-    	return $this->socialite->driver($provider)->redirect();
+
+        return Socialite::driver($provider)->redirect();
+    }
+
+    public function msgraphLogin()
+    {
+        return Socialite::driver('graph')->scopes(['User.Read'])->redirect();
     }
     
     public function getSocialAuthCallback($provider=null)
     {
 
 	    switch ($provider) {
-		    case 'facebook':
-		       	
-		    	if($socialUser = $this->socialite->driver($provider)->user()){
-		    	
-		    		$oAuthUser = User::firstOrCreate([
-		    				'email' => $socialUser->email,
-		    		]);
-		    		
-		    		Auth::login($oAuthUser, true);
-		    		
-					$user = Auth::user();
-					
-					$name = $socialUser->name;
-					
-					$parts = explode(" ", $name);
-					$user->setlastName(array_pop($parts));
-					$user->setfirstName(implode(" ", $parts));
-					
-		    		$user->setAvatar($socialUser->avatar_original);
-		    		
-		    		$user->setFacebookId($socialUser->id);
-		    		
-		    		$user->save();
-		    
-		    		return redirect()->intended('/');
-		    	
-		    	} else {
-		    		return redirect()->route('login')->withErrors([
-		    				'social' => trans('messages.session.login.facebook_connection_error'),
-		    		]);
-		    	}
-		    	
-		        break;
+            case 'graph':
+                if ($graphUser = Socialite::driver($provider)->user()){
+
+                        $user = User::where('msgraphId', '=', $graphUser->id)->first();
+                        if ($user === null) {
+                            $user = new User;
+                            $user->setMsgraphId($graphUser->id);
+                            $user->setDisplayName($graphUser->givenName . ' ' . $graphUser->surname);
+                            $user->setfirstName($graphUser->givenName);
+                            $user->setlastName($graphUser->surname);
+                            $user->setEmail($graphUser->email);
+                            if (preg_match('/.+\(LUX-S[1-7][A-Z]+\)/', $graphUser->displayName)) {
+                                $user->setBelongsToSchool(true);
+                                $user->attachRole(Role::find(1));
+                            }
+                            $user->save();
+                        }
+
+                        Auth::login($user, true);
+                        return redirect()->intended('/');
+
+                    } else {
+                        return redirect()->home()->withErrors(['login' => trans('messages.profile.account.school_link_messages.not_valid_name')]);
+                    }
+                break;
 		        
 		    default:
 		    	return redirect()->route('login')->withErrors([
@@ -180,6 +173,16 @@ class SessionController extends Controller
     	} else {
     		return redirect()->route('login');
     	}
+    }
+
+    public function loginAsTestmod() {
+        if (\App::environment('development')) {
+            $user = User::find(0);
+            Auth::login($user, true);
+            return redirect()->intended('/');
+        } else {
+            return abort(403, 'Unauthorised action.');
+        }
     }
     
 }

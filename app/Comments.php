@@ -49,5 +49,13 @@ class Comments extends Model implements AuthenticatableContract
     public function created_at () {
     	return $this->attributes['created_at'];
     }
+
+    public function deletedBy() {
+        return $this->attributes['deleted_by'];
+    }
+
+    public function distinguish() {
+        return $this->attributes['distinguish'];
+    }
     
 }

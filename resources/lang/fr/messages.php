@@ -17,7 +17,7 @@ return [
 				],
 				'return' => "Retour à l'application",
 				'terms' => "Conditions d'utilisation",
-				'footer' => "DirectDemocracy est développpé et maintenu par Photis Avrilionis. Copyright © 2015 - " . date("Y") . " Photis Avrilionis",
+				'footer' => "DirectDemocracy est développpé et maintenu par Marks Polakovs. Copyright © 2015-2017 Photis Avrilionis © 2017 - " . date("Y") . " Marks Polakovs",
 		],
 
 		'proposition' => [
@@ -27,7 +27,7 @@ return [
 						'expired' => "Expirée",
 						'blocked' => "Bloquée par les modérateurs",
 						'pending' => "En attente d'approbation",
-						'ending_in' => "{1} Termine dans :daysleft jour|{0} Termine aujourd'hui|[2,Inf] Termine dans :daysleft jours",
+						'ending_in' => "Termine dans :daysleft jour|Termine dans :daysleft jours",
 				],
 				'share' => [
 						'share' => "Partager",
@@ -48,13 +48,20 @@ return [
 						'add' => "rajouter",
 						'cancel' => "Annuler",
 						'delete' => "Supprimer",
+                        'distinguish' => "Distinguer",
+                        'flag' => "Signaler",
+                        'undelete' => "Récupérer",
 						'like' => "J'aime",
 						'liked' => "J'aime déjà",
 						'likes_count' => "{1} :likes personne a aimé|[2,Inf] :likes personnes ont aimé",
+                        'deleted' => "Cette commentaire a été supprimé par un moderateur.",
+                        'guidelines_1' => "Stop ! As-tu lu nos",
+                        'guidelines_2' => "règles de commentaire",
+                        'guidelines_3' => ' ?'
 				],
 				'voting' => [
 						'expired' => "Cette proposition est expirée, tu ne peux plus voter",
-						'already_voted' => "Tu as déjà voté pour cette proposition",
+						'already_voted' => "Tu as déjà voté pour cette proposition. Cliques ici pour changer ton vote.",
 						'already_voted_sort' => "Tu as voté, félicitations !",
 						'link' => "Lies ce compte avec l'email de ton école pour pouvoir voter et commenter !",
 						'credits' => "Ecrit par",
@@ -127,7 +134,7 @@ return [
 						'change_password' => "Changer le mot de passe",
 						'language' => "Langue",
 						'school_link' => "Lien au compte de l'école",
-						'school_link_help' => "Tu dois faire partie de l'école Européenne de Mamer pour voter, commenter et créer des propositions.",
+						'school_link_help' => "Tu dois faire partie de l'école Européenne de Kirchberg pour voter, commenter et créer des propositions.",
 						'school_link_actions' => [
 								'link_now' => "Lier maintenant",
 								'linked_with' => "Lié avec :",
@@ -135,12 +142,11 @@ return [
 						],
 						'school_link_messages' => [
 								"already_linked" => "Cet email est déjà utilisé dans un autre compte",
-								"not_valid_email" => "Ceci n'est pas un compte email valide, ton email doit terminer par @eursc-mamer.lu",
 								"error" => "Erreur de liaison avec compte email",
 								"unlinked" => "Détachement réussi"
 						],
 						'propositionsCount' => "{1} :propositions proposition|{0} Pas de proposition|[2,Inf] :propositions propositions",
-						'school_link_info' => "Tu dois faire partie de l'école Européenne de Mamer pour voter, commenter et créer des propositions.",
+						'school_link_info' => "Tu dois faire partie de l'école Européenne de Kirchberg pour voter, commenter et créer des propositions.",
 						'save' => "Enregistrer",
 				],
 				'password' => [
@@ -158,7 +164,7 @@ return [
 						'step' => "Etape :step",
 						'create_proposition' => "Créer proposition",
 						'proposition_sort' => "Écris ta proposition",
-						'proposition_long' => "Décris ton idée (optionnel)",
+						'proposition_long' => "Décris ton idée",
 						'deadline' => "Choisis une date limite",
 						'confirm' => "Confimer",
 						'next' => "Suivant",
@@ -210,9 +216,8 @@ return [
 		'feedback' => [
 				'thanks' => "Merci pour ton avis",
 				'error' => "Une erreur s'est produite. Veuillez réessayer plus tard.",
-				'anonymous' => "Restez anonyme",
 				'placeholder' => "Saisis ton commentaire",
-				'reason' => "DirectDemocracy peut faire mieux ! N'hésites pas à nous dire ce que l'on peut améliorer ou rajouter ! Ton aide sera beaucoup appréciée.",
+				'reason' => "DirectDemocracy est encore en développement et peut faire mieux ! N'hésites pas à nous dire ce que l'on peut améliorer ou rajouter ! Ton aide sera beaucoup appréciée.",
 				'feedback' => "Ton avis",
 				'submit' => "Donnes-nous ton avis",
 		],
@@ -236,15 +241,15 @@ return [
 				'for_approval' => "Propositions en attente d'approbation",
 				'criteria' => [
 						'title' => "Critères d'approbation",
-						'no_offensive_words' => "Ne doit pas contenir des mots aggressifs ou provocants",
-						'no_mentions' => "Ne doit pas contenir des noms",
+						'no_offensive_words' => "Ne peut pas contenir des mots aggressifs ou provocants",
+						'no_mentions' => "Ne peut pas contenir des noms des personnes",
 						'grammar_and_spelling' => "Si possible vérifier les erreurs de grammaire et d'orthographe",
 				],
 				'approve' => "Approuver",
 				'block' => "Bloquer",
 				'days_left' => "[-Inf,0] Expirée|{0} Dernier jour|{1} Plus qu'un jour|[2,Inf] Encore :daysleft jours",
 				'reason_placeholder' => "Raison",
-				'all_ok' => "Plus de proposition à approuver, bon travail ! :)",
+				'all_ok' => "Rien ici, bon travail ! :)",
 				
 		],
 		
@@ -271,6 +276,7 @@ return [
 						'use_fb' => "S'enregistrer avec Facebook",
 						'use_fb_login' => "Se connecter avec Facebook",
 						'sign_up' => "S'enregistrer",
+                        'use_msgraph' => "Se connecter avec Office 365",
 				],
 				"sign_up" => [
 						'sign_up' => "S'enregistrer",

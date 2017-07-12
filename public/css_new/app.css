@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons|Roboto);
 /* CSS Document */
 
 *, *:before, *:after {box-sizing:  border-box !important;}
@@ -10,7 +10,7 @@ html, body {
 }
 	
 body {
-	font-family: 'soleil', 'Proxima Nova', 'Montserrat', "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: 'Montserrat', "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .material-icons {

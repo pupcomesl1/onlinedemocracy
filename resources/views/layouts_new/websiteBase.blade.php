@@ -137,10 +137,9 @@
 	          
 	          <ul class="nav navbar-nav navbar-right">
 	          @if (Auth::user())
-	            <li><a href="{{ route('propositions') }}" class="btn btn-success">{{Lang::get('messages.website.return')}}</a></li>
+	            <li><a href="{{ route('propositions') }}" class="btn btn-success">@lang('messages.website.return')</a></li>
 	          @else
-				<li><a href="{{ route('login') }}">{{Lang::get('messages.session.login.submit')}}</a></li>
-				<li><a href="{{ route('auth.getSocialAuth', ['provider' => 'facebook']) }}" class="btn btn-primary">{{Lang::get('messages.session.login.use_fb_login')}}</a></li>
+				<li><a href="{{ route('o365login') }}" class="btn btn-primary">@lang('messages.session.login.use_msgraph')</a></li>
 	          @endif
 	          </ul>
 	        </div>
@@ -153,9 +152,8 @@
 	@yield('content')
 	<div class="footer">
   	<div class="container">
-  		<span id="siteseal" class="pull-right"><script async type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=RRj7eHjJWWwIrW3RRbX7U43KBFBB1zHUYmMOs1REasBPEQc8FmhQcj3oU7HL"></script></span>
-        <p><small class="text-muted"><a href="{{ route('terms') }}" class="text-muted">{{Lang::get('messages.website.terms')}}</a> | <a href="https://github.com/pavril/onlinedemocracy" target="_blank" class="text-muted">GitHub</a></small></p>
-        <p><small class="text-muted">{{Lang::get('messages.website.footer')}}</small></p>
+        <p><small class="text-muted"><a href="{{ route('terms') }}" class="text-muted">@lang('messages.website.terms')</a> | <a href="https://github.com/pupcomesl1/onlinedemocracy" target="_blank" class="text-muted">GitHub</a></small></p>
+        <p><small class="text-muted">@lang('messages.website.footer')</small></p>
 	</div>
   </div>
 @stop()

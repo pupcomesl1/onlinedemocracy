@@ -41,15 +41,12 @@ class ProfileController extends Controller
     	$propositionsCount = $propositionFactory->getPropositionsCountByUser($user->userId());
     	
     	$viewUser = [
-    			'fullName' => $user->firstName() . " " . $user->lastName(),
-    			'firstName' => $user->firstName(),
-    			'lastName' => $user->lastName(),
+    			'displayName' => $user->displayName(),
     			'contactEmail' => $user->contactEmail(),
     			'email' => $user->email(),
     			'avatar' => $user->avatar(),
     			'belongsToSchool' => $user->belongsToSchool(),
     			'schoolEmail' => $user->googleEmail(),
-    			'role' => $user->role(),
     			'lang' => $user->language(),
     			'propositionsCount' => $propositionsCount,
     	];
@@ -57,7 +54,7 @@ class ProfileController extends Controller
 		$highlight = array();
 		$highlight[session('highlight')] = true;
     	
-    	return view('account_new.profile', ['fullName' => $user->firstName() . " " . $user->lastName(), 'user' => $viewUser, 'highlight' => $highlight]);
+    	return view('account_new.profile', ['displayName' => $user->displayName(), 'user' => $viewUser, 'highlight' => $highlight]);
     }
 
     public function language()
@@ -84,8 +81,7 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
     	$validator = Validator::make($request->all(), [
-    			'first' => 'required',
-    			'last' => 'required',
+    			'displayName' => 'required',
     			'contact' => 'email',
     			'lang' => 'required',
     	]);
@@ -95,16 +91,14 @@ class ProfileController extends Controller
     		return redirect()->back()->withInput($request->all())->withErrors($validator->errors());
     		 
     	} else {
-    		 
-    		$firstName = $request->input('first');
-    		$lastName = $request->input('last');
+
+            $displayName = $request->input('displayName');
     		$contactemail = $request->input('contact');
     		$lang = $request->input('lang');
     	
     		$user = Auth::user();
     	
-    		$user->setFirstName($firstName);
-    		$user->setLastName($lastName);
+    		$user->setDisplayName($displayName);
     		$user->setContactEmail($contactemail);
     		$user->setLanguage($lang);
     	
@@ -120,7 +114,7 @@ class ProfileController extends Controller
     	$propositionFactory = new PropositionFactory();
     	$propositionsCount = $propositionFactory->getPropositionsCountByUser($user->userId());
     	$viewUser = [
-    			'fullName' => $user->firstName() . " " . $user->lastName(),
+    			'displayName' => $user->displayName(),
     			'firstName' => $user->firstName(),
     			'lastName' => $user->lastName(),
     			'contactEmail' => $user->contactEmail(),
@@ -128,7 +122,6 @@ class ProfileController extends Controller
     			'avatar' => $user->avatar(),
     			'belongsToSchool' => $user->belongsToSchool(),
     			'schoolEmail' => $user->googleEmail(),
-    			'role' => $user->role(),
     			'propositionsCount' => $propositionsCount,
     	];
     	
@@ -156,7 +149,7 @@ class ProfileController extends Controller
     		];
     	}
     	
-    	return view('account_new.propositions', ['fullName' => $user->firstName() . " " . $user->lastName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
+    	return view('account_new.propositions', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
     }
 
     /**
@@ -234,7 +227,7 @@ class ProfileController extends Controller
     	$propositionsCount = $propositionFactory->getPropositionsCountByUser($user->userId());
     	 
     	$viewUser = [
-    			'fullName' => $user->firstName() . " " . $user->lastName(),
+    			'displayName' => $user->displayName(),
     			'firstName' => $user->firstName(),
     			'lastName' => $user->lastName(),
     			'contactEmail' => $user->contactEmail(),
@@ -242,11 +235,10 @@ class ProfileController extends Controller
     			'avatar' => $user->avatar(),
     			'belongsToSchool' => $user->belongsToSchool(),
     			'schoolEmail' => $user->googleEmail(),
-    			'role' => $user->role(),
     			'propositionsCount' => $propositionsCount,
     	];
     	 
-    	return view('account_new.password', ['fullName' => $user->firstName() . " " . $user->lastName(), 'user' => $viewUser]);
+    	return view('account_new.password', ['displayName' => $user->displayName(), 'user' => $viewUser]);
     }
     
     public function password_update(Request $request)
