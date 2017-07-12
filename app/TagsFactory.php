@@ -37,26 +37,26 @@ class TagsFactory {
 		return $results;
 	}
 	
-	public function getTagsByPropositionId($propositionId) {	
+	public function getTagsById($id) {
 		 return Tags::join('propositions_tags', 'propositions_tags.tag_id', '=', 'tags.id')
-		 	->join('propositions', 'propositions.propositionId', '=', 'propositions_tags.proposition_id')
-			->where('propositions.propositionId', '=', $propositionId)->get();
+		 	->join('propositions', 'propositions.id', '=', 'propositions_tags.proposition_id')
+			->where('propositions.id', '=', $id)->get();
 	}
 	
 	public function getPropositionsByTagId($tagId) {
-		return Proposition::join('propositions_tags', 'propositions_tags.proposition_id', '=', 'propositions.propositionId')
+		return Proposition::join('propositions_tags', 'propositions_tags.proposition_id', '=', 'propositions.id')
 		->join('tags', 'tags.id', '=', 'propositions_tags.tag_id')
 		->where('tags.id', '=', $tagId)->get();
 	}
 	
 	public function getAproovedPropositionsByTagId($tagId) {
-		return Proposition::join('propositions_tags', 'propositions_tags.proposition_id', '=', 'propositions.propositionId')
+		return Proposition::join('propositions_tags', 'propositions_tags.proposition_id', '=', 'propositions.id')
 		->join('tags', 'tags.id', '=', 'propositions_tags.tag_id')
 		->where('tags.id', '=', $tagId)->where('propositions.status', '=', 1)->get();
 	}
 	
 	public function getFlaggedPropositionsExeptUsers($id) {
-		return Flags::where('status', '<', 3)->whereNotIn('proposer_id', [$id])->groupBy('proposition')->join('propositions', 'flags.proposition', '=', 'propositions.propositionId')->get();
+		return Flags::where('status', '<', 3)->whereNotIn('proposer_id', [$id])->groupBy('proposition')->join('propositions', 'flags.proposition', '=', 'propositions.id')->get();
 	}
 	public function getFlagCount($id) {
 		return Flags::where('proposition', [$id])->count();
@@ -86,7 +86,7 @@ class TagsFactory {
 		$userHasVoted = false;
 		
 		if ($user->belongsToSchool() == true) {
-			if (Votes::wherePropositionIdAndVoteSchoolEmail($proposition->propositionId(), $user->googleEmail())->count() == 1) {
+			if (Votes::whereIdAndVoteSchoolEmail($proposition->id(), $user->googleEmail())->count() == 1) {
 				$userHasVoted = true;
 			}
 		}
@@ -98,7 +98,7 @@ class TagsFactory {
 		$proposition = Proposition::find($id);
 		$upvotes = 0;
 	
-		$upvotes = Votes::wherePropositionIdAndVoteValue($proposition->propositionId(), 1)->get();
+		$upvotes = Votes::whereIdAndVoteValue($proposition->id(), 1)->get();
 	
 		$upvotesSum = 0;
 	
@@ -113,7 +113,7 @@ class TagsFactory {
 		$proposition = Proposition::find($id);
 		$downvotes = 0;
 		
-		$downvotes = Votes::wherePropositionIdAndVoteValue($proposition->propositionId(), 0)->get();
+		$downvotes = Votes::whereIdAndVoteValue($proposition->id(), 0)->get();
 		
 		$downvotesSum = 0;
 		
@@ -125,15 +125,15 @@ class TagsFactory {
 	}
 	
 	public function getComments($id) {
-		return Comments::wherePropositionId($id)->orderBy('created_at', 'desc')->get();
+		return Comments::whereId($id)->orderBy('created_at', 'desc')->get();
 	}
 	
 	public function getCommentsCount($id) {
-		return Comments::wherePropositionId($id)->count();
+		return Comments::whereId($id)->count();
 	}
 	
 	public function getMarker($id) {
-		return Marker::wherePropositionId($id)->get()->first();
+		return Marker::whereId($id)->get()->first();
 	}
 	
 }

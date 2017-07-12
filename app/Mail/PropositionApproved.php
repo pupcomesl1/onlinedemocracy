@@ -25,7 +25,7 @@ class PropositionApproved extends Mailable
     public function __construct(Proposition $prop)
     {
         $this->proposition = $prop;
-        $this->shareLinks = Share::load(route('proposition', [$prop->propositionId()]), $prop->propositionSort())->services();
+        $this->shareLinks = Share::load(route('proposition', [$prop->id()]), $prop->propositionSort())->services();
     }
 
     /**

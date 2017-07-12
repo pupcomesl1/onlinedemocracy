@@ -32,7 +32,7 @@
 							  <div class="form-group">
 							    <input type="text" name="reason" class="form-control input-sm" id="reason" placeholder="@lang('messages.moderator.reason_placeholder')">
 							  </div>
-							  <input type="hidden" name="propositionId" value="{{$proposition['id']}}">
+							  <input type="hidden" name="id" value="{{$proposition['id']}}">
 							  {!! csrf_field() !!}
 							  <button type="submit" class="btn btn-danger btn-sm">{{ Lang::get('messages.moderator.block')}}</button>
 						</form>

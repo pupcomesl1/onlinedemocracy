@@ -26,12 +26,12 @@ class Proposition extends Model implements AuthenticatableContract
      *
      * @var array
      */
-    protected $fillable = ['propositionId', 'proposer_id', 'propositionSort', 'propositionLong', 'deadline', 'status', 'block_reason', 'created_at', 'updated_at'];
-    protected $primaryKey = 'propositionId';
+    protected $fillable = ['id', 'proposer_id', 'propositionSort', 'propositionLong', 'deadline', 'status', 'block_reason', 'created_at', 'updated_at'];
+    protected $primaryKey = 'id';
 
     
-    public function propositionId () {
-    	return $this->attributes['propositionId'];
+    public function id () {
+    	return $this->attributes['id'];
     }
     
     public function proposerId () {
@@ -93,5 +93,8 @@ class Proposition extends Model implements AuthenticatableContract
     public function date_updated () {
     	return $this->attributes['updated_at'];
     }
-    
+
+    public function comments() {
+        return $this->hasMany('App\Comments');
+    }
 }

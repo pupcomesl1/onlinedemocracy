@@ -107,6 +107,8 @@
             @permission('handleFlags')
             <a href="{{ route('moderator.handle_flags') }}"
                class="list-group-item @if(Route::current()->getName() == 'moderator.handle_flags') active @endif">{{ Lang::get('messages.moderator.menu.handle_flags') }}</a>
+            <a href="{{ route('moderator.handle_comment_flags') }}"
+               class="list-group-item @if(Route::current()->getName() == 'moderator.handle_comment_flags') active @endif">{{ Lang::get('messages.moderator.menu.handle_comment_flags') }}</a>
             @endpermission
           </div>
           @endpermission

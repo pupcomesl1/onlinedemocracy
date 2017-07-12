@@ -4,7 +4,7 @@
 @lang('messages.emails.approved-proposition.description')
 
 @component('mail::panel')
-### [{{ $proposition->propositionSort() }}]({{ route('proposition', [$proposition->propositionId()]) }})
+### [{{ $proposition->propositionSort() }}]({{ route('proposition', [$proposition->id()]) }})
 {{ $proposition->propositionLong() }}
 @endcomponent
 

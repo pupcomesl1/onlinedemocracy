@@ -52,26 +52,43 @@ class PropositionFactory extends Model {
 	}
 	
 	public function getQueuedPropositions() {
-		return Proposition::whereStatus(2)->orderBy('deadline', 'asc')->get();
+		return Proposition::whereStatus(2)
+            ->orderBy('deadline', 'asc')
+            ->get();
 	}
 	public function getQueuedPropositionsExeptUsers($id) {
-		return Proposition::whereStatus(2)->whereNotIn('proposer_id', [$id])->orderBy('deadline', 'asc')->get();
+		return Proposition::whereStatus(2)
+            ->whereNotIn('proposer_id', [$id])
+            ->orderBy('deadline', 'asc')
+            ->get();
 	}
 	public function getQueuedPropositionsExceptUsersCount($id) {
-		return Proposition::whereStatus(2)->whereNotIn('proposer_id', [$id])->orderBy('deadline', 'asc')->count();
+		return Proposition::whereStatus(2)
+            ->whereNotIn('proposer_id', [$id])
+            ->orderBy('deadline', 'asc')
+            ->count();
 	}
 	
 	public function getFlaggedPropositionsExeptUsers($id) {
-		return Flags::where('status', '<', 3)->whereNotIn('proposer_id', [$id])->groupBy('proposition')->join('propositions', 'flags.proposition', '=', 'propositions.propositionId')->get();
+		return Flags::where('status', '<', 3)
+            ->whereNotIn('proposer_id', [$id])
+            ->groupBy('proposition')
+            ->join('propositions', 'flags.proposition', '=', 'propositions.id')
+            ->get();
 	}
 	public function getFlagCount($id) {
 		return Flags::where('proposition', [$id])->count();
 	}
 	public function getFlagTypeCount($id, $type) {
-		return Flags::where('proposition', [$id])->where('type', $type)->count();
+		return Flags::where('proposition', [$id])
+            ->where('type', $type)
+            ->count();
 	}
 	public function getGlobalFlagCount($id) {
-		return Flags::where('status', '<', 3)->join('propositions', 'flags.proposition', '=', 'propositions.propositionId')->whereNotIn('proposer_id', [$id])->count();
+		return Flags::where('status', '<', 3)
+            ->join('propositions', 'flags.proposition', '=', 'propositions.id')
+            ->whereNotIn('proposer_id', [$id])
+            ->count();
 	}
 	
 	
@@ -88,7 +105,7 @@ class PropositionFactory extends Model {
 	}
 	
 	public function getPropositionsByTagId($tagId) {
-		return Proposition::join('propositions_tags', 'propositions.propositionId', '=', 'propositions_tags.proposition_id')
+		return Proposition::join('propositions_tags', 'propositions.id', '=', 'propositions_tags.proposition_id')
 		->join('tags', 'propositions_tags.tag_id', '=', 'tags.id')
 		->where('tags.id', '=', $tagId);
 	}
@@ -96,7 +113,7 @@ class PropositionFactory extends Model {
 	public function addTagtoProposition(Tags $tag, Proposition $proposition) {
 		DB::table('propositions_tags')->insert([
 			'tag_id' => $tag->id(), 
-			'proposition_id' => $proposition->propositionId()						
+			'proposition_id' => $proposition->id()
 		]);
 	}
 	
@@ -107,7 +124,7 @@ class PropositionFactory extends Model {
 		$userHasVoted = false;
 		
 		if ($user->belongsToSchool() == true) {
-			if (Votes::wherePropositionIdAndVoteUser($proposition->propositionId(), $userId)->count() != 0) {
+			if (Votes::whereIdAndVoteUser($proposition->id(), $userId)->count() != 0) {
 				$userHasVoted = true;
 			}
 		}
@@ -115,10 +132,10 @@ class PropositionFactory extends Model {
 		return $userHasVoted;
 	}
 	
-	public function upvote($propositionId, $userId, $schoolEmail) {
+	public function upvote($id, $userId, $schoolEmail) {
 		
 		return Votes::create([
-				"proposition_id" => $propositionId,
+				"proposition_id" => $id,
 				"vote_user" => $userId,
 				"vote_value" => 1,
 		]);
@@ -128,7 +145,7 @@ class PropositionFactory extends Model {
 		$proposition = Proposition::find($id);
 		$upvotes = 0;
 	
-		$upvotes = Votes::wherePropositionIdAndVoteValue($proposition->propositionId(), 1)->get();
+		$upvotes = Votes::whereIdAndVoteValue($proposition->id(), 1)->get();
 	
 		$upvotesSum = 0;
 	
@@ -139,10 +156,10 @@ class PropositionFactory extends Model {
 		return $upvotesSum;
 	}
 	
-	public function downvote($propositionId, $userId) {
+	public function downvote($id, $userId) {
 	
 		return Votes::create([
-				"proposition_id" => $propositionId,
+				"proposition_id" => $id,
 				"vote_user" => $userId,
 				"vote_value" => 0,
 		]);
@@ -152,7 +169,7 @@ class PropositionFactory extends Model {
 		$proposition = Proposition::find($id);
 		$downvotes = 0;
 		
-		$downvotes = Votes::wherePropositionIdAndVoteValue($proposition->propositionId(), 0)->get();
+		$downvotes = Votes::whereIdAndVoteValue($proposition->id(), 0)->get();
 		
 		$downvotesSum = 0;
 		
@@ -163,8 +180,8 @@ class PropositionFactory extends Model {
 		return $downvotesSum;
 	}
 
-    public function unvote($propositionId, $userId) {
-        return Votes::where(['proposition_id' => $propositionId, 'vote_user' => $userId])->delete();
+    public function unvote($id, $userId) {
+        return Votes::where(['proposition_id' => $id, 'vote_user' => $userId])->delete();
     }
 	
 	public function getComments($id) {
@@ -172,7 +189,7 @@ class PropositionFactory extends Model {
 	}
 	
 	public function getCommentsCount($id) {
-		return Comments::wherePropositionId($id)->count();
+		return Comments::whereId($id)->count();
 	}
 	
 	public function flag($type, $id) {
@@ -182,16 +199,16 @@ class PropositionFactory extends Model {
 		]);
 	}
 	
-	public function createMarker($type, $body, $propositionId) {
+	public function createMarker($type, $body, $id) {
 		return Marker::create([
 				"marker_id" => $type,
 				"marker_text" => $body,
-				"proposition_id" => $propositionId,
+				"proposition_id" => $id,
 		]);
 	}
 	
 	public function getMarker($id) {
-		return Marker::wherePropositionId($id)->get()->first();
+		return Marker::whereId($id)->get()->first();
 	}
 	
 }

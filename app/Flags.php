@@ -43,7 +43,7 @@ class Flags extends Model implements AuthenticatableContract
     	}
     }
     
-    public function propositionId () {
+    public function propositionId() {
     	return $this->attributes['proposition'];
     }
     

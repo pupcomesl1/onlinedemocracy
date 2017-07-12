@@ -61,13 +61,14 @@ Route::get('/archived', ['middleware' => 'auth','as' => 'archived','uses' => 'Pr
 Route::get('/proposition/{id}', ['as' => 'proposition','uses' => 'PropositionsController@show']);
 
 Route::post('/proposition/update', ['as' => 'proposition.update','uses' => 'PropositionsController@update']);
-Route::get('/proposition/delete/{propositionId}', ['as' => 'proposition.delete','uses' => 'PropositionsController@delete']);
+Route::get('/proposition/delete/{id}', ['as' => 'proposition.delete','uses' => 'PropositionsController@delete']);
 
 Route::post('/proposition/comment', ['middleware' => 'auth', 'as' => 'comment', 'uses' => 'PropositionsController@comment']);
 Route::post('/proposition/comment/like', ['middleware' => 'auth', 'as' => 'comment.like', 'uses' => 'PropositionsController@like_comment']);
 Route::post('/proposition/comment/remove_like', ['middleware' => 'auth', 'as' => 'comment.remove_like', 'uses' => 'PropositionsController@remove_like_comment']);
-Route::get('/proposition/comment/delete/{commentId}', ['middleware' => 'auth', 'as' => 'comment.delete', 'uses' => 'PropositionsController@delete_comment']);
-Route::get('/proposition/comment/undelete/{commentId}', ['middleware' => 'auth', 'as' => 'comment.undelete', 'uses' => 'PropositionsController@undelete_comment']);
+Route::get('/proposition/comment/{id}/flag/', ['middleware' => 'auth', 'as' => 'comment.flag', 'uses' => 'PropositionsController@comment_flag']);
+Route::get('/proposition/comment/delete/{id}', ['middleware' => 'auth', 'as' => 'comment.delete', 'uses' => 'PropositionsController@delete_comment']);
+Route::get('/proposition/comment/undelete/{id}', ['middleware' => 'auth', 'as' => 'comment.undelete', 'uses' => 'PropositionsController@undelete_comment']);
 Route::post('/proposition/comment/distinguish', ['middleware' => 'auth', 'as' => 'distinguish', 'uses' => 'PropositionsController@distinguish_comment']);
 Route::get('/proposition/{id}/upvote', ['middleware' => 'auth', 'as' => 'upvote', 'uses' => 'PropositionsController@upvote']);
 Route::get('/proposition/{id}/downvote', ['middleware' => 'auth', 'as' => 'downvote', 'uses' => 'PropositionsController@downvote']);
@@ -79,11 +80,13 @@ Route::post('/proposition/{id}/marker/edit', ['middleware' => 'auth', 'as' => 'm
 Route::get('/proposition/{id}/marker/delete', ['middleware' => 'auth', 'as' => 'marker.delete', 'uses' => 'PropositionsController@delete_marker']);
 
 //Moderator routes
-Route::group(['prefix' => 'moderator', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'moderator', 'middleware' => ['auth', 'role:moderator']], function () {
 	Route::get('/approval', ['as' => 'moderator.approval', 'uses' => 'ModeratorController@index']);
 	Route::get('/flags', ['as' => 'moderator.handle_flags', 'uses' => 'ModeratorController@handle_flags']);
+	Route::get('/comment_flags', ['as' => 'moderator.handle_comment_flags', 'uses' => 'ModeratorController@handle_comment_flags']);
 	Route::get('/approval/approve/{id}', ['as' => 'moderator.approve', 'uses' => 'ModeratorController@approve']);
 	Route::post('/approval/block', ['as' => 'moderator.block', 'uses' => 'ModeratorController@block']);
+	Route::post('/comment_flags/dismiss', ['as' => 'moderator.comment_flags.dismiss', 'uses' => 'ModeratorController@dismiss_comment_flags']);
 });
 
 // API routes (return JSON data)

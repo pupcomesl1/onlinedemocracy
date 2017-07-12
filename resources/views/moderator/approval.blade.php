@@ -30,7 +30,7 @@
 			<div class="list-group-form collapse" id="proposition{{$proposition['id']}}">
 				<form class="form-inline" method="post" action="{{ route('moderator.block') }}">
 		  			<input type="text" name="reason" class="form-control form-control-sm" placeholder="{{ Lang::get('messages.moderator.reason_placeholder') }}">
-		  			<input type="hidden" name="propositionId" value="{{$proposition['id']}}">
+		  			<input type="hidden" name="id" value="{{$proposition['id']}}">
 		  			{!! csrf_field() !!}
 		  			<button type="submit" class="btn btn-danger btn-sm">{{ Lang::get('messages.moderator.block') }}</button>
 				</form>

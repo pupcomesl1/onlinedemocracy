@@ -27,7 +27,9 @@
 
       <p><b>"Meh" is not enough.</b> If you don't care about something, don't reply. Or if you do, at least explain why, which leads into the next point:</p>
 
-      <p><b>No matter what your opinion, say why.</b> If you agree, say why. If you disagree, say why. If you don't really care, say why. If you can't be bothered to explain your opinion,  just move on and don't comment.</p>
+      <p><b>No matter what your opinion, say why.</b> If you agree, say why. If you disagree, say why. If you don't really care, say why. If you can't be bothered to explain your opinion,  just move on and don't comment. </p>
+
+      <p><b>If you want to just say yes or no, that's what the upvote and downvote buttons are for.</b> However, we'd all still prefer it if you left a comment explaining your reasons&mdash;it may (completely by accident) lead us to new ideas on how to make the school better</p>
 
       <h2>And the obvious:</h2>
       <p><b>Don't post racist, sexist, ageist, homophobic, or otherwise bigoted comments.</b></p>

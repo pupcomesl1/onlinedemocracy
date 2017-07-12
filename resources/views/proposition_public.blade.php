@@ -169,7 +169,7 @@ $(document).ready( function() {
 		var myWindow = window.open(link, "MsgWindow", "width=550, height=500");
 	});
 
-	$URL = "{{ route('proposition', [$proposition['propositionId']]) }}";
+	$URL = "{{ route('proposition', [$proposition['id']]) }}";
 	// Facebook Shares Count
 	$.getJSON( 'https://graph.facebook.com/?id=' + $URL, function( fbdata ) {
 		$('#shares-count').text(ReplaceNumberWithCommas(fbdata.shares));

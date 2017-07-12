@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CommentFactory;
 use App\Mail\PropositionApproved;
 use Illuminate\Http\Request;
 
@@ -33,147 +34,218 @@ class ModeratorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-	
-	public function __construct () {
-		\App::setLocale(Auth::user()->language());
-	}
-	
+
+    public function __construct()
+    {
+        \App::setLocale(Auth::user()->language());
+    }
+
     public function index()
     {
-    	$user = Auth::user();
-    	if (!$user->can(['approveOrBlockPropositions', 'handleFlags'])) {
-    		abort(404);
-    	}
-    	
-    	$propositionsFactory = new PropositionFactory();
-    	$viewUser = [
-    			'displayName' => $user->displayName(),
-    			'firstName' => $user->firstName(),
-    			'lastName' => $user->lastName(),
-    			'contactEmail' => $user->contactEmail(),
-    			'email' => $user->email(),
-    			'avatar' => $user->avatar(),
-    			'belongsToSchool' => $user->belongsToSchool(),
-    			'schoolEmail' => $user->googleEmail(),
-    			'propositionsCount' =>  $propositionsFactory->getPropositionsCountByUser($user->userId()),
-    	];
+        $user = Auth::user();
+        if (!$user->can(['approveOrBlockPropositions', 'handleFlags'])) {
+            abort(404);
+        }
 
-    	
-    	$viewPropositions = array();
-    	foreach ($propositionsFactory->getQueuedPropositionsExeptUsers($user->userId()) as $proposition) {
-    		$viewPropositions[$proposition->propositionId()] = [
-    				'id' => $proposition->propositionId(),
-    				'propositionSort' => $proposition->propositionSort(),
-    				'propositionLong' => $proposition->propositionLong(),
-    				'proposer' => $proposition->proposerId(),
-    				'propositionCreationDate' => Carbon::createFromTimestamp(strtotime($proposition->date_created()))->diffForHumans(),
-    				'userHasVoted' => $propositionsFactory->getUserVoteStatus($proposition->propositionId(), $user->userId()),
-    				'deadline' => $proposition->deadline(),
-    				'statusId' => $proposition->status(),
-    				'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
-    		];
-    	}
-    	
-    	return view('moderator.approval_new', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
+        $propositionsFactory = new PropositionFactory();
+        $viewUser = [
+            'displayName' => $user->displayName(),
+            'firstName' => $user->firstName(),
+            'lastName' => $user->lastName(),
+            'contactEmail' => $user->contactEmail(),
+            'email' => $user->email(),
+            'avatar' => $user->avatar(),
+            'belongsToSchool' => $user->belongsToSchool(),
+            'schoolEmail' => $user->googleEmail(),
+            'propositionsCount' => $propositionsFactory->getPropositionsCountByUser($user->userId()),
+        ];
+
+
+        $viewPropositions = array();
+        foreach ($propositionsFactory->getQueuedPropositionsExeptUsers($user->userId()) as $proposition) {
+            $viewPropositions[$proposition->id()] = [
+                'id' => $proposition->id(),
+                'propositionSort' => $proposition->propositionSort(),
+                'propositionLong' => $proposition->propositionLong(),
+                'proposer' => $proposition->proposerId(),
+                'propositionCreationDate' => Carbon::createFromTimestamp(strtotime($proposition->date_created()))->diffForHumans(),
+                'userHasVoted' => $propositionsFactory->getUserVoteStatus($proposition->id(), $user->userId()),
+                'deadline' => $proposition->deadline(),
+                'statusId' => $proposition->status(),
+                'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
+            ];
+        }
+
+        return view('moderator.approval_new', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
     }
 
-    
+
     public function approve($id)
     {
-    	$user = Auth::user();
-    	if (!$user->can('approveOrBlockPropositions')) {
-    		abort(403, 'Unauthorized action.');
-    	}
-        
-    	$propositionsFactory = new PropositionFactory();
-    	$proposition = $propositionsFactory->getProposition($id);
-    	
-    	$proposition->setStatus(Proposition::ACCEPTED);
-    	$proposition->save();
-    	
-    	\App::setLocale($proposition->proposer()->language());
+        $user = Auth::user();
+        if (!$user->can('approveOrBlockPropositions')) {
+            abort(403, 'Unauthorized action.');
+        }
 
-    	Log::debug($proposition->proposer()->email());
+        $propositionsFactory = new PropositionFactory();
+        $proposition = $propositionsFactory->getProposition($id);
 
-    	Mail::to($proposition->proposer()->email())
+        $proposition->setStatus(Proposition::ACCEPTED);
+        $proposition->save();
+
+        \App::setLocale($proposition->proposer()->language());
+
+        Log::debug($proposition->proposer()->email());
+
+        Mail::to($proposition->proposer()->email())
             ->send(new PropositionApproved($proposition));
-    	
-    	return redirect()->back();
+
+        return redirect()->back();
     }
-    
+
     public function block(Request $request)
     {
-    	$user = Auth::user();
+        $user = Auth::user();
         if (!$user->can('approveOrBlockPropositions')) {
-    		abort(403, 'Unauthorized action.');
-    	}
-    	
-    	$validator = Validator::make($request->all(), [
-    			'reason' => 'required|max:120',
-    			'propositionId' => 'required',
-    	]);
-    	
-    	if ($validator->fails()) {
-    		abort(403, $validator->errors()->first('reason'));
-    	} else {
-    		$id = $request->input('propositionId');
-    		$reason = $request->input('reason');
-    		
-    		$propositionsFactory = new PropositionFactory();
-    		$proposition = $propositionsFactory->getProposition($id);
-    		
-    		$proposition->setStatus(Proposition::BLOCKED);
-    		$proposition->setBlockReason($reason);
-    		$proposition->save();
-    		
-    		return redirect()->back();
-    	}
-    	
+            abort(403, 'Unauthorized action.');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'reason' => 'required|max:120',
+            'id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            abort(403, $validator->errors()->first('reason'));
+        } else {
+            $id = $request->input('id');
+            $reason = $request->input('reason');
+
+            $propositionsFactory = new PropositionFactory();
+            $proposition = $propositionsFactory->getProposition($id);
+
+            $proposition->setStatus(Proposition::BLOCKED);
+            $proposition->setBlockReason($reason);
+            $proposition->save();
+
+            return redirect()->back();
+        }
+
     }
-    
+
     public function handle_flags()
     {
-    	$user = Auth::user();
-    	if (!$user->can('handleFlags')) {
-    		abort(404);
-    	}
-    	 
-    	$propositionsFactory = new PropositionFactory();
-    	$viewUser = [
-    			'displayName' => $user->displayName(),
-    			'firstName' => $user->firstName(),
-    			'lastName' => $user->lastName(),
-    			'contactEmail' => $user->contactEmail(),
-    			'email' => $user->email(),
-    			'avatar' => $user->avatar(),
-    			'belongsToSchool' => $user->belongsToSchool(),
-    			'schoolEmail' => $user->googleEmail(),
-    			'propositionsCount' =>  $propositionsFactory->getPropositionsCountByUser($user->userId()),
-    	];
-    
-    	$viewPropositions = array();
-    	foreach ($propositionsFactory->getFlaggedPropositionsExeptUsers($user->userId()) as $flag) {
-    		
-    		$proposition = $propositionsFactory->getProposition($flag->propositionId());
-    		
-    		$viewPropositions[$proposition->propositionId()] = [
-    				'id' => $proposition->propositionId(),
-    				'propositionSort' => $proposition->propositionSort(),
-    				'propositionLong' => $proposition->propositionLong(),
-    				'proposer' => $proposition->proposerId(),
-    				'propositionCreationDate' => Carbon::createFromTimestamp(strtotime($proposition->date_created()))->diffForHumans(),
-    				'userHasVoted' => $propositionsFactory->getUserVoteStatus($proposition->propositionId(), $user->userId()),
-    				'deadline' => $proposition->deadline(),
-    				'statusId' => $proposition->status(),
-    				'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
-    				
-    				'flagsCount' => $propositionsFactory->getFlagCount($proposition->propositionId()),
-    				'offensiveCount' => $propositionsFactory->getFlagTypeCount($proposition->propositionId(), 1),
-    				'inappropriateCount' => $propositionsFactory->getFlagTypeCount($proposition->propositionId(), 2),
-    				'incomprehensibleCount' => $propositionsFactory->getFlagTypeCount($proposition->propositionId(), 3),
-    		];
-    	}
-    	 
-    	return view('moderator.flags', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
+        $user = Auth::user();
+        if (!$user->can('handleFlags')) {
+            abort(404);
+        }
+
+        $propositionsFactory = new PropositionFactory();
+        $viewUser = [
+            'displayName' => $user->displayName(),
+            'firstName' => $user->firstName(),
+            'lastName' => $user->lastName(),
+            'contactEmail' => $user->contactEmail(),
+            'email' => $user->email(),
+            'avatar' => $user->avatar(),
+            'belongsToSchool' => $user->belongsToSchool(),
+            'schoolEmail' => $user->googleEmail(),
+            'propositionsCount' => $propositionsFactory->getPropositionsCountByUser($user->userId()),
+        ];
+
+        $viewPropositions = array();
+        foreach ($propositionsFactory->getFlaggedPropositionsExeptUsers($user->userId()) as $flag) {
+
+            $proposition = $propositionsFactory->getProposition($flag->id());
+
+            $viewPropositions[$proposition->id()] = [
+                'id' => $proposition->id(),
+                'propositionSort' => $proposition->propositionSort(),
+                'propositionLong' => $proposition->propositionLong(),
+                'proposer' => $proposition->proposerId(),
+                'propositionCreationDate' => Carbon::createFromTimestamp(strtotime($proposition->date_created()))->diffForHumans(),
+                'userHasVoted' => $propositionsFactory->getUserVoteStatus($proposition->id(), $user->userId()),
+                'deadline' => $proposition->deadline(),
+                'statusId' => $proposition->status(),
+                'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
+
+                'flagsCount' => $propositionsFactory->getFlagCount($proposition->id()),
+                'offensiveCount' => $propositionsFactory->getFlagTypeCount($proposition->id(), 1),
+                'inappropriateCount' => $propositionsFactory->getFlagTypeCount($proposition->id(), 2),
+                'incomprehensibleCount' => $propositionsFactory->getFlagTypeCount($proposition->id(), 3),
+            ];
+        }
+
+        return view('moderator.flags', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
+    }
+
+    public function handle_comment_flags(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user->can('handleFlags')) {
+            abort(404);
+        }
+
+        $include_dismissed = $request->input('include_dismissed') == '1';
+
+        $propositionsFactory = new PropositionFactory();
+
+        $viewUser = [
+            'displayName' => $user->displayName(),
+            'firstName' => $user->firstName(),
+            'lastName' => $user->lastName(),
+            'contactEmail' => $user->contactEmail(),
+            'email' => $user->email(),
+            'avatar' => $user->avatar(),
+            'belongsToSchool' => $user->belongsToSchool(),
+            'schoolEmail' => $user->googleEmail(),
+            'propositionsCount' => $propositionsFactory->getPropositionsCountByUser($user->userId()),
+        ];
+
+        $factory = new \App\CommentFactory();
+        $userFactory = new \App\UserFactory();
+        $flags = $factory->getFlaggedCommentsExceptUsers($user->id, $include_dismissed);
+        $viewComments = [];
+
+        foreach ($flags as $flag) {
+            $comment = $flag->comment;
+//            $commenter = $userFactory->getUser($comment->commenterId());
+            $viewComments[$comment->id] = [
+                'id' => $comment->id,
+                'body' => $comment->body,
+                'commenter' => [
+                    'displayName' => $comment->commenter->displayName,
+                ],
+                'flagCount' => [
+                    'total' => $factory->getFlagCountForComment($comment->id, true),
+                    'nonDismissed' => $factory->getFlagCountForComment($comment->id, false),
+                ],
+                'proposition' => [
+                    'title' => $comment->proposition->propositionSort,
+                    'id' => $comment->proposition->id,
+                ]
+            ];
+        }
+
+        return view('moderator.comment-flags', [
+            'displayName' => $user->displayName(),
+            'user' => $viewUser,
+            'flags' => $viewComments,
+            'includeDismissed' => $include_dismissed,
+        ]);
+
+    }
+
+    public function dismiss_comment_flags(Request $request) {
+        $user = Auth::user();
+        if (!$user->can('approveOrBlockPropositions')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $id = $request->input('id');
+        $factory = new CommentFactory();
+        $factory->dismissCommentFlags($id);
+
+        return redirect()->back();
     }
 }

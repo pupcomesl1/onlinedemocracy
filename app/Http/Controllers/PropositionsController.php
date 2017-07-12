@@ -62,13 +62,13 @@ class PropositionsController extends Controller
 
     	foreach ($propositionFactory->getAcceptedPropositionsExeptExpired() as $proposition) {
 
-    		$userHasVoted = $propositionFactory->getUserVoteStatus($proposition->propositionId(), $user->userId());
+    		$userHasVoted = $propositionFactory->getUserVoteStatus($proposition->id(), $user->userId());
     		$daysLeft = Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false);
 
     		if (($daysLeft <= 5) AND ($daysLeft >= 0)) {
     			//Ending soon (5 days left)
-    			$endingSoonPropositions[$proposition->propositionId()] = [
-    					'id' => $proposition->propositionId(),
+    			$endingSoonPropositions[$proposition->id()] = [
+    					'id' => $proposition->id(),
     					'propositionSort' => $proposition->propositionSort(),
     					'proposer' => $proposition->proposerId(),
     					'propositionCreationDate' => $proposition->date_created(),
@@ -76,16 +76,16 @@ class PropositionsController extends Controller
     					'deadline' => $proposition->deadline(),
     					'statusId' => $proposition->status(),
     					'ending_in' => $daysLeft,
-    					'upvotes' => $propositionFactory->getUpvotes($proposition->propositionId()),
-    					'downvotes' => $propositionFactory->getDownvotes($proposition->propositionId()),
-    					'comments' => $propositionFactory->getCommentsCount($proposition->propositionId()),
-    					'marker' => $propositionFactory->getMarker($proposition->propositionId()),
+    					'upvotes' => $propositionFactory->getUpvotes($proposition->id()),
+    					'downvotes' => $propositionFactory->getDownvotes($proposition->id()),
+    					'comments' => $propositionFactory->getCommentsCount($proposition->id()),
+    					'marker' => $propositionFactory->getMarker($proposition->id()),
     			];
 
     		} elseif (($userHasVoted == true) AND ($daysLeft > 0)) {
     			//Voted propositions
-    			$votedPropositions[$proposition->propositionId()] = [
-    					'id' => $proposition->propositionId(),
+    			$votedPropositions[$proposition->id()] = [
+    					'id' => $proposition->id(),
     					'propositionSort' => $proposition->propositionSort(),
     					'proposer' => $proposition->proposerId(),
     					'propositionCreationDate' => $proposition->date_created(),
@@ -93,15 +93,15 @@ class PropositionsController extends Controller
     					'deadline' => $proposition->deadline(),
     					'statusId' => $proposition->status(),
     					'ending_in' => $daysLeft,
-    					'upvotes' => $propositionFactory->getUpvotes($proposition->propositionId()),
-    					'downvotes' => $propositionFactory->getDownvotes($proposition->propositionId()),
-    					'comments' => $propositionFactory->getCommentsCount($proposition->propositionId()),
-    					'marker' => $propositionFactory->getMarker($proposition->propositionId()),
+    					'upvotes' => $propositionFactory->getUpvotes($proposition->id()),
+    					'downvotes' => $propositionFactory->getDownvotes($proposition->id()),
+    					'comments' => $propositionFactory->getCommentsCount($proposition->id()),
+    					'marker' => $propositionFactory->getMarker($proposition->id()),
     			];
 
     		} else {
-    			$viewPropositions[$proposition->propositionId()] = [
-    					'id' => $proposition->propositionId(),
+    			$viewPropositions[$proposition->id()] = [
+    					'id' => $proposition->id(),
     					'propositionSort' => $proposition->propositionSort(),
     					'proposer' => $proposition->proposerId(),
     					'propositionCreationDate' => $proposition->date_created(),
@@ -109,10 +109,10 @@ class PropositionsController extends Controller
     					'deadline' => $proposition->deadline(),
     					'statusId' => $proposition->status(),
     					'ending_in' => $daysLeft,
-    					'upvotes' => $propositionFactory->getUpvotes($proposition->propositionId()),
-    					'downvotes' => $propositionFactory->getDownvotes($proposition->propositionId()),
-    					'comments' => $propositionFactory->getCommentsCount($proposition->propositionId()),
-    					'marker' => $propositionFactory->getMarker($proposition->propositionId()),
+    					'upvotes' => $propositionFactory->getUpvotes($proposition->id()),
+    					'downvotes' => $propositionFactory->getDownvotes($proposition->id()),
+    					'comments' => $propositionFactory->getCommentsCount($proposition->id()),
+    					'marker' => $propositionFactory->getMarker($proposition->id()),
     			];
     		}
 
@@ -150,18 +150,18 @@ class PropositionsController extends Controller
 
     	foreach ($propositionFactory->getAcceptedPropositionsOnlyExpired() as $proposition) {
 
-    		$expiredPropositions[$proposition->propositionId()] = [
-    				'id' => $proposition->propositionId(),
+    		$expiredPropositions[$proposition->id()] = [
+    				'id' => $proposition->id(),
     				'propositionSort' => $proposition->propositionSort(),
     				'proposer' => $proposition->proposerId(),
     				'propositionCreationDate' => $proposition->date_created(),
     				'deadline' => $proposition->deadline(),
     				'statusId' => $proposition->status(),
     				'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
-    				'upvotes' => $propositionFactory->getUpvotes($proposition->propositionId()),
-    				'downvotes' => $propositionFactory->getDownvotes($proposition->propositionId()),
-    				'comments' => $propositionFactory->getCommentsCount($proposition->propositionId()),
-    				'marker' => $propositionFactory->getMarker($proposition->propositionId()),
+    				'upvotes' => $propositionFactory->getUpvotes($proposition->id()),
+    				'downvotes' => $propositionFactory->getDownvotes($proposition->id()),
+    				'comments' => $propositionFactory->getCommentsCount($proposition->id()),
+    				'marker' => $propositionFactory->getMarker($proposition->id()),
     		];
 
     	}
@@ -271,7 +271,7 @@ class PropositionsController extends Controller
 
     	$propositionFactory = new PropositionFactory();
 
-    	$proposition = $propositionFactory->getProposition($request->get('propositionId'));
+    	$proposition = $propositionFactory->getProposition($request->get('id'));
 
     	if ($proposition->status() == 2) {
 
@@ -314,12 +314,12 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function delete($propositionId)
+    public function delete($id)
     {
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
 
-    	$proposition = with(new PropositionFactory())->getProposition($propositionId);
+    	$proposition = with(new PropositionFactory())->getProposition($id);
 
     	if (
             (
@@ -332,7 +332,7 @@ class PropositionsController extends Controller
             and $user->can('deleteOwnPropositions')
         ) {
 
-    			if (with(new PropositionFactory())->deleteProposition($propositionId) == true) {
+    			if (with(new PropositionFactory())->deleteProposition($id) == true) {
 
     				return redirect()->route('profile.propositions')->with('status', trans('messages.profile.propositions.success_deleting'));
     			} else {
@@ -371,7 +371,7 @@ class PropositionsController extends Controller
     	$proposer = $userFactory->getUser($proposition->proposerId());
 
     	$viewProposition = [
-    			'propositionId' => $proposition->propositionId(),
+    			'id' => $proposition->id(),
     			'proposer' => [
     					'id' => $proposition->proposerId(),
     					'displayName' => $proposer->displayName,
@@ -382,7 +382,7 @@ class PropositionsController extends Controller
     			'date_created' => Carbon::createFromTimestamp(strtotime($proposition->date_created()))->diffForHumans(),
     			'deadline' => $proposition->deadline(),
     			'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
-    			'marker' => $propositionFactory->getMarker($proposition->propositionId()),
+    			'marker' => $propositionFactory->getMarker($proposition->id()),
     	];
 
     	$viewVotes = [
@@ -390,7 +390,7 @@ class PropositionsController extends Controller
     			'downvotes' => $propositionFactory->getDownvotes($id),
     	];
 
-    	$viewShareLinks = Share::load(route('proposition', [$viewProposition['propositionId']]), $viewProposition['propositionSort'])->services();
+    	$viewShareLinks = Share::load(route('proposition', [$viewProposition['id']]), $viewProposition['propositionSort'])->services();
 
     	$viewComments = array();
 
@@ -406,8 +406,8 @@ class PropositionsController extends Controller
     		    $canDistinguish = null;
             }
 
-    		$viewComments[$comment->commentId()] = [
-    				'commentId' => $comment->commentId(),
+    		$viewComments[$comment->id()] = [
+    				'id' => $comment->id(),
     				'commentBody' => $comment->body(),
     				'commenter' => [
     						'id' => $commentUser->userId(),
@@ -421,12 +421,21 @@ class PropositionsController extends Controller
     				'date_created' => Carbon::createFromTimestamp(strtotime($comment->created_at()))->diffForHumans(),
                     'modDeleted' => $comment->deletedBy() !== null,
                     'distinguish' => \App\Role::find($comment->distinguish()),
-                    'userCanDistinguish' => $canDistinguish
+                    'userCanDistinguish' => $canDistinguish,
+                    'userCanFlag' =>
+                        $user
+                        and $user->can('flag')
+                        and $user->id != $comment['commenter']['id']
+                        and collect(\App\CommentFlag::where(
+                            [
+                                ['flagger', '=', $user->id],
+                                ['comment_id', '=', $comment->id]
+                            ]))->isEmpty(),
     		];
 
     		if (Auth::check()) {
-    			$viewComments[$comment->commentId()]['userHasLiked'] = with(new CommentFactory())->userHasLiked($comment, $user);
-    			$viewComments[$comment->commentId()]['people_likes'] = with(new CommentFactory())->getLikesByComment($comment);
+    			$viewComments[$comment->id()]['userHasLiked'] = with(new CommentFactory())->userHasLiked($comment, $user);
+    			$viewComments[$comment->id()]['people_likes'] = with(new CommentFactory())->getLikesByComment($comment);
     		}
 
     	}
@@ -435,7 +444,7 @@ class PropositionsController extends Controller
 
 
     	$viewTags = array();
-    	foreach (with(new TagsFactory())->getTagsByPropositionId($proposition->propositionId()) as $tag) {
+    	foreach (with(new TagsFactory())->getTagsById($proposition->id()) as $tag) {
     		$viewTags[$tag->id()] = $tag->content();
     	}
 
@@ -466,7 +475,7 @@ class PropositionsController extends Controller
 
     	$validator = Validator::make($request->all(), [
     			'commentBody' => 'required',
-    			'propositionId' => 'required',
+    			'id' => 'required',
     	]);
 
     	if ($validator->fails()) {
@@ -474,38 +483,42 @@ class PropositionsController extends Controller
     		abort(403, $validator->errors()->first('commentBody'));
 
     	} else {
-            with(new CommentFactory())->createComment($user->userId(), $request->input('propositionId'), $request->input('commentBody'));
+    	    \Log::debug('Inside else statement: ' . $user->userId() . ', ' . $request->input('id'));
+    	    $factory = new CommentFactory();
+    	    $nc = $factory->createComment($user->userId(), $request->input('id'), $request->input('commentBody'));
 
-            return redirect()->route('proposition', $request->input('propositionId'));
+    	    \Log::debug($nc);
+
+            return redirect()->route('proposition', $request->input('id'));
     	}
     }
 
-    public function delete_comment($commentId) {
+    public function delete_comment($id) {
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
 
     	$commentsFactory = new commentFactory();
-    	$comment = $commentsFactory->getComment($commentId);
+    	$comment = $commentsFactory->getComment($id);
 
     	if ($comment->commenterId() == $user->userId() && $user->can('deleteOwnComments')) {
-    		$commentsFactory->deleteComment($commentId);
+    		$commentsFactory->deleteComment($id);
     		return redirect()->back();
     	} else if ($user->can('deleteComments')) {
-            $commentsFactory->moderatorDeleteComment($user->id, $commentId);
+            $commentsFactory->moderatorDeleteComment($user->id, $id);
             return redirect()->back();
         } else {
     		abort(403, trans('messages.unauthorized'));
     	}
     }
 
-    public function undelete_comment($commentId) {
+    public function undelete_comment($id) {
         \App::setLocale(Auth::user()->language());
         $user = Auth::user();
 
         $commentsFactory = new commentFactory();
 
         if ($user->can('deleteComments')) {
-            $commentsFactory->moderatorUndeleteComment($commentId);
+            $commentsFactory->moderatorUndeleteComment($id);
             return redirect()->back();
         } else {
             abort(403, trans('messages.unauthorized'));
@@ -517,7 +530,7 @@ class PropositionsController extends Controller
     	$user = Auth::user();
 
     	$validator = Validator::make($request->all(), [
-    			'commentId' => 'required',
+    			'id' => 'required',
     	]);
 
 
@@ -528,7 +541,7 @@ class PropositionsController extends Controller
 
     		$commentsFactory = new CommentFactory();
 
-    		$comment = $commentsFactory->getComment($request->input('commentId'));
+    		$comment = $commentsFactory->getComment($request->input('id'));
 
     		return $commentsFactory->likeComment($user, $comment);
     	}
@@ -573,7 +586,7 @@ class PropositionsController extends Controller
     	$user = Auth::user();
 
     	$validator = Validator::make($request->all(), [
-    			'commentId' => 'required',
+    			'id' => 'required',
     	]);
 
     	if ($validator->fails()) {
@@ -582,11 +595,22 @@ class PropositionsController extends Controller
 
 	    	$commentsFactory = new CommentFactory();
 
-	    	$comment = $commentsFactory->getComment($request->input('commentId'));
+	    	$comment = $commentsFactory->getComment($request->input('id'));
 	    	$like = $commentsFactory->findLikeByUserAndComment($user, $comment);
 
     		return $commentsFactory->removeLike($like);
     	}
+    }
+
+    public function comment_flag($id) {
+        \App::setLocale(Auth::user()->language());
+        $factory = new CommentFactory();
+        $comment = $factory->getComment($id);
+        if ($comment == null) {
+            return abort(404);
+        }
+        $factory->flagComment($comment, Auth::user());
+        return redirect()->back()->with('status', trans('messages.proposition.comments.flagged'));
     }
 
 
@@ -675,7 +699,7 @@ class PropositionsController extends Controller
         	with(new PropositionFactory())->flag($flag_type, $id);
         	return redirect()->back()->with('status', trans('messages.proposition.flagged'));
         } else {
-        	abort(404);
+        	return abort(404);
         }
     }
 
@@ -792,8 +816,8 @@ class PropositionsController extends Controller
 
     			$proposer = with(new userFactory)->getUser($proposition->proposerId());
 
-    			$results[$proposition->propositionId()] = [
-    					'id' => $proposition->propositionId(),
+    			$results[$proposition->id()] = [
+    					'id' => $proposition->id(),
     					'propositionSort' => $proposition->propositionSort(),
     					'proposer' => [
     							'id' => $proposition->proposerId(),
@@ -804,10 +828,10 @@ class PropositionsController extends Controller
     					'deadline' => $proposition->deadline(),
     					'statusId' => $proposition->status(),
     					'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
-    					'upvotes' => $propositionFactory->getUpvotes($proposition->propositionId()),
-    					'downvotes' => $propositionFactory->getDownvotes($proposition->propositionId()),
-    					'comments' => $propositionFactory->getCommentsCount($proposition->propositionId()),
-    					'marker' => $propositionFactory->getMarker($proposition->propositionId()),
+    					'upvotes' => $propositionFactory->getUpvotes($proposition->id()),
+    					'downvotes' => $propositionFactory->getDownvotes($proposition->id()),
+    					'comments' => $propositionFactory->getCommentsCount($proposition->id()),
+    					'marker' => $propositionFactory->getMarker($proposition->id()),
     			];
     		}
     	}

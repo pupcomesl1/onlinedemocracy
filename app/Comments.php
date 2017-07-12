@@ -23,18 +23,26 @@ class Comments extends Model implements AuthenticatableContract
      *
      * @var array
      */
-    protected $fillable = ['commentId', 'commenter_id', 'proposition_id', 'body', 'created_at', 'updated_at'];
-    protected $primaryKey = 'commentId';
+    protected $fillable = ['id', 'commenter_id', 'proposition_id', 'body', 'created_at', 'updated_at'];
+    protected $primaryKey = 'id';
+
+    public function commenter() {
+        return $this->belongsTo('App\User');
+    }
+
+    public function proposition() {
+        return $this->belongsTo('App\Proposition');
+    }
     
-    public function commentId () {
-    	return $this->attributes['commentId'];
+    public function id () {
+    	return $this->attributes['id'];
     }
     
     public function commenterId () {
     	return $this->attributes['commenter_id'];
     }
     
-    public function propositionId () {
+    public function propositionId() {
     	return $this->attributes['proposition_id'];
     }
     
@@ -56,6 +64,10 @@ class Comments extends Model implements AuthenticatableContract
 
     public function distinguish() {
         return $this->attributes['distinguish'];
+    }
+
+    public function flags() {
+        return $this->hasMany('App\CommentFlag', 'comment_id', 'id');
     }
     
 }

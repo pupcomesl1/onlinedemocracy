@@ -66,6 +66,12 @@ class RolesSeeder extends Seeder
         $deleteOwnPropositionsPermission->display_name = 'Delete Own Propositions';
         $deleteOwnPropositionsPermission->save();
 
+        $flagCommentsPermission = new Permission();
+        $flagCommentsPermission->name = 'flagComments';
+        $flagCommentsPermission->display_name = 'Flag Comments';
+        $flagCommentsPermission->save();
+
+
         // Moderator permissions
 
         $approveOrBlockPropositionsPermission = new Permission();
@@ -93,7 +99,7 @@ class RolesSeeder extends Seeder
         $distinguishAllCommentsPermission->display_name = 'Distinguish any comments';
         $distinguishAllCommentsPermission->save();
 
-        $userRole->attachPermissions([$votePermission, $commentPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission]);
+        $userRole->attachPermissions([$votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission]);
 
         $modRole->attachPermissions([$approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission]);
 

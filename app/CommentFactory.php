@@ -2,12 +2,14 @@
 
 namespace App;
 
+use CommentFlags;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
 use \App\User;
 use \App\Comments;
 use \App\Like;
+use Illuminate\Database\Query\JoinClause;
 use PhpParser\Comment;
 
 class CommentFactory extends Model {
@@ -32,11 +34,11 @@ class CommentFactory extends Model {
         return $comment->save();
     }
 	
-	public function createComment($userId, $propositionId, $body) {
+	public function createComment($userId, $id, $body) {
 		
 		return Comments::create([
 				"commenter_id" => $userId,
-				"proposition_id" => $propositionId,
+				"proposition_id" => $id,
 				"body" => $body,
 		]);
 	}
@@ -46,26 +48,26 @@ class CommentFactory extends Model {
 	}
 	
 	public function getLikesByComment(Comments $comment) {
-		return Like::where('comment_id','=',$comment->commentId())->orderBy('updated_at', 'DESC')->get();
+		return Like::where('comment_id','=',$comment->id())->orderBy('updated_at', 'DESC')->get();
 	}
 	
 	public function findLikeByUserAndComment(User $user, Comments $comment) {
-		return Like::where('comment_id','=',$comment->commentId())->where('user_id','=',$user->userId())->get()->first();
+		return Like::where('comment_id','=',$comment->id())->where('user_id','=',$user->userId())->get()->first();
 	}
 	
 	public function getNumberOfLikes(Comments $comment) {
-		return Like::where('comment_id','=',$comment->commentId())->count();
+		return Like::where('comment_id','=',$comment->id())->count();
 	}
 	
 	public function userHasLiked(Comments $comment, User $user) {
-		return Like::where('comment_id','=',$comment->commentId())->where('user_id','=',$user->userId())->count();
+		return Like::where('comment_id','=',$comment->id())->where('user_id','=',$user->userId())->count();
 	}
 	
 	// Like comment
 	public function likeComment(User $user, Comments $comment) {
 		return Like::firstOrCreate([
 				"user_id" => $user->userId(),
-				"comment_id" => $comment->commentId(),
+				"comment_id" => $comment->id(),
 		]);
 	}
 	
@@ -82,6 +84,42 @@ class CommentFactory extends Model {
     public function undistinguishComment(Comments $comment) {
 	    $comment->distinguish = null;
 	    return $comment->save();
+    }
+
+    public function flagComment(Comments $comment, User $user) {
+	    return $comment->flags()->create([
+	        'flagger' => $user->id
+        ]);
+    }
+
+    public function getFlaggedCommentsExceptUsers($uid, $include_dimissed = false) {
+	    if ($include_dimissed) {
+	        $base = CommentFlag::where('flagger', '!=', $uid);
+        } else {
+	        $base = CommentFlag::where('dismissed', '!=', true)
+                ->where('flagger', '!=', $uid);
+        }
+	    return $base
+            ->groupBy('comment_id')
+            ->join('comments', function(JoinClause $join) use ($uid) {
+                $join->on('comment_flags.comment_id', '=', 'comments.id')
+                     ->where('comments.commenter_id', '!=', $uid)
+                     ->where('comments.deleted_by', '=', null);
+            })
+            ->get();
+    }
+
+    public function getFlagCountForComment($id, $includeDismissed = false) {
+	    if ($includeDismissed) {
+            return CommentFlag::where('comment_id', '=', $id)->count();
+        } else {
+            return CommentFlag::where([['dismissed', '!=', true], ['comment_id', '=', $id]])->count();
+        }
+    }
+
+    public function dismissCommentFlags($id) {
+	    return CommentFlag::where('comment_id', $id)
+            ->update(['dismissed' => true]);
     }
 	
 }

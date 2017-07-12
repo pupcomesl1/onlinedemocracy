@@ -50,6 +50,7 @@ return [
 						'delete' => "Supprimer",
                         'distinguish' => "Distinguer",
                         'flag' => "Signaler",
+                        'flagged' => "La commentaire a été marqué et sera signalée aux modérateurs.",
                         'undelete' => "Récupérer",
 						'like' => "J'aime",
 						'liked' => "J'aime déjà",
@@ -226,14 +227,17 @@ return [
 				'head_title' => [
 						'moderate_props' => "Modération des propositions",
 						'handle_flags' => "Gérer les propositions marquées",
+                        'handle_comment_flags' => "Gérer les commentaires marquées",
 				],
 				'menu' => [
 						'title' => "Modérateur",
 						'for_approval' => "Propositions soumises pour approbation",
 						'handle_flags' => "Gérer les propositions marquées",
+                        'handle_comment_flags' => "Gérer les commentaires marquées",
 				],
 				'flags' => [
-						'count' => "{0} Pas de marque|{1} :flags marque|[2,Inf] :flags marques",
+						'count' => "{0} Pas de marque|{1} :flags marque| :flags marques",
+						'countNonDismissed' => "{1} :flags marque rejeté|[2,Inf] :flags marques rejetés",
 						'offensive_count' => "{0} Pas de marque de provocation|{1} :flags marque de provocation|[2,Inf] :flags marques de provocation",
 						'incomprehensible_count' => "{0} Pas de marque d'incompréhension|{1} :flags marque d'incompréhension|[2,Inf] :flags marques d'incompréhension",
 						'avoid' => "Sauf en cas d'urgence, ne pas bloquer des propositions qui ont moins de 5 marques",
@@ -250,6 +254,9 @@ return [
 				'days_left' => "[-Inf,0] Expirée|{0} Dernier jour|{1} Plus qu'un jour|[2,Inf] Encore :daysleft jours",
 				'reason_placeholder' => "Raison",
 				'all_ok' => "Rien ici, bon travail ! :)",
+                'comment_flags' => [
+                    'explanation' => "Ensure all comments follow the "
+                ]
 				
 		],
 		

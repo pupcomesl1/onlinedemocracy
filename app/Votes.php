@@ -33,7 +33,7 @@ class Votes extends Model implements AuthenticatableContract
     	return $this->attributes['vote_value'];
     }
     
-    public function propositionId () {
+    public function id () {
     	return $this->attributes['proposition_id'];
     }
     

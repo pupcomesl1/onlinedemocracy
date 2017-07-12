@@ -37,7 +37,7 @@ class Like extends Model implements AuthenticatableContract
     	return with(new UserFactory())->getUser($this->userId());
     }
 
-    public function commentId () {
+    public function id () {
     	return $this->attributes['comment_id'];
     }
 

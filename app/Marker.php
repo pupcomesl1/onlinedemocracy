@@ -33,7 +33,7 @@ class Marker extends Model implements AuthenticatableContract
     	return $this->attributes['id'];
     }
     
-    public function propositionId () {
+    public function id () {
     	return $this->attributes['proposition_id'];
     }
     

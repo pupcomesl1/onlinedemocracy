@@ -25,17 +25,17 @@ DROP TABLE IF EXISTS `comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comments` (
-  `commentId` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `commenter_id` int(11) NOT NULL,
   `proposition_id` int(11) NOT NULL,
   `body` mediumtext NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`commentId`),
-  UNIQUE KEY `commentId_UNIQUE` (`commentId`),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_comments_users1_idx` (`commenter_id`),
   KEY `fk_comments_propositions1_idx` (`proposition_id`),
-  CONSTRAINT `fk_comments_propositions` FOREIGN KEY (`proposition_id`) REFERENCES `propositions` (`propositionId`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comments_propositions` FOREIGN KEY (`proposition_id`) REFERENCES `propositions` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `fk_comments_users` FOREIGN KEY (`commenter_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -71,7 +71,7 @@ CREATE TABLE `flags` (
   KEY `fk_flags_flag_categories_idx` (`type`),
   KEY `fk_flags_propositions_idx` (`proposition`),
   CONSTRAINT `fk_flags_flag_categories` FOREIGN KEY (`type`) REFERENCES `flag_categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_flags_propositions` FOREIGN KEY (`proposition`) REFERENCES `propositions` (`propositionId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_flags_propositions` FOREIGN KEY (`proposition`) REFERENCES `propositions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -112,7 +112,7 @@ DROP TABLE IF EXISTS `propositions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `propositions` (
-  `propositionId` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `proposer_id` int(11) NOT NULL,
   `propositionSort` varchar(140) DEFAULT NULL,
   `propositionLong` longtext,
@@ -121,8 +121,8 @@ CREATE TABLE `propositions` (
   `block_reason` varchar(120) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`propositionId`),
-  UNIQUE KEY `propositionId_UNIQUE` (`propositionId`),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_propositions_users_idx` (`proposer_id`),
   KEY `fk_propositions_statuses_idx` (`status`),
   CONSTRAINT `fk_propositions_statuses` FOREIGN KEY (`status`) REFERENCES `statuses` (`statusId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -212,7 +212,7 @@ CREATE TABLE `votes` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_downvotes_propositions1_idx` (`proposition_id`),
   KEY `fk_downvotes_users_idx` (`vote_user`),
-  CONSTRAINT `fk_downvotes_propositions` FOREIGN KEY (`proposition_id`) REFERENCES `propositions` (`propositionId`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_downvotes_propositions` FOREIGN KEY (`proposition_id`) REFERENCES `propositions` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `fk_downvotes_users` FOREIGN KEY (`vote_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

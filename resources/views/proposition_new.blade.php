@@ -55,17 +55,22 @@
 	         	</div>
                 
                 <div class="btn-group pull-right pull-right-left-margin">
-				  <button type="button" class="btn btn-default btn-text-lg btn-sm dropdown-toggle" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="right"
-                  title="@lang('messages.proposition.flagging.flag')">
-				    <i class="material-icons" style="transform: translateY(3px); font-size: 16px;">flag</i>
-				  </button>
-				  <ul class="dropdown-menu">
-				    <li><a
-                  href="{{ route('flag', [$proposition['propositionId'], 1]) }}">@lang('messages.proposition.flagging.offensive')</a></li>
-				    <li><a
-                  href="{{ route('flag', [$proposition['propositionId'], 3]) }}">@lang('messages.proposition.flagging.incomprehensible')</a></li>
-				  </ul>
+          @permission('flag')
+                  <button type="button" class="btn btn-default btn-text-lg btn-sm dropdown-toggle"
+                          data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="right"
+                          title="@lang('messages.proposition.flagging.flag')">
+              <i class="material-icons" style="transform: translateY(3px); font-size: 16px;">flag</i>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="{{ route('flag', [$proposition['id'], 1]) }}">
+                  @lang('messages.proposition.flagging.offensive')
+                </a></li>
+              <li><a href="{{ route('flag', [$proposition['id'], 3]) }}">
+                  @lang('messages.proposition.flagging.incomprehensible')
+                </a></li>
+            </ul>
+                  @endpermission
 				</div>
                 
             </span>
@@ -78,12 +83,20 @@
 	          		 @endif
         @endif ">
           <div class="caption">
-            @permission('setPropositionMarkers') <h1 style="margin-bottom: 0;"><a data-toggle="modal"
-                                                                                  data-target="#mark"
-                                                                                  class="label label-gray label-icon pull-right"
-                                                                                  href="#"> @if (empty($proposition['marker']) == false)
-                  <i class="material-icons">edit</i> @else <i class="material-icons">add</i> @endif </a>
-            </h1> @endpermission
+            @permission('setPropositionMarkers')
+            <h1 style="margin-bottom: 0;">
+              <a data-toggle="modal"
+                 data-target="#mark"
+                 class="label label-gray label-icon pull-right"
+                 href="#"
+              >
+                @if (empty($proposition['marker']) == false)
+                  <i class="material-icons">edit</i>
+                @else <i class="material-icons">add</i>
+                @endif
+              </a>
+            </h1>
+            @endpermission
             <h1 class="linkHashtags">@if (empty($proposition['marker']) == false)
                 @if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span
                     class="label label-success label-icon"><i class="material-icons">check</i></span>
@@ -129,11 +142,11 @@
 
           @if(Auth::user()->can('vote'))
             <div class="btn-group btn-group-justified section">
-              <a href="{{ route('upvote', $proposition['propositionId']) }}" class="btn btn-success btn-text-lg"><i
+              <a href="{{ route('upvote', $proposition['id']) }}" class="btn btn-success btn-text-lg"><i
                     class="material-icons"
                     style="vertical-align: inherit;">thumb_up</i> {{ Lang::get('messages.proposition.voting.actions.upvote') }}
               </a>
-              <a href="{{ route('downvote', $proposition['propositionId']) }}" class="btn btn-danger btn-text-lg"><i
+              <a href="{{ route('downvote', $proposition['id']) }}" class="btn btn-danger btn-text-lg"><i
                     class="material-icons"
                     style="vertical-align: middle;">thumb_down</i> {{ Lang::get('messages.proposition.voting.actions.downvote') }}
               </a>
@@ -154,7 +167,7 @@
 
         @else
           <div class="btn-group btn-group-justified section">
-            <a href="{{ route('unvote', $proposition['propositionId']) }}"
+            <a href="{{ route('unvote', $proposition['id']) }}"
                class="btn btn-success disabled-dark-success btn-text-lg">{{ Lang::get('messages.proposition.voting.already_voted') }}</a>
           </div>
         @endif
@@ -188,7 +201,7 @@
                       <textarea name="commentBody" class="form-control" rows="3" id="textArea"
                                 placeholder="{{ Lang::get('messages.proposition.voting.actions.comment_placeholder') }}"></textarea>
                     </div>
-                    <input type="hidden" name="propositionId" value="{{ $proposition['propositionId'] }}"/>
+                    <input type="hidden" name="id" value="{{ $proposition['id'] }}"/>
                     {!! csrf_field() !!}
                     <input class="btn btn-primary" type="submit"
                            value="{{ Lang::get('messages.proposition.voting.actions.post_comment') }}"/>
@@ -213,18 +226,21 @@
               @foreach ($comments as $comment)
                 <div
                     class="comment @if ($comment['modDeleted'] and Auth::user()->can('deleteComments')) deleted @endif @if (isset($comment['distinguish'])) distinguish distinguish-{{ $comment['distinguish']['name'] }} @endif">
+                  @if ($comment['modDeleted'] and !Auth::user()->can('deleteComments'))
+                    This comment has been deleted by a moderator.
+                  @else
                   <!-- Header -->
                   <div class="header">
                   <span class="name">
                     @if (!$comment['modDeleted'] || (Auth::check() && Auth::user()->can('deleteComments')))
-                    <strong>
+                      <strong>
                         <img class="img-circle text-sized-picture" src="{{ $comment['commenter']['avatar'] }}">
                         <a href="{{ route('search') . '?q=' . $comment['commenter']['displayName'] }}">{{ $comment['commenter']['displayName'] }}</a>
-                      @if (isset($comment['distinguish']))
-                        <em class="role">{{ $comment['distinguish']['display_name'] }}</em>
-                      @endif
+                        @if (isset($comment['distinguish']))
+                          <em class="role">{{ $comment['distinguish']['display_name'] }}</em>
+                        @endif
                     </strong>
-                    <small>
+                      <small>
                       {{ $comment['date_created'] }}
                     </small>
                     @endif
@@ -233,16 +249,16 @@
                     <small class="pull-right text-muted" style="font-size: 90%">
                       @if (!$comment['modDeleted'])
                         @if ((($comment['commenter']['id'] == $user['userId'] and Auth::user()->can('deleteOwnComments')) or Auth::user()->can('deleteComments')))
-                          <a href="{{ route('comment.delete', ['comment' => $comment['commentId']]) }}"
+                          <a href="{{ route('comment.delete', ['comment' => $comment['id']]) }}"
                              class="text-muted">{{ Lang::get('messages.proposition.comments.delete') }}</a>
                         @endif
-                        @if (Auth::user()->id != $comment['commenter']['id'])
-                          <a href="#">@lang('messages.proposition.comments.flag')</a>
+                        @if ($comment['userCanFlag'])
+                          <a href="{{ route('comment.flag', [$comment['id']]) }}">@lang('messages.proposition.comments.flag')</a>
                         @endif
                       @else
                         @permission('deleteComments')
-                          <a href="{{ route('comment.undelete', ['comment' => $comment['commentId']]) }}"
-                             class="text-muted">{{ Lang::get('messages.proposition.comments.undelete') }}</a>
+                        <a href="{{ route('comment.undelete', ['comment' => $comment['id']]) }}"
+                           class="text-muted">{{ Lang::get('messages.proposition.comments.undelete') }}</a>
                         @endpermission
                       @endif
                       @if (!empty($comment['userCanDistinguish']))
@@ -256,12 +272,12 @@
                                     {{ $comment['distinguish'] == $role->name ? 'selected' : '' }} value="{{ $role->name }}">{{ $role->name }}</option>
                               @endforeach
                             </select>
-                            <input type="hidden" name="comment_id" value="{{ $comment['commentId'] }}">
+                            <input type="hidden" name="comment_id" value="{{ $comment['id'] }}">
                             {!! csrf_field() !!}
                             <input type="submit">
                           </form>
                         </span>
-                        @endif
+                      @endif
                     </small>
                   </div>
                   <!-- Body -->
@@ -275,7 +291,7 @@
                     <p class="meta">
                       <a href="#"
                          class="@if ($comment['userHasLiked'] == 1) text-primary @else text-muted @endif like"
-                         data-comment-id="{{ $comment['commentId'] }}"
+                         data-comment-id="{{ $comment['id'] }}"
                          data-user-liked="{{ $comment['userHasLiked'] }}"
                       >
                         <i class="material-icons">thumb_up</i>
@@ -297,7 +313,8 @@
                             </a>
                         </span>
                       @endif
-                  @endif</p>
+                      @endif</p>
+                    @endif
                 </div>
               @endforeach
             @else
@@ -391,7 +408,7 @@
           <div class="modal-footer">
             <button type="button" id="marker_save"
                     class="btn btn-primary btn-block">@lang('messages.proposition.marker.modal.update')</button>
-            <a href="{{ route('marker.delete', [$proposition['propositionId']]) }}"
+            <a href="{{ route('marker.delete', [$proposition['id']]) }}"
                class="btn btn-danger btn-block">@lang('messages.proposition.marker.modal.delete')</a>
           </div>
         </div>
@@ -428,9 +445,9 @@ $('#mark').on('show.bs.modal', function (event) {
 $("#marker_save").click(function (e) {
 
                 @if (empty($proposition['marker']) == true)
-              var url = "{{ route('marker.create', [$proposition['propositionId']]) }}";
+              var url = "{{ route('marker.create', [$proposition['id']]) }}";
                 @else
-              var url = "{{ route('marker.edit', [$proposition['propositionId']]) }}";
+              var url = "{{ route('marker.edit', [$proposition['id']]) }}";
               @endif
 
 $.post(url, $("#marker").serialize())
@@ -476,7 +493,7 @@ $("#social_links li a").click(function (e) {
               var myWindow = window.open(link, "MsgWindow", "width=550, height=500");
           });
 
-          $URL = "{{ route('proposition', [$proposition['propositionId']]) }}";
+          $URL = "{{ route('proposition', [$proposition['id']]) }}";
           // Facebook Shares Count
           $.getJSON('https://graph.facebook.com/?id=' + $URL, function (fbdata) {
               $('#shares-count').text(ReplaceNumberWithCommas(fbdata.shares));
@@ -484,9 +501,9 @@ $("#social_links li a").click(function (e) {
 
           $(".comment .like").click(function (e) {
               var $button = $(this);
-              var commentId = $button.data('comment-id');
+              var id = $button.data('comment-id');
 
-              var data = {'_token': "{{ Session::token() }}", 'commentId': commentId};
+              var data = {'_token': "{{ Session::token() }}", 'id': id};
 
               if ($(this).data('user-liked') == 0) {
                   $.post("{{ route('comment.like') }}", data)

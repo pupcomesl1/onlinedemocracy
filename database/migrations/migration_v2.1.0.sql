@@ -15,7 +15,7 @@ CREATE TABLE `marker` (
   KEY `fk_marker_propositions_idx` (`proposition_id`),
   KEY `fk_marker_markers_idx` (`marker_id`),
   CONSTRAINT `fk_marker_markers` FOREIGN KEY (`marker_id`) REFERENCES `markers` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_marker_propositions` FOREIGN KEY (`proposition_id`) REFERENCES `propositions` (`propositionId`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_marker_propositions` FOREIGN KEY (`proposition_id`) REFERENCES `propositions` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 ALTER TABLE `flags` 
@@ -23,6 +23,6 @@ DROP FOREIGN KEY `fk_flags_propositions`;
 ALTER TABLE `onlinedemocracy`.`flags` 
 ADD CONSTRAINT `fk_flags_propositions`
   FOREIGN KEY (`proposition`)
-  REFERENCES `onlinedemocracy`.`propositions` (`propositionId`)
+  REFERENCES `onlinedemocracy`.`propositions` (`id`)
   ON DELETE CASCADE
   ON UPDATE NO ACTION;

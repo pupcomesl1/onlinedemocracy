@@ -60,7 +60,7 @@ class ApiController extends Controller
     	$proposer = $userFactory->getUser($proposition->proposerId());
     		 
     	$result = [
-   				'propositionId' => $proposition->propositionId(),
+   				'id' => $proposition->id(),
     			'proposer' => [
     					'id' => $proposition->proposerId(),
     					'fullName' => $proposer->firstName() . " " . $proposer->lastName(),
@@ -71,7 +71,7 @@ class ApiController extends Controller
     			'date_created' => Carbon::createFromTimestamp(strtotime($proposition->date_created()))->diffForHumans(),
     			'deadline' => $proposition->deadline(),
     			'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
-    			'marker' => $propositionFactory->getMarker($proposition->propositionId()),
+    			'marker' => $propositionFactory->getMarker($proposition->id()),
     			'votes' => [
     					'upvotes' => $propositionFactory->getUpvotes($id),
     					'downvotes' => $propositionFactory->getDownvotes($id),
@@ -82,8 +82,8 @@ class ApiController extends Controller
     			 
     		$commentUser = $userFactory->getUser($comment->commenterId());
     			 
-    		$result['comments'][$comment->commentId()] = [
-    				'commentId' => $comment->commentId(),
+    		$result['comments'][$comment->id()] = [
+    				'id' => $comment->id(),
     				'commentBody' => $comment->body(),
     				'commenter' => [
     						'id' => $commentUser->userId(),
@@ -95,7 +95,7 @@ class ApiController extends Controller
     			 
     	}
     	
-    	foreach (with(new TagsFactory())->getTagsByPropositionId($proposition->propositionId()) as $tag) {
+    	foreach (with(new TagsFactory())->getTagsById($proposition->id()) as $tag) {
     		$result['tags'][$tag->id()] = $tag->content();
     	}
     	

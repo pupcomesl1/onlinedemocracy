@@ -149,5 +149,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function setLanguage($langCode) {
     	return $this->attributes['languageCode'] = $langCode;
     }
+
+    public function comments() {
+        return $this->hasMany('App\Comments');
+    }
+
+    public function commentFlags() {
+        return $this->hasMany('App\CommentFlag');
+    }
     
 }

@@ -113,7 +113,7 @@
 					</select>
 					<small class="helpBlock text-muted">{{ Lang::get('messages.profile.propositions.deadline_fixed') }}</small>
 				  </div>
-				  <input type="hidden" name="propositionId" value="{{ $proposition['id'] }}">
+				  <input type="hidden" name="id" value="{{ $proposition['id'] }}">
 				  {{ csrf_field() }}
 				  <div class="errors" id="errors"></div>
 				</form>
@@ -191,7 +191,7 @@ $('[data-edit-proposition]').on('show.bs.modal', function (event) {
 
 $('button[data-form-id]').click( function(e) {
 	
-	var propositionId = $(this).data("proposition-id");
+	var id = $(this).data("proposition-id");
 	var formId = $(this).data("form-id");
 	
 	$.post("{{ route('proposition.update') }}", $("#" + formId).serialize())

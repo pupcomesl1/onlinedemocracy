@@ -14,6 +14,6 @@ CREATE TABLE `propositions_tags` (
   PRIMARY KEY (`id`),
   KEY `fk_propositions_tags_propositions_idx` (`proposition_id`),
   KEY `fk_propositions_tags_tags_idx` (`tag_id`),
-  CONSTRAINT `fk_propositions_tags_propositions` FOREIGN KEY (`proposition_id`) REFERENCES `propositions` (`propositionId`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_propositions_tags_propositions` FOREIGN KEY (`proposition_id`) REFERENCES `propositions` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `fk_propositions_tags_tags` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;

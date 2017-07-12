@@ -132,20 +132,20 @@ class ProfileController extends Controller
     	
     	foreach ($userPropositions as $proposition) {
     	
-    		$viewPropositions[$proposition->propositionId()] = [
-    				'id' => $proposition->propositionId(),
+    		$viewPropositions[$proposition->id()] = [
+    				'id' => $proposition->id(),
     				'propositionSort' => $proposition->propositionSort(),
     				'propositionLong' => $proposition->propositionLong(),
     				'propositionCreationDate' => Carbon::createFromTimestamp(strtotime($proposition->date_created()))->diffForHumans(),
-    				'userHasVoted' => $propositionFactory->getUserVoteStatus($proposition->propositionId(), $user->userId()),
-    				'upvotes' => $propositionFactory->getUpvotes($proposition->propositionId()),
-    				'downvotes' => $propositionFactory->getDownvotes($proposition->propositionId()),
-    				'commentsCount' => $propositionFactory->getCommentsCount($proposition->propositionId()),
+    				'userHasVoted' => $propositionFactory->getUserVoteStatus($proposition->id(), $user->userId()),
+    				'upvotes' => $propositionFactory->getUpvotes($proposition->id()),
+    				'downvotes' => $propositionFactory->getDownvotes($proposition->id()),
+    				'commentsCount' => $propositionFactory->getCommentsCount($proposition->id()),
     				'deadline' => $proposition->deadline(),
     				'statusId' => $proposition->status(),
     				'blockReason' => $proposition->blockReason(),
     				'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
-    				'marker' => $propositionFactory->getMarker($proposition->propositionId()),
+    				'marker' => $propositionFactory->getMarker($proposition->id()),
     		];
     	}
     	

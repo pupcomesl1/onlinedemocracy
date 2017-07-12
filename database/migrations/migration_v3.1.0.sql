@@ -15,6 +15,6 @@ CREATE TABLE `likes` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_likes_comments`
     FOREIGN KEY (`comment_id`)
-    REFERENCES `comments` (`commentId`)
+    REFERENCES `comments` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);

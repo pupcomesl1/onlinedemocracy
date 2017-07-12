@@ -50,6 +50,7 @@ return [
 						'delete' => "Delete",
                         'distinguish' => "Distinguish",
                         'flag' => "Flag",
+                        'flagged' => "This comment has been flagged, our moderators have been notified.",
                         'undelete' => "Undelete",
 						'like' => "Like!",
 						'liked' => "Liked",
@@ -229,18 +230,22 @@ return [
 				'head_title' => [
 						'moderate_props' => "Propositions moderation",
 						'handle_flags' => "Handle flagged propositions",
+                        'handle_comment_flags' => "Handle flagged comments",
 				],
 				'menu' => [
 						'title' => "Moderator",
 						'for_approval' => "Propositions queued for approval",
 						'handle_flags' => "Handle flagged propositions",
+                        'handle_comment_flags' => "Handle flagged comments",
 				],
 				'flags' => [
 						'count' => "{1} :flags flag|{0} :flags flags|[2,Inf] :flags flags",
+						'countNonDismissed' => "{1} :flags not dismissed|{0} :flags not dismissed|[2,Inf] :flags not dismissed",
 						'offensive_count' => "{1} :flags time flagged as offensive|{0} :flags times flagged as offensive|[2,Inf] :flags times flagged as offensive",
 						'inappropriate_count' => "{1} :flags time flagged as inappropriate|{0} :flags times flagged as inappropriate|[2,Inf] :flags times flagged as inappropriate",
 						'incomprehensible_count' => "{1} :flags time flagged as incomprehensible|{0} :flags times flagged as incomprehensible|[2,Inf] :flags times flagged as incomprehensible",
 						'avoid' => 'Unless in an emergency, avoid blocking propositions which have been flagged less than 5 times',
+                        'dismiss' => '{1} Dismiss|Dismiss All'
 				],
 				'for_approval' => "Queued propositions for approval",
 				'criteria' => [
@@ -253,6 +258,9 @@ return [
 				'days_left' => "[-Inf,0] Expired|{1} :daysleft day left|{0} :daysleft days left|[2,Inf] :daysleft days left",
 				'reason_placeholder' => "Reason",
 				'all_ok' => "Nothing here, good job! :)",
+                'comment_flags' => [
+                    'explanation' => "Ensure all comments follow the "
+                ]
 				
 		],
 		

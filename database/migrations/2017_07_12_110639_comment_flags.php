@@ -14,9 +14,15 @@ class CommentFlags extends Migration
     public function up()
     {
         Schema::create('comment_flags', function (Blueprint $table) {
+            $table->increments('id', true);
             $table->integer('comment_id');
+            $table->integer('flagger');
             $table->boolean('dismissed')->default(false);
+            $table->timestamps();
+        });
+        Schema::table('comment_flags', function (Blueprint $table) {
             $table->foreign('comment_id')->references('id')->on('comments');
+            $table->foreign('flagger')->references('id')->on('users');
         });
     }
 
@@ -27,6 +33,6 @@ class CommentFlags extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('comment_flags');
     }
 }
