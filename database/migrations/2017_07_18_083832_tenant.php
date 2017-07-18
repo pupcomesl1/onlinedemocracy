@@ -47,10 +47,6 @@ class Tenant extends Migration
             $table->unsignedInteger('tenant_id');
             $table->foreign('tenant_id')->references('id')->on('tenants');
         });
-        Schema::table('markers', function (Blueprint $table) {
-            $table->unsignedInteger('tenant_id');
-            $table->foreign('tenant_id')->references('id')->on('tenants');
-        });
         Schema::table('marker', function (Blueprint $table) {
             $table->unsignedInteger('tenant_id');
             $table->foreign('tenant_id')->references('id')->on('tenants');
@@ -63,10 +59,6 @@ class Tenant extends Migration
             $table->unsignedInteger('tenant_id');
             $table->foreign('tenant_id')->references('id')->on('tenants');
         });
-        Schema::table('permission_role', function (Blueprint $table) {
-            $table->unsignedInteger('tenant_id');
-            $table->foreign('tenant_id')->references('id')->on('tenants');
-        });
         Schema::table('tags', function (Blueprint $table) {
             $table->unsignedInteger('tenant_id');
             $table->foreign('tenant_id')->references('id')->on('tenants');
@@ -75,20 +67,10 @@ class Tenant extends Migration
             $table->unsignedInteger('tenant_id');
             $table->foreign('tenant_id')->references('id')->on('tenants');
         });
-        Schema::table('flag_categories', function (Blueprint $table) {
-            $table->unsignedInteger('tenant_id');
-            $table->foreign('tenant_id')->references('id')->on('tenants');
-        });
         Schema::table('password_resets', function (Blueprint $table) {
             $table->unsignedInteger('tenant_id');
             $table->foreign('tenant_id')->references('id')->on('tenants');
         });
-        Schema::table('statuses', function (Blueprint $table) {
-            $table->unsignedInteger('tenant_id');
-            $table->foreign('tenant_id')->references('id')->on('tenants');
-        });
-        
-        
     }
 
     /**

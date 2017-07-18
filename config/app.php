@@ -30,7 +30,7 @@ return [
 
     'name' => env('APP_NAME', 'DirectDemocracy'),
 
-    'url' => 'http://localhost',
+    'url' => 'http://' . env('APP_DOMAIN', 'directdemocracy.online'),
 
     /*
     |--------------------------------------------------------------------------
@@ -155,6 +155,10 @@ return [
 
         \Way\Generators\GeneratorsServiceProvider::class,
         \Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
+
+        HipsterJazzbo\Landlord\LandlordServiceProvider::class,
+
+        Laravel\Tinker\TinkerServiceProvider::class,
     ],
 
     /*
@@ -208,6 +212,7 @@ return [
 		'Html' 		=> 'Collective\Html\HtmlFacade',
     	'Share' 	=> Chencha\Share\ShareFacade::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Landlord'   => HipsterJazzbo\Landlord\Facades\Landlord::class,
 
     ],
 

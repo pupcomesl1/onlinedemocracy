@@ -14,26 +14,6 @@ class RolesSeeder extends Seeder
      */
     public function run()
     {
-        $userRole = new Role();
-        $userRole->name = 'user';
-        $userRole->display_name = 'User';
-        $userRole->description = 'A regular user.';
-        $userRole->save();
-
-        $modRole = new Role();
-        $modRole->name = 'moderator';
-        $modRole->display_name = 'Moderator';
-        $modRole->save();
-
-        $pcMemberRole = new Role();
-        $pcMemberRole->name = 'pc_member';
-        $pcMemberRole->display_name = 'Pupils\' Committee Member';
-        $pcMemberRole->save();
-
-        $modUser = User::find(0);
-        $modUser->attachRole($userRole);
-        $modUser->attachRole($modRole);
-
         // Vanilla User Perms
 
         $votePermission = new Permission();
@@ -99,10 +79,31 @@ class RolesSeeder extends Seeder
         $distinguishAllCommentsPermission->display_name = 'Distinguish any comments';
         $distinguishAllCommentsPermission->save();
 
-        $userRole->attachPermissions([$votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission]);
+        forAllTenants(function($tenant) use ($votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission, $approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission, $distinguishSameRoleCommentsPermission) {
+            $userRole = new Role();
+            $userRole->name = 'user';
+            $userRole->display_name = 'User';
+            $userRole->description = 'A regular user.';
+            $userRole->tenant_id = $tenant->id;
+            $userRole->save();
 
-        $modRole->attachPermissions([$approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission]);
+            $modRole = new Role();
+            $modRole->name = 'moderator';
+            $modRole->display_name = 'Moderator';
+            $modRole->tenant_id = $tenant->id;
+            $modRole->save();
 
-        $pcMemberRole->attachPermissions([$setPropositionMarkersPermission, $distinguishSameRoleCommentsPermission]);
+            $pcMemberRole = new Role();
+            $pcMemberRole->name = 'pc_member';
+            $pcMemberRole->display_name = 'Pupils\' Committee Member';
+            $pcMemberRole->tenant_id = $tenant->id;
+            $pcMemberRole->save();
+
+            $userRole->attachPermissions([$votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission]);
+
+            $modRole->attachPermissions([$approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission]);
+
+            $pcMemberRole->attachPermissions([$setPropositionMarkersPermission, $distinguishSameRoleCommentsPermission]);
+        });
     }
 }
