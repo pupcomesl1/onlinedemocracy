@@ -1,3 +1,4 @@
+USE onlinedemocracy;
 CREATE TABLE `tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(120) NOT NULL,

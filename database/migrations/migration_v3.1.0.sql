@@ -1,3 +1,4 @@
+USE onlinedemocracy;
 CREATE TABLE `likes` (
   `like_id` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `user_id` INT NOT NULL COMMENT '',

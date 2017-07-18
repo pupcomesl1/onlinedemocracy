@@ -15,7 +15,8 @@
         "socialiteproviders/microsoft-graph": "^2.0",
         "zizaco/entrust": "5.2.x-dev",
         "doctrine/dbal": "^2.5",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "xethron/migrations-generator": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
