@@ -10,10 +10,10 @@
           	<h1>@lang('messages.website.home.title')</h1>
             <p class="lead">@lang('messages.website.home.subtitle')</p>
             <div class="justify hidden-xs">
-	            <a href="{{ route('o365login') }}" class="btn btn-info btn-lg">@lang('messages.session.login.use_msgraph')</a>
+	            <a href="{{ tenantRoute('o365login') }}" class="btn btn-info btn-lg">@lang('messages.session.login.use_msgraph')</a>
             </div>
             <div class="justify visible-xs">
-            	<a href="{{ route('o365login') }}" class="btn btn-info btn-lg btn-block">@lang('messages.session.login.use_msgraph')</a>
+            	<a href="{{ tenantRoute('o365login') }}" class="btn btn-info btn-lg btn-block">@lang('messages.session.login.use_msgraph')</a>
             </div>
           </div>
           <div class="col-md-5 visible-lg visible-md"><img src="{{ asset('img/screenshot.png') }}" class="img-header" alt="DirectDemocracy screenshot"></div>

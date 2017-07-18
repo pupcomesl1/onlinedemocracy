@@ -19,7 +19,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{ route('profile.main') }}"><img alt="profile picture of {{ $user['displayName'] }}"
+        <a class="navbar-brand" href="{{ tenantRoute('profile.main') }}"><img alt="profile picture of {{ $user['displayName'] }}"
                                                                         src="{{ $user['avatar'] }}"
                                                                         class="profile-picture-navbar img-circle"/> {{ $user['displayName'] }}
         </a>
@@ -32,10 +32,10 @@
             <li><a href="#" disabled="disabled"><strong>{{ Lang::get('messages.profile.menu.account') }}</strong></a>
             </li>
             <li class="@if(Route::current()->getName() == 'profile.main') active @endif"><a
-                  href="{{ route('profile.main') }}">{{ Lang::get('messages.profile.menu.overview') }}</a></li>
-            <li><a href="{{ route('profile.language') }}">{{ Lang::get('messages.profile.menu.language') }}</a></li>
+                  href="{{ tenantRoute('profile.main') }}">{{ Lang::get('messages.profile.menu.overview') }}</a></li>
+            <li><a href="{{ tenantRoute('profile.language') }}">{{ Lang::get('messages.profile.menu.language') }}</a></li>
             <li class="@if(Route::current()->getName() == 'profile.propositions') active @endif"><a
-                  href="{{ route('profile.propositions') }}">{{ Lang::get('messages.profile.menu.propositions') }}</a>
+                  href="{{ tenantRoute('profile.propositions') }}">{{ Lang::get('messages.profile.menu.propositions') }}</a>
             </li>
 
             @permission(['approveOrBlockPropositions', 'handleFlags'])
@@ -44,12 +44,12 @@
             @endpermission
             @permission('approveOrBlockPropositions')
             <li class="@if(Route::current()->getName() == 'moderator.approval') active @endif"><a
-                  href="{{ route('moderator.approval') }}">{{ Lang::get('messages.moderator.menu.for_approval') }}</a>
+                  href="{{ tenantRoute('moderator.approval') }}">{{ Lang::get('messages.moderator.menu.for_approval') }}</a>
             </li>
             @endpermission
             @permission('handleFlags')
             <li class="@if(Route::current()->getName() == 'moderator.handle_flags') active @endif"><a
-                  href="{{ route('moderator.handle_flags') }}">{{ Lang::get('messages.moderator.menu.handle_flags') }}</a>
+                  href="{{ tenantRoute('moderator.handle_flags') }}">{{ Lang::get('messages.moderator.menu.handle_flags') }}</a>
             </li>
             @endpermission
 
@@ -59,7 +59,7 @@
                    target="_blank">{{ Lang::get('messages.profile.menu.github') }} <i
                     class="fa fa-external-link"></i></a></li>
             <li class="@if(Route::current()->getName() == 'feedback') active @endif"><a
-                  href="{{ route('feedback') }}">{{ Lang::get('messages.profile.menu.feedback') }}</a></li>
+                  href="{{ tenantRoute('feedback') }}">{{ Lang::get('messages.profile.menu.feedback') }}</a></li>
 
           </ul>
         </div>
@@ -88,11 +88,11 @@
 
           <div class="list-group account-settings">
             <p class="list-group-item"><strong>{{ Lang::get('messages.profile.menu.account') }}</strong></p>
-            <a href="{{ route('profile.main') }}"
+            <a href="{{ tenantRoute('profile.main') }}"
                class="list-group-item @if(Route::current()->getName() == 'profile.main') active @endif">{{ Lang::get('messages.profile.menu.overview') }}</a>
-            <a href="{{ route('profile.language') }}"
+            <a href="{{ tenantRoute('profile.language') }}"
                class="list-group-item">{{ Lang::get('messages.profile.menu.language') }}</a>
-            <a href="{{ route('profile.propositions') }}"
+            <a href="{{ tenantRoute('profile.propositions') }}"
                class="list-group-item @if(Route::current()->getName() == 'profile.propositions') active @endif">{{ Lang::get('messages.profile.menu.propositions') }}</a>
           </div>
 
@@ -101,13 +101,13 @@
             <p class="list-group-item"><strong>{{ Lang::get('messages.moderator.menu.title') }}</strong></p>
 
             @permission('approveOrBlockPropositions')
-            <a href="{{ route('moderator.approval') }}"
+            <a href="{{ tenantRoute('moderator.approval') }}"
                class="list-group-item @if(Route::current()->getName() == 'moderator.approval') active @endif">{{ Lang::get('messages.moderator.menu.for_approval') }}</a>
             @endpermission
             @permission('handleFlags')
-            <a href="{{ route('moderator.handle_flags') }}"
+            <a href="{{ tenantRoute('moderator.handle_flags') }}"
                class="list-group-item @if(Route::current()->getName() == 'moderator.handle_flags') active @endif">{{ Lang::get('messages.moderator.menu.handle_flags') }}</a>
-            <a href="{{ route('moderator.handle_comment_flags') }}"
+            <a href="{{ tenantRoute('moderator.handle_comment_flags') }}"
                class="list-group-item @if(Route::current()->getName() == 'moderator.handle_comment_flags') active @endif">{{ Lang::get('messages.moderator.menu.handle_comment_flags') }}</a>
             @endpermission
           </div>
@@ -119,7 +119,7 @@
             <a href="https://github.com/pupcomesl1/onlinedemocracy" target="_blank"
                class="list-group-item">{{ Lang::get('messages.profile.menu.github') }} <i
                   class="fa fa-external-link"></i></a>
-            <a href="{{ route('feedback') }}"
+            <a href="{{ tenantRoute('feedback') }}"
                class="list-group-item @if(Route::current()->getName() == 'feedback') active @endif">{{ Lang::get('messages.profile.menu.feedback') }}</a>
           </div>
 

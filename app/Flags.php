@@ -5,11 +5,12 @@ namespace App;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use HipsterJazzbo\Landlord\BelongsToTenants;
 
 
 class Flags extends Model implements AuthenticatableContract
 {
-    use Authenticatable;
+    use Authenticatable, BelongsToTenants;
     
     const TYPE_1 = "offensive";
     const TYPE_2 = "inappropriate";

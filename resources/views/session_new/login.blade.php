@@ -8,9 +8,9 @@
 		<div class="row" style="margin-top:110px">
 			<div class="col-md-6 col-md-offset-3">
 				<div class="panel panel-default">
-					<div class="panel-heading"><h1 class="panel-title"><strong><center><a href="{{ route('home') }}">DirectDemocracy.online</a></center></strong></h1></div>
+					<div class="panel-heading"><h1 class="panel-title"><strong><center><a href="{{ tenantRoute('home') }}">DirectDemocracy.online</a></center></strong></h1></div>
 					<div class="panel-body">
-						<form role="form" action="{{ route('authenticate') }}" method="POST">
+						<form role="form" action="{{ tenantRoute('authenticate') }}" method="POST">
 							<div class="form-group @if ($errors->has('email')) has-error @endif">
 								@if ($errors->has('email')) <small class="text-danger pull-right">{{ $errors->first('email') }}</small>@endif
 								<label for="email">{{ Lang::get('messages.session.login.email')}}</label>
@@ -23,10 +23,10 @@
 							</div>
 							{!! csrf_field() !!}
 							<button type="submit" class="btn btn-default btn-block">{{ Lang::get('messages.session.login.submit')}}</button>
-							<a href="{{ route('auth.getSocialAuth', ['provider' => 'facebook']) }}" class="btn btn-primary btn-block">{{ Lang::get('messages.session.login.use_fb')}}</a>
+							<a href="{{ tenantRoute('auth.getSocialAuth', ['provider' => 'facebook']) }}" class="btn btn-primary btn-block">{{ Lang::get('messages.session.login.use_fb')}}</a>
 							@if ($errors->has('social')) <p><small class="text-muted">{{ $errors->first('social') }}</small></p> @endif
 							<hr>
-							<a href="{{ route('register') }}" class="btn btn-info btn-block">{{ Lang::get('messages.session.login.sign_up')}}</a>
+							<a href="{{ tenantRoute('register') }}" class="btn btn-info btn-block">{{ Lang::get('messages.session.login.sign_up')}}</a>
 						</form>
 					</div>
 				</div>

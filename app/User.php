@@ -9,11 +9,12 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Notifications\Notifiable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use HipsterJazzbo\Landlord\BelongsToTenants;
 
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use Authenticatable, CanResetPassword, Notifiable, EntrustUserTrait;
+    use Authenticatable, CanResetPassword, Notifiable, EntrustUserTrait, BelongsToTenants;
     const ROLE_MODERATOR = 2;
     const ROLE_ADMINISTRATOR = 3;
 

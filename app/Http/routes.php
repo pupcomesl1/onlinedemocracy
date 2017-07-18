@@ -32,7 +32,9 @@ Route::get('/login/callback/{provider?}',['uses' => 'SessionController@getSocial
 //Msgraph
 Route::get('/o365login', ['as' => 'o365login', 'uses' => 'SessionController@msgraphLogin']);
 
-// Route::group(['domain' => '{tenant}' . env('APP_DOMAIN')], function() {
+Route::get('/tenant', ['uses' => 'MainController@tenant']);
+
+Route::group(['domain' => '{tenant}.' . env('APP_DOMAIN'), 'middleware' => 'tenant'], function() {
 
 	//Profile-related routes
 	Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
@@ -57,7 +59,7 @@ Route::get('/o365login', ['as' => 'o365login', 'uses' => 'SessionController@msgr
 	Route::get('/profile/unlink',['middleware' => 'auth','uses' => 'ProfileController@unlinkGoogle','as'   => 'unlinkGoogle']);
 
 	//Propositions routes
-	Route::get('/home', ['middleware' => 'auth','as' => 'propositions','uses' => 'PropositionsController@index']);
+	Route::get('/home', ['middleware' => 'auth', 'as' => 'propositions','uses' => 'PropositionsController@index']);
 	Route::get('/search', ['middleware' => 'auth','as' => 'search','uses' => 'PropositionsController@search']);
 	Route::get('/archived', ['middleware' => 'auth','as' => 'archived','uses' => 'PropositionsController@archived']);
 	Route::get('/proposition/{id}', ['as' => 'proposition','uses' => 'PropositionsController@show']);
@@ -97,4 +99,4 @@ Route::get('/o365login', ['as' => 'o365login', 'uses' => 'SessionController@msgr
 		Route::get('proposition', ['as' => 'api.proposition', 'uses' => 'ApiController@proposition']);
 	});
 
-// }));
+});

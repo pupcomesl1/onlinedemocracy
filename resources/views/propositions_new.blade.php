@@ -8,14 +8,14 @@
 	@if ((count($endingSoonPropositions) == 0) AND (count($propositions) == 0) AND (count($votedPropositions) == 0))
 	<h3 class="propositions-section">{{ Lang::get('messages.propositions.no_active') }}</h3>
 	<p class="lead text-center">{{ Lang::get('messages.propositions.no_active_desc') }}</p></br>
-	<p class="text-center"><a href="{{ route('profile.propositions.create') }}" class="btn btn-lg btn-teal"><i class="glyphicon glyphicon-pencil"></i> @lang('messages.navigation.create_proposition')</a></p>
+	<p class="text-center"><a href="{{ tenantRoute('profile.propositions.create') }}" class="btn btn-lg btn-teal"><i class="glyphicon glyphicon-pencil"></i> @lang('messages.navigation.create_proposition')</a></p>
 	@endif
 
 	@if (count($endingSoonPropositions) !== 0)
 	<h3 class="propositions-section">{{ Lang::get('messages.propositions.ending_soon') }}</h3>
 	<div class="pinBoot" id="expiring">
 		@foreach($endingSoonPropositions as $proposition)
-		<a class="thumbnail" href="{{ route('proposition', [$proposition['id']]) }}">
+		<a class="thumbnail" href="{{ tenantRoute('proposition', [$proposition['id']]) }}">
          	<div class="caption">
 	          	<p>@if (empty($proposition['marker']) == false) 
 	          		 @if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span class="label label-success label-icon"><i class="material-icons">check</i></span>
@@ -34,7 +34,7 @@
     <h3 class="propositions-section" >{{ Lang::get('messages.propositions.new_propositions') }}</h3>
 	<div class="pinBoot" id="recent">
 		@foreach($propositions as $proposition)
-		<a class="thumbnail" href="{{ route('proposition', [$proposition['id']]) }}">
+		<a class="thumbnail" href="{{ tenantRoute('proposition', [$proposition['id']]) }}">
          	<div class="caption">
 	          	<p>@if (empty($proposition['marker']) == false) 
 	          		 @if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span class="label label-success label-icon"><i class="material-icons">check</i></span>
@@ -53,7 +53,7 @@
 	<h3 class="propositions-section">{{ Lang::get('messages.propositions.voted_propositions') }}</h3>
 	<div class="pinBoot" id="voted">
 		@foreach($votedPropositions as $proposition)
-  	    	<a class="thumbnail" href="{{ route('proposition', [$proposition['id']]) }}">
+  	    	<a class="thumbnail" href="{{ tenantRoute('proposition', [$proposition['id']]) }}">
 	         	<div class="caption">
 		          	<p>@if (empty($proposition['marker']) == false) 
 		          		 @if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span class="label label-success label-icon"><i class="material-icons">check</i></span>

@@ -18,7 +18,7 @@ class MainController extends Controller
 	
 	public function home() {
 		if (Auth::check()) { 
-			return redirect()->route('propositions');
+			return redirectToUserTenant();
 		} else {
 			return view('guest.home');
 		}
@@ -30,6 +30,10 @@ class MainController extends Controller
     public function guidelines() {
         return view('guest.comment-guidelines');
     }
+
+	public function tenant() {
+		return redirectToUserTenant();
+	}
 	
 	public function feedback() {
 

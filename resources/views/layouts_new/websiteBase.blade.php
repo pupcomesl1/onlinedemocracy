@@ -131,15 +131,15 @@
 	        <!-- Brand and toggle get grouped for better mobile display -->
 	        <div class="navbar-header">
 	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topFixedNavbar1"><span class="sr-only">{{ Lang::get('messages.navigation.nav_toggle') }}</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-	          <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">DirectDemocracy</a></div>
+	          <a class="navbar-brand" href="{{ tenantRoute('home') }}"><img src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">DirectDemocracy</a></div>
 	        <!-- Collect the nav links, forms, and other content for toggling -->
 	        <div class="collapse navbar-collapse" id="topFixedNavbar1">
 	          
 	          <ul class="nav navbar-nav navbar-right">
 	          @if (Auth::user())
-	            <li><a href="{{ route('propositions') }}" class="btn btn-success">@lang('messages.website.return')</a></li>
+	            <li><a href="{{ tenantRoute('propositions') }}" class="btn btn-success">@lang('messages.website.return')</a></li>
 	          @else
-				<li><a href="{{ route('o365login') }}" class="btn btn-primary">@lang('messages.session.login.use_msgraph')</a></li>
+				<li><a href="{{ tenantRoute('o365login') }}" class="btn btn-primary">@lang('messages.session.login.use_msgraph')</a></li>
 	          @endif
 	          </ul>
 	        </div>
@@ -152,7 +152,7 @@
 	@yield('content')
 	<div class="footer">
   	<div class="container">
-        <p><small class="text-muted"><a href="{{ route('terms') }}" class="text-muted">@lang('messages.website.terms')</a> | <a href="https://github.com/pupcomesl1/onlinedemocracy" target="_blank" class="text-muted">GitHub</a></small></p>
+        <p><small class="text-muted"><a href="{{ tenantRoute('terms') }}" class="text-muted">@lang('messages.website.terms')</a> | <a href="https://github.com/pupcomesl1/onlinedemocracy" target="_blank" class="text-muted">GitHub</a></small></p>
         <p><small class="text-muted">@lang('messages.website.footer')</small></p>
 	</div>
   </div>

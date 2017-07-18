@@ -21,7 +21,7 @@
 					<p class="text-center">{{ Lang::get('messages.search.no_results_subtitle') }}</p>
 				@else
 				@foreach ($results as $proposition)
-				<a class="thumbnail" href="{{ route('proposition', [$proposition['id']]) }}">
+				<a class="thumbnail" href="{{ tenantRoute('proposition', [$proposition['id']]) }}">
 		         	<div class="caption">
 			          	<p>@if (empty($proposition['marker']) == false) 
 			          		 @if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span class="label label-success label-icon"><i class="material-icons">check</i></span>
@@ -37,7 +37,7 @@
         		<nav style="text-align: center;">
 				  <ul class="pagination">
 				  	@for ($i=1; $i <= $pages; $i++)
-					    <li @if (isset($_GET["page"]) == true) @if ($i == $_GET["page"]) class="active" @endif @else @if ($i == 1) class="active" @endif @endif><a href="{{ route('search') . '?q=' . $_GET["q"] . '&page=' . $i }}">{{ $i }} @if (isset($_GET["page"]) == true) @if ($i == $_GET["page"]) <span class="sr-only">(current)</span> @endif @else @if ($i == 1) <span class="sr-only">(current)</span> @endif @endif</a></li>
+					    <li @if (isset($_GET["page"]) == true) @if ($i == $_GET["page"]) class="active" @endif @else @if ($i == 1) class="active" @endif @endif><a href="{{ tenantRoute('search') . '?q=' . $_GET["q"] . '&page=' . $i }}">{{ $i }} @if (isset($_GET["page"]) == true) @if ($i == $_GET["page"]) <span class="sr-only">(current)</span> @endif @else @if ($i == 1) <span class="sr-only">(current)</span> @endif @endif</a></li>
 					@endfor
 				  </ul>
 				</nav>

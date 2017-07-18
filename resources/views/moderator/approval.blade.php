@@ -20,7 +20,7 @@
 			@foreach ($propositions as $proposition)
 			<div class="list-group-item">
 				<span class="info action-btns">
-					<a href="{{ route('moderator.approve', $proposition['id']) }}" class="btn btn-sm btn-success">{{ Lang::get('messages.moderator.approve') }}</a>
+					<a href="{{ tenantRoute('moderator.approve', $proposition['id']) }}" class="btn btn-sm btn-success">{{ Lang::get('messages.moderator.approve') }}</a>
 					<a class="btn btn-sm btn-danger" data-toggle="collapse" href="#proposition{{$proposition['id']}}" aria-expanded="false" aria-controls="proposition{{$proposition['id']}}">{{ Lang::get('messages.moderator.block') }}</a>
 				</span>
 				
@@ -28,7 +28,7 @@
 				<span class="proposition-long">{{$proposition['propositionLong']}}</span>
 			</div>
 			<div class="list-group-form collapse" id="proposition{{$proposition['id']}}">
-				<form class="form-inline" method="post" action="{{ route('moderator.block') }}">
+				<form class="form-inline" method="post" action="{{ tenantRoute('moderator.block') }}">
 		  			<input type="text" name="reason" class="form-control form-control-sm" placeholder="{{ Lang::get('messages.moderator.reason_placeholder') }}">
 		  			<input type="hidden" name="id" value="{{$proposition['id']}}">
 		  			{!! csrf_field() !!}

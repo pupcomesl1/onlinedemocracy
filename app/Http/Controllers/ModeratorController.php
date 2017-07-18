@@ -37,7 +37,9 @@ class ModeratorController extends Controller
 
     public function __construct()
     {
-        \App::setLocale(Auth::user()->language());
+        if (Auth::check()) {
+			\App::setLocale(Auth::user()->language());
+		}
     }
 
     public function index()

@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use HipsterJazzbo\Landlord\Facades\Landlord;
+use Illuminate\Support\Facades\Log;
+use Auth;
 
 class Tenant
 {
@@ -16,12 +18,12 @@ class Tenant
      */
     public function handle($request, Closure $next)
     {
-        $tenant = \App\Tenant::where('prefix', $request->params('tenant'))->first();
+        $tenant = \App\Tenant::where('prefix', $request->route('tenant'))->first();
         if ($tenant == null) {
-            return abort(404);
+            return abort(404, 'No tenant');
         }
         if (Auth::check() && !(Auth::user()->tenant_id == $tenant->id)) {
-            return redirect()->route('propositions', ['tenant' => $tenant->prefix]);
+            // return redirect()->route('propositions', ['tenant' => $tenant->prefix]);
         }
         Landlord::addTenant($tenant);
         return $next($request);

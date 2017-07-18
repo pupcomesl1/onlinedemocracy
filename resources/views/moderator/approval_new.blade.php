@@ -16,14 +16,14 @@
   <div class="list-group-item">
   	<span class="pull-right">
   		<span class="label label-info"">{{ Lang::choice('messages.moderator.days_left', $proposition['ending_in'], ['daysleft' => $proposition['ending_in']]) }}</span>
-  		<a href="{{ route('moderator.approve', $proposition['id']) }}" class="btn btn-sm btn-success">{{ Lang::get('messages.moderator.approve') }}</a>
+  		<a href="{{ tenantRoute('moderator.approve', $proposition['id']) }}" class="btn btn-sm btn-success">{{ Lang::get('messages.moderator.approve') }}</a>
 		<a class="btn btn-sm btn-danger" data-toggle="collapse" href="#proposition{{$proposition['id']}}" aria-expanded="false" aria-controls="proposition{{$proposition['id']}}">@lang('messages.moderator.block')</a>
   	</span>
     <h4 class="list-group-item-heading">{{$proposition['propositionSort']}}</h4>
     <p class="list-group-item-text">{{$proposition['propositionLong']}}</p>
   </div>
   <div class="list-group-form collapse" id="proposition{{$proposition['id']}}">
-	<form class="form-inline" method="post" action="{{ route('moderator.block') }}">
+	<form class="form-inline" method="post" action="{{ tenantRoute('moderator.block') }}">
 		  <div class="form-group">
 		    <input type="text" name="reason" class="form-control input-sm" id="reason" placeholder="@lang('messages.moderator.reason_placeholder')">
 		  </div>

@@ -38,11 +38,6 @@
 		<img src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">
 		<h1 class="text-center"><strong>404</strong> - Not found.</h1>
 		
-		<form class="col-md-6 col-md-offset-3" role="search" method="get" action="{{ route('search') }}" style="margin-top: 30px;">
-			<div class="form-group">
-				<input name="q" type="text" class="form-control text-center input-lg" placeholder="🔍 Try searching instead" autocomplete="off">
-			</div>
-		</form>
 		
 	</div>
 

@@ -55,10 +55,6 @@ class Tenant extends Migration
             $table->unsignedInteger('tenant_id');
             $table->foreign('tenant_id')->references('id')->on('tenants');
         });
-        Schema::table('role_user', function (Blueprint $table) {
-            $table->unsignedInteger('tenant_id');
-            $table->foreign('tenant_id')->references('id')->on('tenants');
-        });
         Schema::table('tags', function (Blueprint $table) {
             $table->unsignedInteger('tenant_id');
             $table->foreign('tenant_id')->references('id')->on('tenants');

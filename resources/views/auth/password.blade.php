@@ -25,7 +25,7 @@
 							
 							{!! csrf_field() !!}
 							<button type="submit" class="btn btn-default btn-block">{{ Lang::get('messages.session.forgot.email_link')}}</button>
-							<a class="btn btn-block btn-link" href="{{ route('login') }}">{{ Lang::get('messages.session.return_to_login')}}</a>
+							<a class="btn btn-block btn-link" href="{{ tenantRoute('login') }}">{{ Lang::get('messages.session.return_to_login')}}</a>
 						</form>
 					</div>
 				</div>

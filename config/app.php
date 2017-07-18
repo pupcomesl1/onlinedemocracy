@@ -159,6 +159,7 @@ return [
         HipsterJazzbo\Landlord\LandlordServiceProvider::class,
 
         Laravel\Tinker\TinkerServiceProvider::class,
+        'Barryvdh\Debugbar\ServiceProvider',
     ],
 
     /*
@@ -213,6 +214,7 @@ return [
     	'Share' 	=> Chencha\Share\ShareFacade::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Landlord'   => HipsterJazzbo\Landlord\Facades\Landlord::class,
+        'Debugbar' => 'Barryvdh\Debugbar\Facade',
 
     ],
 

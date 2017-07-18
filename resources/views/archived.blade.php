@@ -9,7 +9,7 @@
 	@if (count($expiredPropositions) !== 0)
 	<div class="pinBoot" id="expired">
 		@foreach($expiredPropositions as $proposition)
-  	    	<a class="thumbnail" href="{{ route('proposition', [$proposition['id']]) }}">
+  	    	<a class="thumbnail" href="{{ tenantRoute('proposition', [$proposition['id']]) }}">
          		<div class="caption">
 		          	<p>@if (empty($proposition['marker']) == false) 
 		          		 @if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span class="label label-success label-icon"><i class="material-icons">check</i></span>

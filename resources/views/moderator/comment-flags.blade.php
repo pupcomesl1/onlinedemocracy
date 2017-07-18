@@ -3,7 +3,7 @@
 @section('title', Lang::get('messages.moderator.head_title.handle_comment_flags'))
 
 @section('form')
-	<p>@lang('messages.moderator.comment_flags.explanation')<a href="{{ route('guidelines') }}">@lang('messages.proposition.comments.guidelines_2')</a>.</p>
+	<p>@lang('messages.moderator.comment_flags.explanation')<a href="{{ tenantRoute('guidelines') }}">@lang('messages.proposition.comments.guidelines_2')</a>.</p>
 
 	<label for="include_dismissed">Include Dismissed Flags</label>
 	<input id="include_dismissed" type="checkbox" {{ $includeDismissed ? 'checked' : '' }}>
@@ -32,8 +32,8 @@
 					</p>
 
 					<p>
-						<a class="btn btn-sm btn-danger" data-toggle="collapse" href="{{ route('comment.delete', $comment['id']) }}" aria-expanded="false" aria-controls="proposition{{$comment['id']}}">@lang('messages.proposition.comments.delete')</a>
-						<form style="display: inline" method="post" action="{{ route('moderator.comment_flags.dismiss') }}">
+						<a class="btn btn-sm btn-danger" data-toggle="collapse" href="{{ tenantRoute('comment.delete', $comment['id']) }}" aria-expanded="false" aria-controls="proposition{{$comment['id']}}">@lang('messages.proposition.comments.delete')</a>
+						<form style="display: inline" method="post" action="{{ tenantRoute('moderator.comment_flags.dismiss') }}">
 							<input type="hidden" name="id" value="{{ $comment['id'] }}">
 							{!! csrf_field() !!}
 							<input type="submit" class="btn btn-sm btn-primary" value="{{ Lang::choice('messages.moderator.flags.dismiss', $comment['flagCount']['total']['total']) }}">
