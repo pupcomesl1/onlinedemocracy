@@ -100,7 +100,7 @@ class PropositionFactory extends Model {
 		return Proposition::whereProposerId($userId)->count();
 	}
 	
-	public function getProposition($id): Proposition {
+	public function getProposition($id): ?Proposition {
 		return Proposition::find($id);
 	}
 	
