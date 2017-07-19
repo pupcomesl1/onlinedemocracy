@@ -59,14 +59,6 @@ class Tenant extends Migration
             $table->unsignedInteger('tenant_id');
             $table->foreign('tenant_id')->references('id')->on('tenants');
         });
-        Schema::table('propositions_tags', function (Blueprint $table) {
-            $table->unsignedInteger('tenant_id');
-            $table->foreign('tenant_id')->references('id')->on('tenants');
-        });
-        Schema::table('password_resets', function (Blueprint $table) {
-            $table->unsignedInteger('tenant_id');
-            $table->foreign('tenant_id')->references('id')->on('tenants');
-        });
     }
 
     /**

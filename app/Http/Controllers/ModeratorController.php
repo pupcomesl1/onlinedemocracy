@@ -82,8 +82,9 @@ class ModeratorController extends Controller
     }
 
 
-    public function approve($id)
+    public function approve(Request $request)
     {
+        $id = $request->id;
         $user = Auth::user();
         if (!$user->can('approveOrBlockPropositions')) {
             abort(403, 'Unauthorized action.');
@@ -101,8 +102,7 @@ class ModeratorController extends Controller
 
         Mail::to($proposition->proposer()->email())
             ->send(new PropositionApproved($proposition));
-
-        return redirect()->back();
+        return redirect()->route('moderator.approval', tenantParams());
     }
 
     public function block(Request $request)

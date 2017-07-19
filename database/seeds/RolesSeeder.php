@@ -77,9 +77,14 @@ class RolesSeeder extends Seeder
         $distinguishAllCommentsPermission = new Permission();
         $distinguishAllCommentsPermission->name = 'distinguishAllComments';
         $distinguishAllCommentsPermission->display_name = 'Distinguish any comments';
-        $distinguishAllCommentsPermission->save();
+	$distinguishAllCommentsPermission->save();
 
-        forAllTenants(function($tenant) use ($votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission, $approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission, $distinguishSameRoleCommentsPermission) {
+	$handleFlagsPermission = new Permission();
+	$handleFlagsPermission->name = 'handleFlags';
+	$handleFlagsPermission->display_name = 'Handle Flags';
+	$handleFlagsPermission->save();
+
+        forAllTenants(function($tenant) use ($votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission, $approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission, $distinguishSameRoleCommentsPermission, $handleFlagsPermission) {
             $userRole = new Role();
             $userRole->name = 'user';
             $userRole->display_name = 'User';
@@ -101,7 +106,7 @@ class RolesSeeder extends Seeder
 
             $userRole->attachPermissions([$votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission]);
 
-            $modRole->attachPermissions([$approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission]);
+            $modRole->attachPermissions([$approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission, $handleFlagsPermission]);
 
             $pcMemberRole->attachPermissions([$setPropositionMarkersPermission, $distinguishSameRoleCommentsPermission]);
         });

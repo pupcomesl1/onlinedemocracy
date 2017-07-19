@@ -23,7 +23,7 @@ class Tenant
             return abort(404, 'No tenant');
         }
         if (Auth::check() && !(Auth::user()->tenant_id == $tenant->id)) {
-            // return redirect()->route('propositions', ['tenant' => $tenant->prefix]);
+            return redirect()->route('propositions', ['tenant' => Auth::user()->tenant->prefix]);
         }
         Landlord::addTenant($tenant);
         return $next($request);

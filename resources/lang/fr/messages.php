@@ -165,7 +165,8 @@ return [
 						'step' => "Etape :step",
 						'create_proposition' => "Créer proposition",
 						'proposition_sort' => "Écris ta proposition",
-						'proposition_long' => "Décris ton idée",
+						'proposition_long' => "Décris ton idée plus en détail",
+						'include_hashtag' => "Inclus des hashtags pour faire plus facile de trouver ton idée.",
 						'deadline' => "Choisis une date limite",
 						'confirm' => "Confimer",
 						'next' => "Suivant",
@@ -351,6 +352,7 @@ return [
 		
 		'notifications' => [
 				'available_in_en' => "DirectDemocracy is also available in",
+				'not_belongs_to_school' => "Bienvenue à DirectDemocracy ! Il nous semble que vous n'étes pas étudiant de :school, donc vous ne pourrez pas voter ou commenter. Si c'est un erreur, veuillez nous contacter.",
 				'welcome_link_alert_1' => "Bienvenue à DirectDemocracy ! Pour acceder à tous les fonctionnalités de DirectDemocracy,",
 				'welcome_link_alert_2' => "lies ton compte avec l'email de ton école",
 				'welcome_link_alert_3' => "!",

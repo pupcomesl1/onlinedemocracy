@@ -16,7 +16,7 @@
   <div class="list-group-item">
   	<span class="pull-right">
   		<span class="label label-info"">{{ Lang::choice('messages.moderator.days_left', $proposition['ending_in'], ['daysleft' => $proposition['ending_in']]) }}</span>
-  		<a href="{{ tenantRoute('moderator.approve', $proposition['id']) }}" class="btn btn-sm btn-success">{{ Lang::get('messages.moderator.approve') }}</a>
+  		<a href="{{ tenantRoute('moderator.approve', ['id' => $proposition['id']]) }}" class="btn btn-sm btn-success">{{ Lang::get('messages.moderator.approve') }}</a>
 		<a class="btn btn-sm btn-danger" data-toggle="collapse" href="#proposition{{$proposition['id']}}" aria-expanded="false" aria-controls="proposition{{$proposition['id']}}">@lang('messages.moderator.block')</a>
   	</span>
     <h4 class="list-group-item-heading">{{$proposition['propositionSort']}}</h4>

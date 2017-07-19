@@ -61,7 +61,7 @@ class ProfileController extends Controller
 
     public function language()
     {
-    	return redirect()->route('profile.main')->with('highlight', 'lang');
+    	return redirect()->route('profile.main', tenantParams())->with('highlight', 'lang');
     }
     
     public function setLanguage($code) 

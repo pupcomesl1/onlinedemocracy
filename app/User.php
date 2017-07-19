@@ -158,5 +158,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function commentFlags() {
         return $this->hasMany('App\CommentFlag');
     }
+
+    public function tenant() {
+        return $this->belongsTo('App\Tenant');
+    }
     
 }

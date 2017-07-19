@@ -1,0 +1,43 @@
+.comment.distinguish .header a {
+  color: #3F403B;
+}
+
+.comment.distinguish-moderator {
+  background-color: #f9bd9e;
+  border: 1px solid #F47C3D;
+  border-bottom-color: #F47C3D !important;
+}
+
+.comment.distinguish-moderator .role {
+  color: #F47C3D;
+}
+
+.comment.distinguish-pc_member {
+  background-color: #83ceed;
+  border: 1px solid #2AABE0;
+  border-bottom-color: #2AABE0 !important;
+}
+
+.comment.distinguish-pc_member .role {
+  color: #2AABE0;
+}
+
+.comment.distinguish-banned {
+  background-color: #e58383;
+  border: 1px solid #D32F2F;
+  border-bottom-color: #D32F2F !important;
+}
+
+.comment.distinguish-banned .role {
+  color: #D32F2F;
+}
+
+.comment.deleted {
+  background-color: #a1a1a1;
+  color: #212121;
+}
+
+.comment.deleted a {
+  color: #fff;
+}
+

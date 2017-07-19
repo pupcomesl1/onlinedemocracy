@@ -98,7 +98,7 @@ class SessionController extends Controller
     		if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
 			    
     			$user = Auth::user();
-    			return redirect()->intended('/');
+    			return redirectToUserTenant();
 
 			} else {
 				return redirect()->back()->withInput($request->except('password'))->withErrors([
@@ -137,9 +137,9 @@ class SessionController extends Controller
                         $user = User::where('msgraphId', '=', $graphUser->id)->first();
                         $tenant = null;
                         if (preg_match('/.+\([A-Z]{3}-S[1-7][A-Z]+\)/', $graphUser->displayName)) {
-                            if (preg_match('/.+\(LUX-S[1-7][A-Z]+\)/', $graphUser->displayName)) {
+                            if (preg_match('/.+\(LUX-/', $graphUser->displayName)) {
                                 $tenant = \App\Tenant::where('prefix', 'kirch')->first();
-                            } else if (preg_match('/.+\(MAM-S[1-7][A-Z]+\)/', $graphUser->displayName)) {
+                            } else if (preg_match('/.+\(MAM-/', $graphUser->displayName)) {
                                 $tenant = \App\Tenant::where('prefix', 'mam')->first();
                             }
                             Landlord::addTenant($tenant);

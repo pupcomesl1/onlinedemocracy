@@ -53,7 +53,7 @@
 		@if (!Auth::user()->can('postPropositions'))
 		<div class="alert alert-info" role="alert" id="link-info" style="display: none;">
 			<button type="button" class="close" data-dismiss="alert" data-alert-box="link-info" style="margin-top: -6px;" aria-label="Close"><span aria-hidden="true"><i class="material-icons">close</i></span></button>
-			<p>@lang('messages.notifications.not_belongs_to_school')</p>
+			<p>@lang('messages.notifications.not_belongs_to_school', ['school' => tenant()->long_name])</p>
 		</div>
 		@endif
 

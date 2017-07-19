@@ -63,10 +63,10 @@
               <i class="material-icons" style="transform: translateY(3px); font-size: 16px;">flag</i>
             </button>
             <ul class="dropdown-menu">
-              <li><a href="{{ tenantRoute('flag', [$proposition['id'], 1]) }}">
+              <li><a href="{{ tenantRoute('flag', ['id' => $proposition['id'], 1]) }}">
                   @lang('messages.proposition.flagging.offensive')
                 </a></li>
-              <li><a href="{{ tenantRoute('flag', [$proposition['id'], 3]) }}">
+              <li><a href="{{ tenantRoute('flag', ['id' => $proposition['id'], 3]) }}">
                   @lang('messages.proposition.flagging.incomprehensible')
                 </a></li>
             </ul>
@@ -110,10 +110,12 @@
 
             <!-- Future tags -->
 
-            <small
-                class="text-muted">{{ Lang::choice('messages.proposition.voting.stats.upvotes', $votes['upvotes'], ['votes' => $votes['upvotes']]) }}
+            <small lass="text-muted">
+              {{ Lang::choice('messages.proposition.voting.stats.upvotes', $votes['upvotes'], ['votes' => $votes['upvotes']]) }}
               | {{ Lang::choice('messages.proposition.voting.stats.downvotes', $votes['downvotes'], ['votes' => $votes['downvotes']]) }}
-              | {{ Lang::choice('messages.proposition.voting.stats.comments', $proposition['commentsCount'], ['comments' => $proposition['commentsCount']]) }}</small>
+              | {{ Lang::choice('messages.proposition.voting.stats.comments', $proposition['commentsCount'], ['comments' => $proposition['commentsCount']]) }}
+              </small>
+              {{--  <a href="#" class="text-muted">Adminflags</a>  --}}
           </div>
 
           @if (empty($proposition['marker']) == false)
@@ -142,11 +144,11 @@
 
           @if(Auth::user()->can('vote'))
             <div class="btn-group btn-group-justified section">
-              <a href="{{ tenantRoute('upvote', $proposition['id']) }}" class="btn btn-success btn-text-lg"><i
+              <a href="{{ tenantRoute('upvote', ['id' => $proposition['id']]) }}" class="btn btn-success btn-text-lg"><i
                     class="material-icons"
                     style="vertical-align: inherit;">thumb_up</i> {{ Lang::get('messages.proposition.voting.actions.upvote') }}
               </a>
-              <a href="{{ tenantRoute('downvote', $proposition['id']) }}" class="btn btn-danger btn-text-lg"><i
+              <a href="{{ tenantRoute('downvote', ['id' => $proposition['id']]) }}" class="btn btn-danger btn-text-lg"><i
                     class="material-icons"
                     style="vertical-align: middle;">thumb_down</i> {{ Lang::get('messages.proposition.voting.actions.downvote') }}
               </a>
@@ -167,7 +169,7 @@
 
         @else
           <div class="btn-group btn-group-justified section">
-            <a href="{{ tenantRoute('unvote', $proposition['id']) }}"
+            <a href="{{ tenantRoute('unvote', ['id' => $proposition['id']]) }}"
                class="btn btn-success disabled-dark-success btn-text-lg">{{ Lang::get('messages.proposition.voting.already_voted') }}</a>
           </div>
         @endif
@@ -237,7 +239,7 @@
                         <img class="img-circle text-sized-picture" src="{{ $comment['commenter']['avatar'] }}">
                         <a href="{{ tenantRoute('search') . '?q=' . $comment['commenter']['displayName'] }}">{{ $comment['commenter']['displayName'] }}</a>
                         @if (isset($comment['distinguish']))
-                          <em class="role">{{ $comment['distinguish']['display_name'] }}</em>
+                          <em class="role">&nbsp;{{ $comment['distinguish']['display_name'] }}</em>
                         @endif
                     </strong>
                       <small>
@@ -408,7 +410,7 @@
           <div class="modal-footer">
             <button type="button" id="marker_save"
                     class="btn btn-primary btn-block">@lang('messages.proposition.marker.modal.update')</button>
-            <a href="{{ tenantRoute('marker.delete', [$proposition['id']]) }}"
+            <a href="{{ tenantRoute('marker.delete', ['id' => $proposition['id']]) }}"
                class="btn btn-danger btn-block">@lang('messages.proposition.marker.modal.delete')</a>
           </div>
         </div>
@@ -445,9 +447,9 @@ $('#mark').on('show.bs.modal', function (event) {
 $("#marker_save").click(function (e) {
 
                 @if (empty($proposition['marker']) == true)
-              var url = "{{ tenantRoute('marker.create', [$proposition['id']]) }}";
+              var url = "{{ tenantRoute('marker.create', ['id' => $proposition['id']]) }}";
                 @else
-              var url = "{{ tenantRoute('marker.edit', [$proposition['id']]) }}";
+              var url = "{{ tenantRoute('marker.edit', ['id' => $proposition['id']]) }}";
               @endif
 
 $.post(url, $("#marker").serialize())
@@ -493,7 +495,7 @@ $("#social_links li a").click(function (e) {
               var myWindow = window.open(link, "MsgWindow", "width=550, height=500");
           });
 
-          $URL = "{{ tenantRoute('proposition', [$proposition['id']]) }}";
+          $URL = "{{ tenantRoute('proposition', ['id' => $proposition['id']]) }}";
           // Facebook Shares Count
           $.getJSON('https://graph.facebook.com/?id=' + $URL, function (fbdata) {
               $('#shares-count').text(ReplaceNumberWithCommas(fbdata.shares));
