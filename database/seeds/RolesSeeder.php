@@ -77,14 +77,19 @@ class RolesSeeder extends Seeder
         $distinguishAllCommentsPermission = new Permission();
         $distinguishAllCommentsPermission->name = 'distinguishAllComments';
         $distinguishAllCommentsPermission->display_name = 'Distinguish any comments';
-	$distinguishAllCommentsPermission->save();
+        $distinguishAllCommentsPermission->save();
 
-	$handleFlagsPermission = new Permission();
-	$handleFlagsPermission->name = 'handleFlags';
-	$handleFlagsPermission->display_name = 'Handle Flags';
-	$handleFlagsPermission->save();
+        $handleFlagsPermission = new Permission();
+        $handleFlagsPermission->name = 'handleFlags';
+        $handleFlagsPermission->display_name = 'Handle Flags';
+        $handleFlagsPermission->save();
 
-        forAllTenants(function($tenant) use ($votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission, $approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission, $distinguishSameRoleCommentsPermission, $handleFlagsPermission) {
+        $flagPermission = new Permission();
+        $flagPermission->name = 'flag';
+        $flagPermission->display_name = 'Flag';
+        $flagPermission->save();
+
+        forAllTenants(function($tenant) use ($votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission, $approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission, $distinguishSameRoleCommentsPermission, $handleFlagsPermission, $flagPermission) {
             $userRole = new Role();
             $userRole->name = 'user';
             $userRole->display_name = 'User';
@@ -104,7 +109,7 @@ class RolesSeeder extends Seeder
             $pcMemberRole->tenant_id = $tenant->id;
             $pcMemberRole->save();
 
-            $userRole->attachPermissions([$votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission]);
+            $userRole->attachPermissions([$votePermission, $commentPermission, $flagCommentsPermission, $editOwnCommentsPermission, $deleteOwnCommentsPermission, $postPropositionsPermission, $deleteOwnPropositionsPermission, $flagPermission]);
 
             $modRole->attachPermissions([$approveOrBlockPropositionsPermission, $deleteCommentsPermission, $setPropositionMarkersPermission, $distinguishAllCommentsPermission, $handleFlagsPermission]);
 

@@ -14,7 +14,6 @@
 //Website routes
 Route::get('/', ['as' => 'home', 'uses' => 'MainController@home']);
 Route::get('/terms', ['as' => 'terms', 'uses' => 'MainController@terms']);
-Route::get('/comment-guidelines', ['as' => 'guidelines', 'uses' => 'MainController@guidelines']);
 
 //Session routes
 Route::get('/login', ['as' => 'login', 'uses' => 'SessionController@index']);
@@ -35,6 +34,7 @@ Route::get('/o365login', ['as' => 'o365login', 'uses' => 'SessionController@msgr
 Route::get('/tenant', ['uses' => 'MainController@tenant']);
 
 Route::group(['domain' => '{tenant}.' . env('APP_DOMAIN'), 'middleware' => 'tenant'], function() {
+	Route::get('/comment-guidelines', ['as' => 'guidelines', 'uses' => 'MainController@guidelines']);
 
 	//Profile-related routes
 	Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {

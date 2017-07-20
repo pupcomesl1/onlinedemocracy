@@ -115,7 +115,7 @@
               | {{ Lang::choice('messages.proposition.voting.stats.downvotes', $votes['downvotes'], ['votes' => $votes['downvotes']]) }}
               | {{ Lang::choice('messages.proposition.voting.stats.comments', $proposition['commentsCount'], ['comments' => $proposition['commentsCount']]) }}
               </small>
-              {{--  <a href="#" class="text-muted">Adminflags</a>  --}}
+              {{--  <a href="#" class="text-muted">Adminfuncs</a>  --}}
           </div>
 
           @if (empty($proposition['marker']) == false)
@@ -287,6 +287,9 @@
                     <p>{{ $comment['commentBody'] }}</p>
                   @else
                     <p><em>@lang('messages.proposition.comments.deleted')</em></p>
+                    @permission('deleteComments')
+                      <p><em>Original text:</em> {{ $comment['commentBody'] }}</p>
+                    @endpermission
                   @endif
                 <!-- Footer -->
                   @if (!$comment['modDeleted'])

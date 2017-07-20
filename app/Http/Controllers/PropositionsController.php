@@ -426,11 +426,11 @@ class PropositionsController extends Controller
                         $user
                         and $user->can('flag')
                         and $user->id != $comment['commenter']['id']
-                        and collect(\App\CommentFlag::where(
+                        and \App\CommentFlag::where(
                             [
                                 ['flagger', '=', $user->id],
                                 ['comment_id', '=', $comment->id]
-                            ]))->isEmpty(),
+                            ])->get()->isEmpty(),
     		];
 
     		if (Auth::check()) {
@@ -698,7 +698,7 @@ class PropositionsController extends Controller
      * @param  int  $flag_type
      * @return \Illuminate\Http\Response
      */
-    public function flag($id, $flag_type) {
+    public function flag($tenant, $id, $flag_type) {
 		\App::setLocale(Auth::user()->language());
         if ($flag_type == 1 OR $flag_type == 3) {
         	with(new PropositionFactory())->flag($flag_type, $id);
