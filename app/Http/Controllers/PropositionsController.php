@@ -314,7 +314,7 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function delete($id)
+    public function delete($tenant, $id)
     {
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
