@@ -21,18 +21,25 @@
 		
 		@if ($proposition['statusId'] == 1)
 		@if ($proposition['ending_in'] <= 0)
-		<span class="label label-warning pull-right" style="line-height: 18px;">{{ Lang::get('messages.profile.propositions.status.expired') }}</span>
+		  <span class="label label-warning pull-right" style="line-height: 18px;">
+			{{ Lang::get('messages.profile.propositions.status.expired') }}
+			</span>
 		@else
-		<span class="label label-success pull-right" style="line-height: 18px;">{{ Lang::choice('messages.profile.propositions.status.ending_in', $proposition['ending_in'], ['daysleft' => $proposition['ending_in']]) }}</span>
+		  <span class="label label-success pull-right" style="line-height: 18px;">
+			{{ Lang::choice('messages.proposition.status.ending_in', $proposition['ending_in'], ['daysleft' => $proposition['ending_in']]) }}
+			</span>
 		@endif
 		@else
 		<span class="label @if ($proposition['statusId'] == 2) label-info @else label-danger @endif pull-right" style="line-height: 18px;">@if ($proposition['statusId'] == 2) {{ Lang::get('messages.proposition.status.pending') }} @elseif ($proposition['statusId'] == 3) {{ Lang::get('messages.proposition.status.blocked') }} @endif</span>
 		@endif
 		<a class="panel-title" role="button" data-toggle="collapse" data-parent="#propositions" href="#collapse{{ $proposition['id'] }}" aria-controls="collapse{{ $proposition['id'] }}">
 		@if (empty($proposition['marker']) == false) 
-			@if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span class="label label-success label-icon pull-left"><i class="material-icons">check</i></span>
-			@elseif ($proposition['marker']->relationMarkerId() == \App\Marker::UNDER_DISCUSSION) <span class="label label-info label-icon pull-left"><i class="material-icons">speaker_notes</i></span>
-			@elseif ($proposition['marker']->relationMarkerId() == \App\Marker::FAILED) <span class="label label-warning label-icon pull-left"><i class="material-icons">announcement</i></span>
+			@if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)
+			  <span class="label label-success label-icon pull-left"><i class="material-icons">check</i></span>
+			@elseif ($proposition['marker']->relationMarkerId() == \App\Marker::UNDER_DISCUSSION)
+			  <span class="label label-info label-icon pull-left"><i class="material-icons">speaker_notes</i></span>
+			@elseif ($proposition['marker']->relationMarkerId() == \App\Marker::FAILED)
+			  <span class="label label-warning label-icon pull-left"><i class="material-icons">announcement</i></span>
 			@endif
 		@endif
 		{{{ $proposition['propositionSort'] }}}</a>
