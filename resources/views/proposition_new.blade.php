@@ -533,6 +533,7 @@ $("#social_links li a").click(function (e) {
                       .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                           alert(errorThrown);
                           console.log(XMLHttpRequest.responseText);
+                          window.location.reload();
                       });
               }
 
