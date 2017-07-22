@@ -113,7 +113,7 @@ class ProfileController extends Controller
     
     public function propositions() {
     	$user = Auth::user();
-		Carbon::setLocale($user->language());
+	Carbon::setLocale($user->language());
     	$propositionFactory = new PropositionFactory();
     	$propositionsCount = $propositionFactory->getPropositionsCountByUser($user->userId());
     	$viewUser = [
