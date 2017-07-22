@@ -15,6 +15,9 @@
 Route::get('/', ['as' => 'home', 'uses' => 'MainController@home']);
 Route::get('/terms', ['as' => 'terms', 'uses' => 'MainController@terms']);
 
+// GitHub Deploy webhook
+Route::post('/deploy', ['uses' => 'DeployController@deploy']);
+
 //Session routes
 Route::get('/login', ['as' => 'login', 'uses' => 'SessionController@index']);
 Route::post('/login', ['as' => 'authenticate', 'uses' => 'SessionController@login']);

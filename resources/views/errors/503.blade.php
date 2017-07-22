@@ -37,7 +37,9 @@
 		
 		<img src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">
 		<h1 class="text-center">Be right back.</h1>
-		<p class="lead text-center">The service is currently down due scheduled maintenance.</p>
+		<p class="lead text-center">We're updating our code.</p>
+		<p>As you read this, a script is running on our servers, updating the site to the latest version.</p>
+		<p>We should be back online in less than a minute, and with new features and bug fixes!</p>
 		
 	</div>
 
