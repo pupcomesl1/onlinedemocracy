@@ -483,11 +483,8 @@ class PropositionsController extends Controller
     		abort(403, $validator->errors()->first('commentBody'));
 
     	} else {
-    	    \Log::debug('Inside else statement: ' . $user->userId() . ', ' . $request->input('id'));
     	    $factory = new CommentFactory();
     	    $nc = $factory->createComment($user->userId(), $request->input('id'), $request->input('commentBody'));
-
-    	    \Log::debug($nc);
 
             return redirect()->route('proposition', tenantParams(['id' => $request->input('id')]));
     	}
