@@ -25,20 +25,20 @@ class DeployController extends Controller
 
         // Check if the update contains database migrations.
         `cd ..`; // by default we're in public/
-        `git fetch origin production`;
+        `git fetch origin production 2>&1`;
 
         // Since the next step will wipe out the logs, let's back them up first
         if (!ENV('DEPLOY_DISABLE_LOG_BACKUP') == 'true') {
             $time = `git log production..origin/production -1  --pretty=format:%ct`;
-            `cp storage/logs/laravel.log /var/log/directdemocracy/laravel-deploy-{$time}.log`;
+            `cp storage/logs/laravel.log /var/log/directdemocracy/laravel-deploy-{$time}.log 2>&1`;
         }
 
         // This step MUST be before the git reset
-        $diff = `git diff --name-only production origin/production`;
+        $diff = `git diff --name-only production origin/production 2>&1`;
         $migrationsNecessary = strpos($diff, 'migrations') !== false;
 
         // Alright. Time to actually deploy the code!
-        `git reset --hard origin/production`;
+        `git reset --hard origin/production 2>&1`;
 
         // Run migrations if necessary
         if ($migrationsNecessary) {
