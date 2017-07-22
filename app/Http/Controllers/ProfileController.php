@@ -24,10 +24,10 @@ class ProfileController extends Controller
 {
 	
 	public function __construct(Socialite $socialite){
-		$this->socialite = $socialite;
-		if (Auth::check()) {
-			\App::setLocale(Auth::user()->language());
-		}
+	    $this->socialite = $socialite;
+	    if (Auth::check()) {
+	        App::setLocale(Auth::user()->language());
+	    }
 	}
 	
 	
