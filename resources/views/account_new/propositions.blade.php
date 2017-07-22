@@ -11,7 +11,7 @@
 	<h3>{{ Lang::get('messages.profile.create_proposition.begining') }}</h3>
 	<p class="lead">{{ Lang::get('messages.profile.create_proposition.description') }}</p>
 	<br>
-	<p><a href="{{ route('profile.propositions.create') }}" class="btn btn-teal btn-lg btn-text-lg"><i class="material-icons" style="font-size: 18px; vertical-align: sub;">create</i> {{ Lang::get('messages.profile.create_proposition.begining_btn') }}</a></p>
+	<p><a href="{{ tenantRoute('profile.propositions.create') }}" class="btn btn-teal btn-lg btn-text-lg"><i class="material-icons" style="font-size: 18px; vertical-align: sub;">create</i> {{ Lang::get('messages.profile.create_proposition.begining_btn') }}</a></p>
 	
 @endif
 
@@ -21,18 +21,25 @@
 		
 		@if ($proposition['statusId'] == 1)
 		@if ($proposition['ending_in'] <= 0)
-		<span class="label label-warning pull-right" style="line-height: 18px;">{{ Lang::get('messages.profile.propositions.status.expired') }}</span>
+		  <span class="label label-warning pull-right" style="line-height: 18px;">
+			{{ Lang::get('messages.profile.propositions.status.expired') }}
+			</span>
 		@else
-		<span class="label label-success pull-right" style="line-height: 18px;">{{ Lang::choice('messages.profile.propositions.status.ending_in', $proposition['ending_in'], ['daysleft' => $proposition['ending_in']]) }}</span>
+		  <span class="label label-success pull-right" style="line-height: 18px;">
+			{{ Lang::choice('messages.proposition.status.ending_in', $proposition['ending_in'], ['daysleft' => $proposition['ending_in']]) }}
+			</span>
 		@endif
 		@else
 		<span class="label @if ($proposition['statusId'] == 2) label-info @else label-danger @endif pull-right" style="line-height: 18px;">@if ($proposition['statusId'] == 2) {{ Lang::get('messages.proposition.status.pending') }} @elseif ($proposition['statusId'] == 3) {{ Lang::get('messages.proposition.status.blocked') }} @endif</span>
 		@endif
 		<a class="panel-title" role="button" data-toggle="collapse" data-parent="#propositions" href="#collapse{{ $proposition['id'] }}" aria-controls="collapse{{ $proposition['id'] }}">
 		@if (empty($proposition['marker']) == false) 
-			@if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span class="label label-success label-icon pull-left"><i class="material-icons">check</i></span>
-			@elseif ($proposition['marker']->relationMarkerId() == \App\Marker::UNDER_DISCUSSION) <span class="label label-info label-icon pull-left"><i class="material-icons">speaker_notes</i></span>
-			@elseif ($proposition['marker']->relationMarkerId() == \App\Marker::FAILED) <span class="label label-warning label-icon pull-left"><i class="material-icons">announcement</i></span>
+			@if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)
+			  <span class="label label-success label-icon pull-left"><i class="material-icons">check</i></span>
+			@elseif ($proposition['marker']->relationMarkerId() == \App\Marker::UNDER_DISCUSSION)
+			  <span class="label label-info label-icon pull-left"><i class="material-icons">speaker_notes</i></span>
+			@elseif ($proposition['marker']->relationMarkerId() == \App\Marker::FAILED)
+			  <span class="label label-warning label-icon pull-left"><i class="material-icons">announcement</i></span>
 			@endif
 		@endif
 		{{{ $proposition['propositionSort'] }}}</a>
@@ -64,7 +71,7 @@
 		
 			@if ($proposition['statusId'] !== 2)
 			@if ($proposition['statusId'] !== 3)
-			<a href="{{ route('proposition', [$proposition['id']]) }}" class="btn btn-primary btn-sm">{{ Lang::get('messages.profile.propositions.go_to') }}</a>
+			<a href="{{ tenantRoute('proposition', [$proposition['id']]) }}" class="btn btn-primary btn-sm">{{ Lang::get('messages.profile.propositions.go_to') }}</a>
 			@if ($proposition['ending_in'] <= 0)
 			<a href="#delete{{$proposition['id']}}" class="btn btn-default btn-sm" data-toggle="collapse" aria-expanded="false">{{ Lang::get('messages.profile.propositions.delete') }}</a>
 			@endif
@@ -77,7 +84,7 @@
 			
 			@if ($proposition['statusId'] == 3)
 			{{ Lang::get('messages.profile.propositions.status.block_reason') }} {{ $proposition['blockReason'] }}
-			<a href="{{ route('proposition.delete', [$proposition['id']]) }}" class="btn btn-default btn-sm" >{{ Lang::get('messages.profile.propositions.delete_proposition') }}</a>
+			<a href="{{ tenantRoute('proposition.delete', [$proposition['id']]) }}" class="btn btn-default btn-sm" >{{ Lang::get('messages.profile.propositions.delete_proposition') }}</a>
 			@endif
 		
 		</div>
@@ -85,7 +92,7 @@
 		@if ($proposition['ending_in'] <= 0)
 		<div class="collapse" id="delete{{$proposition['id']}}"><div class="panel-footer panel-footer-gray panel-footer-danger">
 			<p>{{ Lang::get('messages.profile.propositions.warning_delete') }}</p>
-			<a href="{{ route('proposition.delete', [$proposition['id']]) }}" class="btn btn-danger btn-sm">{{ Lang::get('messages.profile.propositions.delete_proposition') }}</a>
+			<a href="{{ tenantRoute('proposition.delete', [$proposition['id']]) }}" class="btn btn-danger btn-sm">{{ Lang::get('messages.profile.propositions.delete_proposition') }}</a>
 			<a href="#delete{{$proposition['id']}}" class="btn btn-default btn-sm" data-toggle="collapse" aria-expanded="false" >{{ Lang::get('messages.close') }}</a>
 		</div></div>
 		@endif
@@ -119,7 +126,7 @@
 				</form>
 		      </div>
 		      <div class="modal-footer">
-		      	<a href="{{ route('proposition.delete', [$proposition['id']]) }}" class="btn btn-danger pull-left">{{ Lang::get('messages.profile.propositions.delete_proposition') }}</a>
+		      	<a href="{{ tenantRoute('proposition.delete', [$proposition['id']]) }}" class="btn btn-danger pull-left">{{ Lang::get('messages.profile.propositions.delete_proposition') }}</a>
 		        <button type="button" class="btn btn-default" data-dismiss="modal">{{ Lang::get('messages.close') }}</button>
 		        <button type="button" class="btn btn-primary" data-form-id="editForm{{ $proposition['id'] }}" data-proposition-id="{{{ $proposition['id'] }}}">{{ Lang::get('messages.form.buttons.save') }}</button>
 		      </div>
@@ -177,7 +184,7 @@ $('[data-edit-proposition]').on('show.bs.modal', function (event) {
 	  var $modal = $(this);
 	  $modal.find('.errors').html('');
 
-	  $.getJSON('{{ route('api.proposition') }}', { id: $(this).data("edit-proposition") })
+	  $.getJSON('{{ tenantRoute('api.proposition') }}', { id: $(this).data("edit-proposition") })
 	  .done(function (data) {
 		  
 		$modal.find('[data-field="proposition"]').val(data['propositionSort']);
@@ -194,7 +201,7 @@ $('button[data-form-id]').click( function(e) {
 	var id = $(this).data("proposition-id");
 	var formId = $(this).data("form-id");
 	
-	$.post("{{ route('proposition.update') }}", $("#" + formId).serialize())
+	$.post("{{ tenantRoute('proposition.update') }}", $("#" + formId).serialize())
 	  .done(function(e) {
 	    var errors = e;
 		if (errors !== 'success') {

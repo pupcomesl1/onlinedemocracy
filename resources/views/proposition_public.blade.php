@@ -106,7 +106,7 @@
           <a href="#" class="btn btn-danger btn-text-lg" disabled><i class="material-icons" style="vertical-align: middle;">thumb_down</i> {{ Lang::get('messages.proposition.voting.actions.downvote') }}</a>
         </div>
         <div class="btn-group btn-group-justified section">
-			<a href="{{ route('login') }}" class="btn btn-info btn-text-lg">{{ Lang::get('messages.proposition.voting.need_to_login') }}</a>
+			<a href="{{ tenantRoute('login') }}" class="btn btn-info btn-text-lg">{{ Lang::get('messages.proposition.voting.need_to_login') }}</a>
 		</div>
         @endif
        
@@ -169,7 +169,7 @@ $(document).ready( function() {
 		var myWindow = window.open(link, "MsgWindow", "width=550, height=500");
 	});
 
-	$URL = "{{ route('proposition', [$proposition['id']]) }}";
+	$URL = "{{ tenantRoute('proposition', [$proposition['id']]) }}";
 	// Facebook Shares Count
 	$.getJSON( 'https://graph.facebook.com/?id=' + $URL, function( fbdata ) {
 		$('#shares-count').text(ReplaceNumberWithCommas(fbdata.shares));

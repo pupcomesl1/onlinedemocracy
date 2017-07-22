@@ -254,7 +254,7 @@ class PropositionsController extends Controller
     				$proposition->addTag($tag);
     			}
 
-    			return redirect()->route('profile.propositions')->with('status', trans('messages.profile.create_proposition.success'));
+    			return redirect()->route('profile.propositions', tenantParams())->with('status', trans('messages.profile.create_proposition.success'));
 
     		} else {
     			abort(403, trans('messages.unauthorized'));
@@ -314,7 +314,7 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function delete($id)
+    public function delete($tenant, $id)
     {
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
@@ -334,10 +334,10 @@ class PropositionsController extends Controller
 
     			if (with(new PropositionFactory())->deleteProposition($id) == true) {
 
-    				return redirect()->route('profile.propositions')->with('status', trans('messages.profile.propositions.success_deleting'));
+    				return redirect()->route('profile.propositions', tenantParams())->with('status', trans('messages.profile.propositions.success_deleting'));
     			} else {
 
-    				return redirect()->route('profile.propositions')->with('error', trans('messages.profile.propositions.error_deleting'));
+    				return redirect()->route('profile.propositions', tenantParams())->with('error', trans('messages.profile.propositions.error_deleting'));
     			}
 
     	} else {
@@ -351,7 +351,7 @@ class PropositionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($tenant, $id)
     {
 
     	$propositionFactory = new PropositionFactory();
@@ -390,7 +390,7 @@ class PropositionsController extends Controller
     			'downvotes' => $propositionFactory->getDownvotes($id),
     	];
 
-    	$viewShareLinks = Share::load(route('proposition', [$viewProposition['id']]), $viewProposition['propositionSort'])->services();
+    	$viewShareLinks = Share::load(route('proposition', tenantParams([$viewProposition['id']])), $viewProposition['propositionSort'])->services();
 
     	$viewComments = array();
 
@@ -426,11 +426,11 @@ class PropositionsController extends Controller
                         $user
                         and $user->can('flag')
                         and $user->id != $comment['commenter']['id']
-                        and collect(\App\CommentFlag::where(
+                        and \App\CommentFlag::where(
                             [
                                 ['flagger', '=', $user->id],
                                 ['comment_id', '=', $comment->id]
-                            ]))->isEmpty(),
+                            ])->get()->isEmpty(),
     		];
 
     		if (Auth::check()) {
@@ -483,17 +483,14 @@ class PropositionsController extends Controller
     		abort(403, $validator->errors()->first('commentBody'));
 
     	} else {
-    	    \Log::debug('Inside else statement: ' . $user->userId() . ', ' . $request->input('id'));
     	    $factory = new CommentFactory();
     	    $nc = $factory->createComment($user->userId(), $request->input('id'), $request->input('commentBody'));
 
-    	    \Log::debug($nc);
-
-            return redirect()->route('proposition', $request->input('id'));
+            return redirect()->route('proposition', tenantParams(['id' => $request->input('id')]));
     	}
     }
 
-    public function delete_comment($id) {
+    public function delete_comment($tenant, $id) {
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
 
@@ -511,7 +508,7 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function undelete_comment($id) {
+    public function undelete_comment($tenant, $id) {
         \App::setLocale(Auth::user()->language());
         $user = Auth::user();
 
@@ -602,7 +599,7 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function comment_flag($id) {
+    public function comment_flag($tenant, $id) {
         \App::setLocale(Auth::user()->language());
         $factory = new CommentFactory();
         $comment = $factory->getComment($id);
@@ -614,7 +611,7 @@ class PropositionsController extends Controller
     }
 
 
-    public function upvote($id) {
+    public function upvote($tenant, $id) {
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
 
@@ -633,7 +630,7 @@ class PropositionsController extends Controller
 
 	    		$propositionFactory->upvote($id, $user->userId(), $user->googleEmail());
 
-	    		return redirect()->route('proposition', $id);
+	    		return redirect()->route('proposition', tenantParams(['id' => $id]));
 	    	} else {
 	    		abort(403, trans('messages.unauthorized'));
 	    	}
@@ -642,7 +639,7 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function downvote($id) {
+    public function downvote($tenant, $id) {
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
     	$propositionFactory = new PropositionFactory();
@@ -658,31 +655,36 @@ class PropositionsController extends Controller
 
     		$propositionFactory->downvote($id, $user->userId());
 
-    		return redirect()->route('proposition', $id);
+    		return redirect()->route('proposition', tenantParams(['id' => $id]));
     	} else {
     		abort(403, trans('messages.unauthorized'));
     	}
     }
 
-    public function unvote($id) {
+    public function unvote($tenant, $id) {
         \App::setLocale(Auth::user()->language());
         $user = Auth::user();
         $propositionFactory = new PropositionFactory();
+		\Debugbar::info(
+			Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
+            or (!$user->can('vote'))
+		);
 
         if (
             Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
             or (!$user->can('vote'))
         ) {
-            abort(403, trans('messages.unauthorized'));
+            abort(403, trans('messages.unauthorized') . ' (1)');
         }
 
+		\Debugbar::info([$id, $propositionFactory->getUserVoteStatus($id, $user->userId())]);
         if ($propositionFactory->getUserVoteStatus($id, $user->userId())) {
 
             $propositionFactory->unvote($id, $user->userId());
 
-            return redirect()->route('proposition', $id);
+            return redirect()->route('proposition', tenantParams(['id' => $id]));
         } else {
-            abort(403, trans('messages.unauthorized'));
+            abort(403, trans('messages.unauthorized') . ' (2)');
         }
     }
 
@@ -693,7 +695,7 @@ class PropositionsController extends Controller
      * @param  int  $flag_type
      * @return \Illuminate\Http\Response
      */
-    public function flag($id, $flag_type) {
+    public function flag($tenant, $id, $flag_type) {
 		\App::setLocale(Auth::user()->language());
         if ($flag_type == 1 OR $flag_type == 3) {
         	with(new PropositionFactory())->flag($flag_type, $id);
@@ -710,7 +712,7 @@ class PropositionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create_marker($id, Request $request) {
+    public function create_marker($tenant, $id, Request $request) {
 
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
@@ -737,7 +739,7 @@ class PropositionsController extends Controller
 
     }
 
-    public function edit_marker($id, Request $request) {
+    public function edit_marker($tenant, $id, Request $request) {
 
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
@@ -768,7 +770,7 @@ class PropositionsController extends Controller
 
     }
 
-    public function delete_marker($id) {
+    public function delete_marker($tenant, $id) {
 
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();

@@ -100,7 +100,7 @@ class PropositionFactory extends Model {
 		return Proposition::whereProposerId($userId)->count();
 	}
 	
-	public function getProposition($id): Proposition {
+	public function getProposition($id): ?Proposition {
 		return Proposition::find($id);
 	}
 	
@@ -124,7 +124,7 @@ class PropositionFactory extends Model {
 		$userHasVoted = false;
 		
 		if ($user->belongsToSchool() == true) {
-			if (Votes::whereIdAndVoteUser($proposition->id(), $userId)->count() != 0) {
+			if (Votes::wherePropositionIdAndVoteUser($proposition->id(), $userId)->count() != 0) {
 				$userHasVoted = true;
 			}
 		}
@@ -145,7 +145,7 @@ class PropositionFactory extends Model {
 		$proposition = Proposition::find($id);
 		$upvotes = 0;
 	
-		$upvotes = Votes::whereIdAndVoteValue($proposition->id(), 1)->get();
+		$upvotes = Votes::wherePropositionIdAndVoteValue($proposition->id(), 1)->get();
 	
 		$upvotesSum = 0;
 	
@@ -169,7 +169,7 @@ class PropositionFactory extends Model {
 		$proposition = Proposition::find($id);
 		$downvotes = 0;
 		
-		$downvotes = Votes::whereIdAndVoteValue($proposition->id(), 0)->get();
+		$downvotes = Votes::wherePropositionIdAndVoteValue($proposition->id(), 0)->get();
 		
 		$downvotesSum = 0;
 		
@@ -189,7 +189,7 @@ class PropositionFactory extends Model {
 	}
 	
 	public function getCommentsCount($id) {
-		return Comments::whereId($id)->count();
+		return Comments::wherePropositionId($id)->count();
 	}
 	
 	public function flag($type, $id) {
@@ -208,7 +208,7 @@ class PropositionFactory extends Model {
 	}
 	
 	public function getMarker($id) {
-		return Marker::whereId($id)->get()->first();
+		return Marker::wherePropositionId($id)->get()->first();
 	}
 	
 }

@@ -9,7 +9,7 @@
         		<!-- Brand and toggle get grouped for better mobile display -->
         		<div class="navbar-header">
           			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topFixedNavbar1"><span class="sr-only">{{ Lang::get('messages.navigation.nav_toggle') }}</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-          			<a class="navbar-brand" href="{{ route('propositions') }}">
+          			<a class="navbar-brand" href="{{ tenantRoute('propositions') }}">
           				<img src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">
           				DirectDemocracy
           			</a>
@@ -17,11 +17,11 @@
 
         		<div class="collapse navbar-collapse" id="topFixedNavbar1">
 	         		<ul class="nav navbar-nav">
-	            		<li class="@if(Route::current()->getName() == 'propositions') active @endif"><a href="{{ route('propositions') }}">{{ Lang::get('messages.navigation.home') }}</a></li>
-	          			<li class="@if(Route::current()->getName() == 'archived') active @endif"><a href="{{ route('archived') }}">{{ Lang::get('messages.navigation.archived') }}</a></li>
+	            		<li class="@if(Route::current()->getName() == 'propositions') active @endif"><a href="{{ tenantRoute('propositions') }}">{{ Lang::get('messages.navigation.home') }}</a></li>
+	          			<li class="@if(Route::current()->getName() == 'archived') active @endif"><a href="{{ tenantRoute('archived') }}">{{ Lang::get('messages.navigation.archived') }}</a></li>
 	          		</ul>
 
-	          		<form class="navbar-form navbar-left" role="search" method="get" action="{{ route('search') }}">
+	          		<form class="navbar-form navbar-left" role="search" method="get" action="{{ tenantRoute('search') }}">
 				    	<div class="form-group">
 				      		<input name="q" type="text" @if (isset($_GET["q"]) == true) @if ($_GET["q"] !== null) value="{{ $_GET["q"] }}" @endif @endif class="form-control" placeholder="{{ Lang::get('messages.search.search') }}" autocomplete="off">
 				        </div>
@@ -29,15 +29,15 @@
 
 	          		<ul class="nav navbar-nav navbar-right">
 						<li>
-						<a href="{{ route('profile.propositions.create') }}" class="btn btn-teal"><i class="material-icons" style="font-size: 15px; vertical-align: sub;">create</i><span class="hidden-sm"> @lang('messages.navigation.create_proposition')</span></a></li>
+						<a href="{{ tenantRoute('profile.propositions.create') }}" class="btn btn-teal"><i class="material-icons" style="font-size: 15px; vertical-align: sub;">create</i><span class="hidden-sm"> @lang('messages.navigation.create_proposition')</span></a></li>
 	            		<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img alt="profile picture of {{ $user['displayName'] }}" src="{{ $user['avatar'] }}" class="profile-picture-navbar img-circle"> {{ $user['displayName'] }}<span class="caret"></span></a>
 		              		<ul class="dropdown-menu" role="menu">
-		                		<li><a href="{{ route('profile.propositions') }}">@lang('messages.navigation.propositions')</a></li>
-		                		<li><a href="{{ route('profile.main') }}">@lang('messages.navigation.profile')</a></li>
+		                		<li><a href="{{ tenantRoute('profile.propositions') }}">@lang('messages.navigation.propositions')</a></li>
+		                		<li><a href="{{ tenantRoute('profile.main') }}">@lang('messages.navigation.profile')</a></li>
 		                		<li class="divider"></li>
-		                		<li><a href="{{ route('profile.language') }}">@lang('messages.navigation.language')</a></li>
+		                		<li><a href="{{ tenantRoute('profile.language') }}">@lang('messages.navigation.language')</a></li>
 		                		<li class="divider"></li>
-		                		<li><a href="{{ route('logout') }}">@lang('messages.navigation.logout')</a></li>
+		                		<li><a href="{{ tenantRoute('logout') }}">@lang('messages.navigation.logout')</a></li>
 		             		</ul>
 	            		</li>
 	          		</ul>
@@ -53,16 +53,16 @@
 		@if (!Auth::user()->can('postPropositions'))
 		<div class="alert alert-info" role="alert" id="link-info" style="display: none;">
 			<button type="button" class="close" data-dismiss="alert" data-alert-box="link-info" style="margin-top: -6px;" aria-label="Close"><span aria-hidden="true"><i class="material-icons">close</i></span></button>
-			<p>@lang('messages.notifications.not_belongs_to_school')</p>
+			<p>@lang('messages.notifications.not_belongs_to_school', ['school' => tenant()->long_name])</p>
 		</div>
 		@endif
 
 		<div class="alert alert-info" role="alert" id="lang-info" style="display: none; background-color: #607D8B;">
 			<button type="button" class="close" data-dismiss="alert" data-alert-box="link-info" style="margin-top: -6px;" aria-label="Close"><span aria-hidden="true"><i class="material-icons">close</i></span></button>
 			@if (Lang::locale() == 'en')
-			<p>{{ Lang::get('messages.notifications.available_in_fr') }} <a href="{{ route('profile.language.set', ['fr']) }}" class="alert-link">{{ Lang::get('messages.languages.fr') }}</a>!</p>
+			<p>{{ Lang::get('messages.notifications.available_in_fr') }} <a href="{{ tenantRoute('profile.language.set', ['fr']) }}" class="alert-link">{{ Lang::get('messages.languages.fr') }}</a>!</p>
 			@else
-			<p>{{ Lang::get('messages.notifications.available_in_en') }} <a href="{{ route('profile.language.set', ['en']) }}" class="alert-link">{{ Lang::get('messages.languages.en') }}</a>!</p>
+			<p>{{ Lang::get('messages.notifications.available_in_en') }} <a href="{{ tenantRoute('profile.language.set', ['en']) }}" class="alert-link">{{ Lang::get('messages.languages.en') }}</a>!</p>
 			@endif
 		</div>
 
@@ -72,13 +72,13 @@
 			@if (empty($modAlerts["approval"]) == false)
             	<div class="alert alert-warning" role="alert" id="mod-approval" style="display: none;">
 					<button type="button" class="close" data-dismiss="alert" data-alert-box="link-info" style="margin-top: -6px;" aria-label="Close"><span aria-hidden="true"><i class="material-icons">close</i></span></button>
-					<p><a href="{{ route('moderator.approval') }}" class="alert-link">{{ Lang::get('messages.notifications.moderator_approval_queue')  }}</a></p>
+					<p><a href="{{ tenantRoute('moderator.approval') }}" class="alert-link">{{ Lang::get('messages.notifications.moderator_approval_queue')  }}</a></p>
             	</div>
        		@endif
             @if (empty($modAlerts["flag"]) == false)
                 <div class="alert alert-warning" role="alert" id="mod-flag" style="display: none;">
                     <button type="button" class="close" data-dismiss="alert" data-alert-box="link-info" style="margin-top: -6px;" aria-label="Close"><span aria-hidden="true"><i class="material-icons">close</i></span></button>
-					<p><a href="{{ route('moderator.handle_flags') }}" class="alert-link">{{ Lang::get('messages.notifications.moderator_flag_queue')  }}</a></p>
+					<p><a href="{{ tenantRoute('moderator.handle_flags') }}" class="alert-link">{{ Lang::get('messages.notifications.moderator_flag_queue')  }}</a></p>
                 </div>
             @endif
             
@@ -193,7 +193,7 @@ $('#footer-app-iphone-link').click(function( e ){
 	<div class="collapse" id="feedback-floating">
 	  <div class="well" style="display: inline-block; margin: 0 30px; border-radius: 0; border-top-left-radius: 4px; background: #78909c; color: #fff; min-width: 200px; max-width: 500px; text-align: left;">
 	    
-	    <form class="form-vertical" id="floating-feedback-form" method="POST" action="{{ route('feedback.send') }}">
+	    <form class="form-vertical" id="floating-feedback-form" method="POST" action="{{ tenantRoute('feedback.send') }}">
 			
 			<p>@lang('messages.feedback.reason')</p>
 			

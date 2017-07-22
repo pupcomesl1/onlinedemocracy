@@ -24,8 +24,10 @@ class ProfileController extends Controller
 {
 	
 	public function __construct(Socialite $socialite){
-		$this->socialite = $socialite;
-		\App::setLocale(Auth::user()->language());
+	    $this->socialite = $socialite;
+	    if (Auth::check()) {
+	        App::setLocale(Auth::user()->language());
+	    }
 	}
 	
 	
@@ -59,7 +61,7 @@ class ProfileController extends Controller
 
     public function language()
     {
-    	return redirect()->route('profile.main')->with('highlight', 'lang');
+    	return redirect()->route('profile.main', tenantParams())->with('highlight', 'lang');
     }
     
     public function setLanguage($code) 
@@ -111,6 +113,7 @@ class ProfileController extends Controller
     
     public function propositions() {
     	$user = Auth::user();
+	Carbon::setLocale($user->language());
     	$propositionFactory = new PropositionFactory();
     	$propositionsCount = $propositionFactory->getPropositionsCountByUser($user->userId());
     	$viewUser = [

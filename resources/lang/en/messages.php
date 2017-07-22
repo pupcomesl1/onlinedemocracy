@@ -355,7 +355,7 @@ return [
 
 		'notifications' => [
 				'available_in_fr' => "DirectDemocracy est aussi disponible en",
-                'not_belongs_to_school' => "Welcome to DirectDemocracy! It seems like you are not a student from the European School of Luxembourg 1, so you will not be able to vote or comment. If this is a mistake, please contact us.",
+                'not_belongs_to_school' => "Welcome to DirectDemocracy! It seems like you are not a student from :school, so you will not be able to vote or comment. If this is a mistake, please contact us.",
 				'welcome_link_alert_1' => "Welcome to DirectDemocracy! You need to",
 				'welcome_link_alert_2' => "connect your account with your school email",
 				'welcome_link_alert_3' => "to unlock all the features of DirectDemocracy!",

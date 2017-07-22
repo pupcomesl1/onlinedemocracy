@@ -5,11 +5,12 @@ namespace App;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use HipsterJazzbo\Landlord\BelongsToTenants;
 
 
 class Marker extends Model implements AuthenticatableContract
 {
-    use Authenticatable;
+    use Authenticatable, BelongsToTenants;
     const SUCCESS = 1;
     const UNDER_DISCUSSION = 2;
     const FAILED = 3;

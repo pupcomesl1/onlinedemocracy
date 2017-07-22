@@ -4,7 +4,7 @@
 
 @section('form')
 
-<form class="form-horizontal" id="account_form" method="POST" action="{{ route('feedback.send') }}">
+<form class="form-horizontal" id="account_form" method="POST" action="{{ tenantRoute('feedback.send') }}">
 
 	@if (session('status'))
 	<div class="form-group form-group-sm">

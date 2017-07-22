@@ -55,7 +55,7 @@
         
 	</div>
 	
-    <form method="post" action="{{ route('profile.propositions.store') }}">
+    <form method="post" action="{{ tenantRoute('profile.propositions.store') }}">
       <div id="step1">	
   	    <div class="proposition section">
             <textarea name="proposition" id="preview_heading_entry" class="form-control input-lg input-proposition" rows="4" placeholder="@lang('messages.profile.create_proposition.proposition_sort')">{{ old('proposition') }}</textarea>
@@ -111,7 +111,7 @@
           </div>
         </div>
         
-        <small class="text-muted">@lang('messages.profile.create_proposition.agree') <a href="{{ route('terms') }}" target="_blank">@lang('messages.profile.create_proposition.more')</a>.</small>
+        <small class="text-muted">@lang('messages.profile.create_proposition.agree') <a href="{{ tenantRoute('terms') }}" target="_blank">@lang('messages.profile.create_proposition.more')</a>.</small>
       </div>
       {!! csrf_field() !!}
       </form>
@@ -127,7 +127,7 @@
 			<h1>@lang('messages.profile.create_proposition.inactive')</h1>
 			<p class="lead">{{ Lang::get('messages.profile.account.school_link_help') }}</p>
 			<br/>
-			<a href="{{ route('getLinkAuth') }}" class="btn btn-lg btn-info btn-block">{{ Lang::get('messages.profile.account.school_link_actions.link_now') }}</a>
+			<a href="{{ tenantRoute('getLinkAuth') }}" class="btn btn-lg btn-info btn-block">{{ Lang::get('messages.profile.account.school_link_actions.link_now') }}</a>
 		</div>
 	</div>
 </div>

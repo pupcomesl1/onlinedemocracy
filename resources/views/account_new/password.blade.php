@@ -4,11 +4,11 @@
 
 @section('form')
 
-<form class="form-horizontal scene_element scene_element--fadein" id="account_form" method="POST" action="{{ route('profile.password.update') }}">
+<form class="form-horizontal scene_element scene_element--fadein" id="account_form" method="POST" action="{{ tenantRoute('profile.password.update') }}">
 	
 	<div class="form-group form-group-sm">
 		<div class="col-sm-10 col-sm-offset-2">
-			<a href="{{ route('profile.main') }}" class="btn btn-default btn-sm"><i class="fa fa-angle-left"></i> {{ Lang::get('messages.proposition.back') }}</a>
+			<a href="{{ tenantRoute('profile.main') }}" class="btn btn-default btn-sm"><i class="fa fa-angle-left"></i> {{ Lang::get('messages.proposition.back') }}</a>
 		</div>
 	</div>
 	

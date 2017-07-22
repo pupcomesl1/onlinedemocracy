@@ -28,7 +28,7 @@
 					<p><a class="btn btn-sm btn-danger" data-toggle="collapse" href="#proposition{{$proposition['id']}}" aria-expanded="false" aria-controls="proposition{{$proposition['id']}}">@lang('messages.moderator.block')</a></p>
 					
 					<div class="list-group-form collapse" id="proposition{{$proposition['id']}}">
-						<form class="form-inline" method="post" action="{{ route('moderator.block') }}">
+						<form class="form-inline" method="post" action="{{ tenantRoute('moderator.block') }}">
 							  <div class="form-group">
 							    <input type="text" name="reason" class="form-control input-sm" id="reason" placeholder="@lang('messages.moderator.reason_placeholder')">
 							  </div>

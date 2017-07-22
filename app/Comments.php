@@ -5,11 +5,12 @@ namespace App;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use HipsterJazzbo\Landlord\BelongsToTenants;
 
 
 class Comments extends Model implements AuthenticatableContract
 {
-    use Authenticatable;
+    use Authenticatable, BelongsToTenants;
 
     /**
      * The database table used by the model.

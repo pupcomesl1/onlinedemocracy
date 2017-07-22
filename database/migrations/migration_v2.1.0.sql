@@ -1,3 +1,4 @@
+USE onlinedemocracy;
 CREATE TABLE `markers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `decode` varchar(100) NOT NULL,

@@ -136,8 +136,8 @@
 	        <div class="collapse navbar-collapse" id="topFixedNavbar1">
 	          
 	          <ul class="nav navbar-nav navbar-right">
-	          @if (Auth::user())
-	            <li><a href="{{ route('propositions') }}" class="btn btn-success">@lang('messages.website.return')</a></li>
+	          @if (Auth::check())
+	            <li><a href="{{ route('propositions', ['tenant' => Auth::user()->tenant->prefix]) }}" class="btn btn-success">@lang('messages.website.return')</a></li>
 	          @else
 				<li><a href="{{ route('o365login') }}" class="btn btn-primary">@lang('messages.session.login.use_msgraph')</a></li>
 	          @endif

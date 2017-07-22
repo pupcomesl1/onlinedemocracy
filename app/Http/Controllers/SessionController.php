@@ -15,6 +15,7 @@ use Socialite;
 use App\User;
 use App\UserFactory;
 use Illuminate\Database\Eloquent\Model;
+use HipsterJazzbo\Landlord\Facades\Landlord;
 
 class SessionController extends Controller
 {
@@ -97,7 +98,7 @@ class SessionController extends Controller
     		if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
 			    
     			$user = Auth::user();
-    			return redirect()->intended('/');
+    			return redirectToUserTenant();
 
 			} else {
 				return redirect()->back()->withInput($request->except('password'))->withErrors([
@@ -133,8 +134,18 @@ class SessionController extends Controller
 	    switch ($provider) {
             case 'graph':
                 if ($graphUser = Socialite::driver($provider)->user()){
-
                         $user = User::where('msgraphId', '=', $graphUser->id)->first();
+                        $tenant = null;
+                        if (preg_match('/.+\([A-Z]{3}-S[1-7][A-Z]+\)/', $graphUser->displayName)) {
+                            if (preg_match('/.+\(LUX-/', $graphUser->displayName)) {
+                                $tenant = \App\Tenant::where('prefix', 'kirch')->first();
+                            } else if (preg_match('/.+\(MAM-/', $graphUser->displayName)) {
+                                $tenant = \App\Tenant::where('prefix', 'mam')->first();
+                            }
+                            Landlord::addTenant($tenant);
+                        } else {
+                            return abort(500, 'No tenant. This isn\'t supposed to happen.');
+                        }
                         if ($user === null) {
                             $user = new User;
                             $user->setMsgraphId($graphUser->id);
@@ -142,15 +153,14 @@ class SessionController extends Controller
                             $user->setfirstName($graphUser->givenName);
                             $user->setlastName($graphUser->surname);
                             $user->setEmail($graphUser->email);
-                            if (preg_match('/.+\(LUX-S[1-7][A-Z]+\)/', $graphUser->displayName)) {
-                                $user->setBelongsToSchool(true);
-                                $user->attachRole(Role::find(1));
-                            }
+                            $user->setBelongsToSchool(true);
+                            $user->save(); // so that an ID is generated for the next line
+                            $user->attachRole(\App\Role::find(1));
                             $user->save();
                         }
 
                         Auth::login($user, true);
-                        return redirect()->intended('/');
+                        return redirect()->route('propositions', ['tenant' => $tenant->prefix]);
 
                     } else {
                         return redirect()->home()->withErrors(['login' => trans('messages.profile.account.school_link_messages.not_valid_name')]);

@@ -4,7 +4,7 @@
 
 @section('form')
 
-<form class="form-horizontal" id="account_form" method="POST" action="{{ route('profile.main.update') }}">
+<form class="form-horizontal" id="account_form" method="POST" action="{{ tenantRoute('profile.main.update') }}">
 
 	<div class="form-group form-group-sm @if ($errors->has('first') or $errors->has('last')) has-error @endif">
 		<label for="name" class="col-sm-2 control-label">{{ Lang::get('messages.profile.account.name') }}</label>

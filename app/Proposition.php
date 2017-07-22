@@ -5,11 +5,12 @@ namespace App;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use HipsterJazzbo\Landlord\BelongsToTenants;
 
 
 class Proposition extends Model implements AuthenticatableContract
 {
-    use Authenticatable;
+    use Authenticatable, BelongsToTenants;
     const ACCEPTED = 1;
     const PENDING = 2;
     const BLOCKED = 3;

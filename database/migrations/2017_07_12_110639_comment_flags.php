@@ -21,8 +21,8 @@ class CommentFlags extends Migration
             $table->timestamps();
         });
         Schema::table('comment_flags', function (Blueprint $table) {
-            $table->foreign('comment_id')->references('id')->on('comments');
-            $table->foreign('flagger')->references('id')->on('users');
+            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
+            $table->foreign('flagger')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

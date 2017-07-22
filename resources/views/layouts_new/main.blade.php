@@ -69,9 +69,10 @@
 		  $('[data-toggle="tooltip"]').tooltip()
 		})
 		
+		@if (Auth::check())
 		hashtag_regexp = /#([a-zA-Z0-9_]+)/g;
 		function linkHashtags(text) {
-			$link = "{{ route('search') . '?q=%23to_replace' }}";
+			$link = "{{ tenantRoute('search') . '?q=%23to_replace' }}";
 		    return text.replace(
 		        hashtag_regexp,
 		        '<a class="hashtag" href="'+$link.replace('to_replace', '$1')+'">#$1</a>'
@@ -82,6 +83,7 @@
 			    $(this).html(linkHashtags($(this).html()));
 			});
 		});
+		@endif
 	    </script>
 	    @yield('footer_scripts')
 	    
