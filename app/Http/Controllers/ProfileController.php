@@ -24,10 +24,10 @@ class ProfileController extends Controller
 {
 	
 	public function __construct(Socialite $socialite){
-		$this->socialite = $socialite;
-		if (Auth::check()) {
-			\App::setLocale(Auth::user()->language());
-		}
+	    $this->socialite = $socialite;
+	    if (Auth::check()) {
+	        \App::setLocale(Auth::user()->language());
+	    }
 	}
 	
 	
@@ -78,7 +78,7 @@ class ProfileController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function update(Request $request)
     {
