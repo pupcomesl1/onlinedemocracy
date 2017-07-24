@@ -37,8 +37,8 @@ class PropositionFactory extends Model {
 	}
 	
 	public function search($term, $pagination) {
-
-		$query = Proposition::join('users', 'users.id', '=', 'propositions.proposer_id')
+		$query = Proposition::select(['propositions.*'])
+        ->join('users', 'users.id', '=', 'propositions.proposer_id')
 		->where(function($query) use ($term) {
 		    $query->orwhere('propositions.propositionLong', 'LIKE', "%$term%");
 			$query->orwhere('propositions.propositionSort', 'LIKE', "%$term%");
