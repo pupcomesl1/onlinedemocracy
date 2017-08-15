@@ -652,10 +652,12 @@ class PropositionsController extends Controller
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
         $propositionFactory = new PropositionFactory();
+        $proposerId = $propositionFactory->getProposition($id)->proposer()->id;
 
         if (
             Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
             or (!$user->can('vote'))
+            or ($user->id === $proposerId)
         ) {
             abort(403, trans('messages.unauthorized'));
         }
@@ -683,10 +685,12 @@ class PropositionsController extends Controller
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
     	$propositionFactory = new PropositionFactory();
+        $proposerId = $propositionFactory->getProposition($id)->proposer()->id;
 
     	if (
     	    Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
             or (!$user->can('vote'))
+            or ($user->id === $proposerId)
         ) {
     		abort(403, trans('messages.unauthorized'));
     	}
@@ -714,14 +718,18 @@ class PropositionsController extends Controller
         \App::setLocale(Auth::user()->language());
         $user = Auth::user();
         $propositionFactory = new PropositionFactory();
+        $proposerId = $propositionFactory->getProposition($id)->proposer()->id;
+
 		\Debugbar::info(
 			Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
             or (!$user->can('vote'))
+            or ($user->id === $proposerId)
 		);
 
         if (
             Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
             or (!$user->can('vote'))
+            or ($user->id === $proposerId)
         ) {
             abort(403, trans('messages.unauthorized') . ' (1)');
         }
