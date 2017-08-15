@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/icon?family=Material+Icons|Roboto);
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons|Montserrat);
 /* CSS Document */
 
 *, *:before, *:after {box-sizing:  border-box !important;}
@@ -10,7 +10,7 @@ html, body {
 }
 	
 body {
-	font-family: 'Montserrat', "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: 'Montserrat', sans-serif;
 }
 
 .material-icons {
@@ -502,6 +502,11 @@ fieldset[disabled] .btn-teal.active {
 .disabled-dark-success {
 	background-color: #5cb85c;
     border-color: #4cae4c;
+}
+
+.disabled-dark-danger {
+	background-color: #d9534f;
+	border-color: #b64c48;
 }
 
 .navbar-form {

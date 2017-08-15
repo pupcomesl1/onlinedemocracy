@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7",
         "laravel/framework": "5.4.*",
         "laravel/socialite": "^3.0",
         "nesbot/carbon": "~1.14",
@@ -19,7 +19,9 @@
         "xethron/migrations-generator": "^2.0",
         "hipsterjazzbo/landlord": "^2.0",
         "laravel/tinker": "^1.0",
-        "barryvdh/laravel-debugbar": "^2.4"
+        "barryvdh/laravel-debugbar": "^2.4",
+        "predis/predis": "^1.1",
+        "xinax/laravel-gettext": "4.0.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

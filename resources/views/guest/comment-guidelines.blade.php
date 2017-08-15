@@ -44,7 +44,7 @@
 
       <p><b>Don't spam.</b></p>
 
-      <p>The moderators can delete comments, lock discussions, and ban users at their own discretion if you don't follow the rules. <b>Don't rule-lawyer against them</b>, that just tends to make them angrier. If you legitimately think we were wrong, email <code>petitions-contact{{'@'}}pupilscom-esl1.eu</code>, however repeated rule-lawyering will lead to your pleas falling on deaf ears.</p>
+      <p>The moderators can delete comments, lock discussions, and ban users at their own discretion if you don't follow the rules. <b>Don't rule-lawyer against them</b>, that just tends to make them angrier. If you legitimately think we were wrong, email <code>contact{{'@'}}{{ tenant()->id }}.directdemocracy.online</code>, however repeated rule-lawyering will lead to your pleas falling on deaf ears.</p>
 
       <p>We absolutely hope that we don't have to invoke these rules. We're all here to make the school a better place, and we hope you are too. To use a slightly labored analogy: Imagine the comments section as a party. Everyone is invited, and we want you all to have a good time. But if you walk in, jump on the table, start screaming, and then throw up on the carpet, don't be surprised if you're asked to leave.</p>
 

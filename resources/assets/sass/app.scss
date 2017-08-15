@@ -32,3 +32,112 @@ $distinguish-colors: (
   }
 }
 
+$badge-colors: (
+  gold: #FCC200,
+  silver: #a59fa3,
+  bronze: #f99968
+);
+
+@mixin badge-left-indicator($style) {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: map-get($badge-colors, $style);
+  position: absolute;
+  left: .5rem;
+  top: calc(50% - 4px);
+}
+
+.app-badge {
+  padding: .6rem .6rem .6rem 1.8rem;
+  margin: 0 3px 3px 0;
+  color: #FFF;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 12px;
+  background-color: #2f3337;
+  border: 1px solid transparent;
+  display: inline-block;
+  border-radius: 4px;
+  position: relative;
+  &.gold::before {
+    @include badge-left-indicator(gold)
+  }
+  &.silver::before {
+    @include badge-left-indicator(silver)
+  }
+  &.bronze::before {
+    @include badge-left-indicator(bronze)
+  }
+}
+
+.user-badge {
+  position: relative;
+  min-width: 10px;
+  padding-left: 1.8rem;
+  &.gold {
+    color: map-get($badge-colors, gold);
+    &::before {
+      @include badge-left-indicator(gold)
+    }
+  }
+  &.silver {
+    color: map-get($badge-colors, silver);
+    &::before {
+      @include badge-left-indicator(silver)
+    }
+  }
+  &.bronze {
+    color: map-get($badge-colors, bronze);
+    &::before {
+      @include badge-left-indicator(bronze)
+    }
+  }
+}
+
+.points-history td {
+  padding: 0.4rem;
+}
+
+.container.leaderboard {
+  font-size: 120%;
+}
+
+.leaderboard tr:not(.skip) td {
+  padding: 1rem;
+}
+
+.points-history tr.hover, .leaderboard tr.highlight {
+  background-color: lighten(#93C54B, 35%);
+  transition: 300ms background-color;
+}
+
+.leaderboard tr.skip hr {
+  border-top: 1px solid #afafaf;
+}
+
+.rownum {
+  font-weight: bold;
+  background-color: #93C54B;
+  padding-right: 0.3rem;
+}
+
+.sidebar {
+  display: none;
+}
+
+@media screen and (min-width: 1500px) {
+  body:not(.no-sidebar) .sidebar {
+    display: block;
+    position: fixed;
+    top: 120px;
+    right: 40px;
+  }
+  .leaderboard-button {
+    display: none !important;
+  }
+}
+
+

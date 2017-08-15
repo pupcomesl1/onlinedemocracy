@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Badge;
 use Illuminate\Http\Request;
 
 use Auth;
@@ -153,10 +154,12 @@ class SessionController extends Controller
                             $user->setfirstName($graphUser->givenName);
                             $user->setlastName($graphUser->surname);
                             $user->setEmail($graphUser->email);
+                            $user->setAvatar('https://www.gravatar.com/avatar/' . md5(strtolower(trim($graphUser->email))). '?d=identicon');
                             $user->setBelongsToSchool(true);
                             $user->save(); // so that an ID is generated for the next line
                             $user->attachRole(\App\Role::find(1));
                             $user->save();
+                            Badge::tryAward($user->id, "initiate");
                         }
 
                         Auth::login($user, true);

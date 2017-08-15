@@ -41,3 +41,148 @@
   color: #fff;
 }
 
+.app-badge {
+  padding: .6rem .6rem .6rem 1.8rem;
+  margin: 0 3px 3px 0;
+  color: #FFF;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 12px;
+  background-color: #2f3337;
+  border: 1px solid transparent;
+  display: inline-block;
+  border-radius: 4px;
+  position: relative;
+}
+
+.app-badge.gold::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #FCC200;
+  position: absolute;
+  left: .5rem;
+  top: calc(50% - 4px);
+}
+
+.app-badge.silver::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #a59fa3;
+  position: absolute;
+  left: .5rem;
+  top: calc(50% - 4px);
+}
+
+.app-badge.bronze::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #f99968;
+  position: absolute;
+  left: .5rem;
+  top: calc(50% - 4px);
+}
+
+.user-badge {
+  position: relative;
+  min-width: 10px;
+  padding-left: 1.8rem;
+}
+
+.user-badge.gold {
+  color: #FCC200;
+}
+
+.user-badge.gold::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #FCC200;
+  position: absolute;
+  left: .5rem;
+  top: calc(50% - 4px);
+}
+
+.user-badge.silver {
+  color: #a59fa3;
+}
+
+.user-badge.silver::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #a59fa3;
+  position: absolute;
+  left: .5rem;
+  top: calc(50% - 4px);
+}
+
+.user-badge.bronze {
+  color: #f99968;
+}
+
+.user-badge.bronze::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #f99968;
+  position: absolute;
+  left: .5rem;
+  top: calc(50% - 4px);
+}
+
+.points-history td {
+  padding: 0.4rem;
+}
+
+.container.leaderboard {
+  font-size: 120%;
+}
+
+.leaderboard tr:not(.skip) td {
+  padding: 1rem;
+}
+
+.points-history tr.hover,
+.leaderboard tr.highlight {
+  background-color: #e4f1d2;
+  -webkit-transition: 300ms background-color;
+  transition: 300ms background-color;
+}
+
+.leaderboard tr.skip hr {
+  border-top: 1px solid #afafaf;
+}
+
+.rownum {
+  font-weight: bold;
+  background-color: #93C54B;
+  padding-right: 0.3rem;
+}
+
+.sidebar {
+  display: none;
+}
+
+@media screen and (min-width: 1500px) {
+  body:not(.no-sidebar) .sidebar {
+    display: block;
+    position: fixed;
+    top: 120px;
+    right: 40px;
+  }
+
+  .leaderboard-button {
+    display: none !important;
+  }
+}
+

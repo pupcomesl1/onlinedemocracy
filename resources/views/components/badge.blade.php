@@ -1,0 +1,1 @@
+<a href="{{ tenantRoute('badge', ['name' => $name]) }}" title="{{ $title }}" class="app-badge {{ $type }}">{{ $slot }}</a>

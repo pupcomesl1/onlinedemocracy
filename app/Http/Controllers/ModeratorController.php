@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Badge;
 use App\CommentFactory;
 use App\Mail\PropositionApproved;
+use App\PointsHistoryEntry;
 use Illuminate\Http\Request;
 
 use Auth;
@@ -50,17 +52,6 @@ class ModeratorController extends Controller
         }
 
         $propositionsFactory = new PropositionFactory();
-        $viewUser = [
-            'displayName' => $user->displayName(),
-            'firstName' => $user->firstName(),
-            'lastName' => $user->lastName(),
-            'contactEmail' => $user->contactEmail(),
-            'email' => $user->email(),
-            'avatar' => $user->avatar(),
-            'belongsToSchool' => $user->belongsToSchool(),
-            'schoolEmail' => $user->googleEmail(),
-            'propositionsCount' => $propositionsFactory->getPropositionsCountByUser($user->userId()),
-        ];
 
 
         $viewPropositions = array();
@@ -78,7 +69,7 @@ class ModeratorController extends Controller
             ];
         }
 
-        return view('moderator.approval_new', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
+        return view('moderator.approval_new', ['propositions' => $viewPropositions]);
     }
 
 
@@ -102,6 +93,12 @@ class ModeratorController extends Controller
 
         Mail::to($proposition->proposer()->email())
             ->send(new PropositionApproved($proposition));
+
+        PointsHistoryEntry::add($proposition->proposer->id, 25, 'prop_post', $proposition);
+        Badge::tryAward($proposition->proposer->id, 'contributor', $proposition);
+        Badge::tryAward($proposition->proposer->id, 'innovator', $proposition);
+        Badge::tryAward($proposition->proposer->id, 'inventor', $proposition);
+
         return redirect()->route('moderator.approval', tenantParams());
     }
 
@@ -143,17 +140,6 @@ class ModeratorController extends Controller
         }
 
         $propositionsFactory = new PropositionFactory();
-        $viewUser = [
-            'displayName' => $user->displayName(),
-            'firstName' => $user->firstName(),
-            'lastName' => $user->lastName(),
-            'contactEmail' => $user->contactEmail(),
-            'email' => $user->email(),
-            'avatar' => $user->avatar(),
-            'belongsToSchool' => $user->belongsToSchool(),
-            'schoolEmail' => $user->googleEmail(),
-            'propositionsCount' => $propositionsFactory->getPropositionsCountByUser($user->userId()),
-        ];
 
         $viewPropositions = array();
         foreach ($propositionsFactory->getFlaggedPropositionsExeptUsers($user->userId()) as $flag) {
@@ -178,7 +164,7 @@ class ModeratorController extends Controller
             ];
         }
 
-        return view('moderator.flags', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
+        return view('moderator.flags', ['propositions' => $viewPropositions]);
     }
 
     public function handle_comment_flags(Request $request)
@@ -191,18 +177,6 @@ class ModeratorController extends Controller
         $include_dismissed = $request->input('include_dismissed') == '1';
 
         $propositionsFactory = new PropositionFactory();
-
-        $viewUser = [
-            'displayName' => $user->displayName(),
-            'firstName' => $user->firstName(),
-            'lastName' => $user->lastName(),
-            'contactEmail' => $user->contactEmail(),
-            'email' => $user->email(),
-            'avatar' => $user->avatar(),
-            'belongsToSchool' => $user->belongsToSchool(),
-            'schoolEmail' => $user->googleEmail(),
-            'propositionsCount' => $propositionsFactory->getPropositionsCountByUser($user->userId()),
-        ];
 
         $factory = new \App\CommentFactory();
         $userFactory = new \App\UserFactory();
@@ -231,7 +205,6 @@ class ModeratorController extends Controller
 
         return view('moderator.comment-flags', [
             'displayName' => $user->displayName(),
-            'user' => $viewUser,
             'flags' => $viewComments,
             'includeDismissed' => $include_dismissed,
         ]);

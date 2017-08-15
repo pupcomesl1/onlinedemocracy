@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use \Illuminate\Support\Facades\DB;
 
 use App\Proposition;
@@ -95,9 +96,15 @@ class PropositionFactory extends Model {
 	public function getPropositionsByUser($userId) {
 		return Proposition::whereProposerId($userId)->orderBy('created_at', 'desc')->get();
 	}
+
+	public function getApprovedPropositionsByUser($userId) {
+        return Proposition::whereProposerId($userId)->where('status', 1)->orderBy('created_at', 'desc')->get();
+    }
 	
 	public function getPropositionsCountByUser($userId) {
-		return Proposition::whereProposerId($userId)->count();
+		return Cache::remember('propsCount:' . $userId, 60, function() use  ($userId) {
+            return Proposition::whereProposerId($userId)->count();
+        });
 	}
 	
 	public function getProposition($id): ?Proposition {
@@ -119,20 +126,33 @@ class PropositionFactory extends Model {
 	
 	public function getUserVoteStatus($id, $userId) {
 		$proposition = Proposition::find($id);
-		$user = User::find($userId);
+		$userFactory = new UserFactory();
+		$user = $userFactory->getUser($userId);
 		
 		$userHasVoted = false;
-		
-		if ($user->belongsToSchool() == true) {
-			if (Votes::wherePropositionIdAndVoteUser($proposition->id(), $userId)->count() != 0) {
-				$userHasVoted = true;
-			}
-		}
+
+        if (Votes::wherePropositionIdAndVoteUser($proposition->id(), $userId)->count() != 0) {
+            $userHasVoted = true;
+        }
 		
 		return $userHasVoted;
 	}
+
+	public function getUserVote($id, $userId) {
+        $proposition = Proposition::find($id);
+        $user = User::find($userId);
+
+        $userVoteValue = -2147483647;
+
+        $votes = Votes::wherePropositionIdAndVoteUser($proposition->id(), $userId);
+        if ($votes->count() != 0) {
+            $userVoteValue = $votes->first()->vote_value;
+        }
+
+        return $userVoteValue;
+    }
 	
-	public function upvote($id, $userId, $schoolEmail) {
+	public function upvote($id, $userId) {
 		
 		return Votes::create([
 				"proposition_id" => $id,
@@ -142,18 +162,7 @@ class PropositionFactory extends Model {
 	}
 	
 	public function getUpvotes($id) {
-		$proposition = Proposition::find($id);
-		$upvotes = 0;
-	
-		$upvotes = Votes::wherePropositionIdAndVoteValue($proposition->id(), 1)->get();
-	
-		$upvotesSum = 0;
-	
-		foreach ($upvotes as $upvote) {
-			$upvotesSum ++;
-		}
-	
-		return $upvotesSum;
+		return Votes::wherePropositionIdAndVoteValue($id, 1)->count();
 	}
 	
 	public function downvote($id, $userId) {
@@ -166,18 +175,7 @@ class PropositionFactory extends Model {
 	}
 	
 	public function getDownvotes($id) {
-		$proposition = Proposition::find($id);
-		$downvotes = 0;
-		
-		$downvotes = Votes::wherePropositionIdAndVoteValue($proposition->id(), 0)->get();
-		
-		$downvotesSum = 0;
-		
-		foreach ($downvotes as $downvote) {
-			$downvotesSum ++;
-		}
-		
-		return $downvotesSum;
+        return Votes::wherePropositionIdAndVoteValue($id, 0)->count();
 	}
 
     public function unvote($id, $userId) {
@@ -207,8 +205,24 @@ class PropositionFactory extends Model {
 		]);
 	}
 	
-	public function getMarker($id) {
+	public function getMarker($id): ?Marker {
 		return Marker::wherePropositionId($id)->get()->first();
 	}
+
+	public function makeForViewById(number $id) {
+	    $prop = Proposition::findOrFail($id);
+	    return $this->makeForView($prop);
+    }
+
+    public function makeForView($prop) {
+        return [
+            'id' => $prop->id,
+            'propositionSort' => $prop->propositionSort,
+            'marker' => $this->getMarker($prop->id),
+            'upvotes' => $this->getUpvotes($prop->id),
+            'downvotes' => $this->getDownvotes($prop->id),
+            'comments' => $this->getCommentsCount($prop->id)
+        ];
+    }
 	
 }

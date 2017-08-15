@@ -23,6 +23,7 @@ return [
 		'proposition' => [
 				'back' => "Back",
 				'flagged' => "This position has been flagged, our moderators have been notified.",
+                'views' => "{1} view|{0} views|[2,Inf] views",
 				'status' => [
 						'expired' => "Expired",
 						'blocked' => "Blocked by moderator",
@@ -65,6 +66,7 @@ return [
 						'need_to_login' => "Login in order to vote and comment",
                         'must_be_from_school' => "It seems like you are not a student of the European School of Luxembourg 1, so you cannot vote. If this is a mistake, please contact us.",
 						'already_voted' => "You have already voted on this proposition. Click here to change your vote",
+                        'already_voted_locked' => "You have already voted, however you may no longer change your vote.",
 						'already_voted_sort' => "You have voted!",
 						'link' => "Link your school account in order to vote and comment",
 						'credits' => "Written by",
@@ -122,6 +124,7 @@ return [
 						'overview' => "Overview",
 						'language' => "Language",
 						'propositions' => "Propositions",
+                        'points_history' => "Score History",
 						
 						'contribute' => "Contribute",
 						'translate' => "Help translate",
@@ -149,6 +152,7 @@ return [
 								"unlinked" => "Unlinked successfully"
 						],
 						'propositionsCount' => "{1} :propositions proposition|{0} :propositions propositions|[2,Inf] :propositions propositions",
+                        'points' => "{1} :points point|{0} :points points|[2,Inf] :points points",
 						'school_link_info' => "You need to be part of the European School of Kirchberg in order to vote, comment and make propositions or suggestions.",
 						'save' => "Save",
 				],
@@ -377,6 +381,28 @@ return [
 		'languages' => [
 				'en' => 'English',
 				'fr' => 'Français',
-		]
+		],
+
+        'points' => [
+            'history' => [
+                'prop_post' => 'Posted a proposition',
+                'comment' => 'Commented',
+                'comment_deleted' => 'Deleted a comment',
+                'comment_deleted_mod' => 'Comment deleted by moderator',
+                'comment_undeleted_mod' => 'Comment undeleted by moderator',
+                'comment_deleted_like_compensation' => 'Likes on deleted comment',
+                'comment_deleted_like_compensation_liker' => 'Likes on deleted comment',
+                'comment_undeleted_like_compensation' => 'Likes on undeleted comment',
+                'comment_undeleted_like_compensation_liker' => 'Likes on undeleted comment',
+                'like_comment' => 'Liked a comment',
+                'comment_liked' => 'Comment was liked',
+                'unlike_comment' => 'Unliked a comment',
+                'comment_unliked' => 'Comment was unliked',
+                'vote' => 'Voted',
+                'receive_upvote' => 'Received upvote',
+                'prop_under_discussion' => 'Proposition marked as under discussion',
+                'prop_success' => 'Proposition successful',
+            ]
+        ]
 
 ];

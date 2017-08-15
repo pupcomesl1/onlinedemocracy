@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -38,23 +39,8 @@ class MainController extends Controller
 	public function feedback() {
 
 		\App::setLocale(Auth::user()->language());
-		$user = Auth::user();
-		$propositionFactory = new PropositionFactory();
 		 
-		$viewUser = [
-				'displayName' => $user->displayName(),
-				'firstName' => $user->firstName(),
-				'lastName' => $user->lastName(),
-				'contactEmail' => $user->contactEmail(),
-				'email' => $user->email(),
-				'avatar' => $user->avatar(),
-				'belongsToSchool' => $user->belongsToSchool(),
-				'schoolEmail' => $user->googleEmail(),
-				'roles' => $user->roles(),
-				'propositionsCount' => $propositionFactory->getPropositionsCountByUser($user->userId()),
-		];
-		 
-		return view('feedback', ['displayName' => $user->displayName(), 'user' => $viewUser]);
+		return view('feedback');
 	}
 	
 	public function feedback_send(Request $request) {
@@ -77,7 +63,7 @@ class MainController extends Controller
 			 
 			\Mail::send('emails.feedback', ['feedback' => $request->input('feedback'), 'user' => ['displayName' => $user->displayName(), 'email' => $user->email(), 'id' => $user->userId()]], function($message)
 			{
-				$message->from('dd-feedback@pupilscom-esl1.eu', 'DirectDemocracy')->to(env('FEEDBACK_EMAIL'))->subject('Feedback Submission');
+				$message->from('dd-feedback@pupilscom-esl1.eu', 'DirectDemocracy')->to(config('app.feedback_email'))->subject('Feedback Submission');
 			});
 		
 			if ($request->ajax()){
@@ -88,5 +74,18 @@ class MainController extends Controller
 			 
 		}
 	}
+
+	public function badge($tenant, $name) {
+	    $badge = getBadges()[$name];
+
+	    $userCount = User::all()->count();
+	    $badgeCount = DB::table('users')
+            ->join('badges', 'users.id', '=', 'badges.user_id')
+            ->where('badges.type', $name)
+            ->count();
+	    $percentage = ($badgeCount / $userCount) * 100;
+
+	    return view('badge', ['badge' => $badge, 'percentage' => $percentage, 'count' => $badgeCount, 'key' => $name, 'name' => trans('badges.' . $name . '.name')]);
+    }
 	
 }

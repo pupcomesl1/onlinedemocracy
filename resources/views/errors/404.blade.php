@@ -13,13 +13,12 @@
 		margin: 0;
 		padding: 0;
 		width: 100%;
-		display: table;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.container {
-		text-align: center;
-		display: table-cell;
-		vertical-align: middle;
 	}
 
 	.content {

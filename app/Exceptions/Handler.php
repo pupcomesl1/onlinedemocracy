@@ -39,6 +39,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if (!($e instanceof HttpException)) {
+            return response()->view("errors.500", ['prefix' => $request->input('domain') ?? 'kirch']);
+        }
         return parent::render($request, $e);
     }
 }

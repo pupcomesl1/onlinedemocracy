@@ -1,3 +1,11 @@
+<?php
+$update = strpos($exception->getMessage(), 'codeUpdate') !== false;
+if (!$update) {
+    $cause = $exception->getMessage();
+    $eta = $exception->willBeAvailableAt;
+}
+?>
+
 @extends('layouts_new.guestBase')
 
 @section('title', 'Down for maintenance')
@@ -37,9 +45,21 @@
 		
 		<img src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">
 		<h1 class="text-center">Be right back.</h1>
-		<p class="lead text-center">We're updating our code.</p>
-		<p>As you read this, a script is running on our servers, updating the site to the latest version.</p>
-		<p>We should be back online in less than a minute, and with new features and bug fixes!</p>
+		@if ($update)
+			<p class="lead text-center">We're updating our code.</p>
+			<p>As you read this, a script is running on our servers, updating the site to the latest version.</p>
+			<p>We should be back online in less than a minute, and with new features and bug fixes!</p>
+		@else
+			<p class="lead text-center">We're running some important maintenance.</p>
+			<p>We're sorry about this, but there's something we need to do to our servers which we can't do while the website is up.</p>
+			<p>We're working as fast as we can, and will be back very soon!</p>
+			<p><b>What's up:</b> {{ $cause }}</p>
+			@if ($eta->gt(\Carbon\Carbon::now()))
+				<p><b>ETA:</b> about {{ $eta->diffForHumans(null, false) }}</p>
+			@else
+				<p><b>ETA:</b> right about now, actually...</p>
+			@endif
+		@endif
 		
 	</div>
 

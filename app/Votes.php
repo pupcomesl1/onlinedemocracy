@@ -45,5 +45,9 @@ class Votes extends Model implements AuthenticatableContract
     public function created_at () {
     	return $this->attributes['created_at'];
     }
+
+    public function proposition() {
+        return $this->belongsTo('App\Proposition');
+    }
     
 }

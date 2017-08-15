@@ -1,5 +1,7 @@
 @extends('layouts_new.authBase')
 
+@section('body-class', 'no-sidebar')
+
 @section('content')
   <style>
     @media (max-width: 767px) {
@@ -19,9 +21,10 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{ tenantRoute('profile.main') }}"><img alt="profile picture of {{ $user['displayName'] }}"
-                                                                        src="{{ $user['avatar'] }}"
-                                                                        class="profile-picture-navbar img-circle"/> {{ $user['displayName'] }}
+        <a class="navbar-brand" href="{{ tenantRoute('profile.main') }}">
+          <img alt="profile picture of {{ $user['displayName'] }}" src="{{ $user['avatar'] }}"
+               class="profile-picture-navbar img-circle"/>
+          &nbsp;{{ $user['displayName'] }}
         </a>
       </div>
 
@@ -33,7 +36,8 @@
             </li>
             <li class="@if(Route::current()->getName() == 'profile.main') active @endif"><a
                   href="{{ tenantRoute('profile.main') }}">{{ Lang::get('messages.profile.menu.overview') }}</a></li>
-            <li><a href="{{ tenantRoute('profile.language') }}">{{ Lang::get('messages.profile.menu.language') }}</a></li>
+            <li><a href="{{ tenantRoute('profile.language') }}">{{ Lang::get('messages.profile.menu.language') }}</a>
+            </li>
             <li class="@if(Route::current()->getName() == 'profile.propositions') active @endif"><a
                   href="{{ tenantRoute('profile.propositions') }}">{{ Lang::get('messages.profile.menu.propositions') }}</a>
             </li>
@@ -72,56 +76,61 @@
       <div class="col-md-3 text-center hidden-xs" id="profile_navigation">
         <img alt="profile picture of {{ $user['displayName'] }}" src="{{ $user['avatar'] }}"
              class="profile-picture img-circle"/>
-            <br/>
-            <small class="text-muted">
-              <small>{{ Lang::choice('messages.profile.account.propositionsCount', $user['propositionsCount'], ['propositions' => $user['propositionsCount']]) }}</small>
-            </small>
-          </p>
-          <br/>
+        <br/>
+        <small class="text-muted">
+          <small>{{ Lang::choice('messages.profile.account.propositionsCount', $user['propositionsCount'], ['propositions' => $user['propositionsCount']]) }}</small>
+        </small>
+        <br/>
+        <small class="text-muted">
+          <small>{{ Lang::choice('messages.profile.account.points', $user['points'], ['points' => number_format($user['points'], 0)]) }}</small>
+        </small>
+        <br/>
 
-          <!--             <div class="list-group account-settings"> -->
-          <!--               <p class="list-group-item" data-toggle="collapse" data-target="#demo"><strong>Get started</strong></p> -->
-          <!--               <a href="#" class="list-group-item" style="text-decoration: line-through;">Link your school account</a>-->
-          <!--               <a href="#" class="list-group-item" style="text-decoration: line-through;">Set up your account</a>-->
-          <!--               <a href="#" class="list-group-item">Make your first proposition</a> -->
-          <!--             </div> -->
+        <!--             <div class="list-group account-settings"> -->
+        <!--               <p class="list-group-item" data-toggle="collapse" data-target="#demo"><strong>Get started</strong></p> -->
+        <!--               <a href="#" class="list-group-item" style="text-decoration: line-through;">Link your school account</a>-->
+        <!--               <a href="#" class="list-group-item" style="text-decoration: line-through;">Set up your account</a>-->
+        <!--               <a href="#" class="list-group-item">Make your first proposition</a> -->
+        <!--             </div> -->
 
-          <div class="list-group account-settings">
-            <p class="list-group-item"><strong>{{ Lang::get('messages.profile.menu.account') }}</strong></p>
-            <a href="{{ tenantRoute('profile.main') }}"
-               class="list-group-item @if(Route::current()->getName() == 'profile.main') active @endif">{{ Lang::get('messages.profile.menu.overview') }}</a>
-            <a href="{{ tenantRoute('profile.language') }}"
-               class="list-group-item">{{ Lang::get('messages.profile.menu.language') }}</a>
-            <a href="{{ tenantRoute('profile.propositions') }}"
-               class="list-group-item @if(Route::current()->getName() == 'profile.propositions') active @endif">{{ Lang::get('messages.profile.menu.propositions') }}</a>
-          </div>
+        <div class="list-group account-settings">
+          <p class="list-group-item"><strong>{{ Lang::get('messages.profile.menu.account') }}</strong></p>
+          <a href="{{ tenantRoute('profile.main') }}"
+             class="list-group-item @if(Route::current()->getName() == 'profile.main') active @endif">{{ Lang::get('messages.profile.menu.overview') }}</a>
+          <a href="{{ tenantRoute('profile.language') }}"
+             class="list-group-item">{{ Lang::get('messages.profile.menu.language') }}</a>
+          <a href="{{ tenantRoute('profile.propositions') }}"
+             class="list-group-item @if(Route::current()->getName() == 'profile.propositions') active @endif">{{ Lang::get('messages.profile.menu.propositions') }}</a>
+          <a href="{{ tenantRoute('profile.points_history') }}"
+             class="list-group-item @if(Route::current()->getName() == 'profile.points_history') active @endif">{{ Lang::get('messages.profile.menu.points_history') }}</a>
+        </div>
 
-          @permission(['approveOrBlockPropositions', 'handleFlags'])
-          <div class="list-group account-settings">
-            <p class="list-group-item"><strong>{{ Lang::get('messages.moderator.menu.title') }}</strong></p>
+        @permission(['approveOrBlockPropositions', 'handleFlags'])
+        <div class="list-group account-settings">
+          <p class="list-group-item"><strong>{{ Lang::get('messages.moderator.menu.title') }}</strong></p>
 
-            @permission('approveOrBlockPropositions')
-            <a href="{{ tenantRoute('moderator.approval') }}"
-               class="list-group-item @if(Route::current()->getName() == 'moderator.approval') active @endif">{{ Lang::get('messages.moderator.menu.for_approval') }}</a>
-            @endpermission
-            @permission('handleFlags')
-            <a href="{{ tenantRoute('moderator.handle_flags') }}"
-               class="list-group-item @if(Route::current()->getName() == 'moderator.handle_flags') active @endif">{{ Lang::get('messages.moderator.menu.handle_flags') }}</a>
-            <a href="{{ tenantRoute('moderator.handle_comment_flags') }}"
-               class="list-group-item @if(Route::current()->getName() == 'moderator.handle_comment_flags') active @endif">{{ Lang::get('messages.moderator.menu.handle_comment_flags') }}</a>
-            @endpermission
-          </div>
+          @permission('approveOrBlockPropositions')
+          <a href="{{ tenantRoute('moderator.approval') }}"
+             class="list-group-item @if(Route::current()->getName() == 'moderator.approval') active @endif">{{ Lang::get('messages.moderator.menu.for_approval') }}</a>
           @endpermission
+          @permission('handleFlags')
+          <a href="{{ tenantRoute('moderator.handle_flags') }}"
+             class="list-group-item @if(Route::current()->getName() == 'moderator.handle_flags') active @endif">{{ Lang::get('messages.moderator.menu.handle_flags') }}</a>
+          <a href="{{ tenantRoute('moderator.handle_comment_flags') }}"
+             class="list-group-item @if(Route::current()->getName() == 'moderator.handle_comment_flags') active @endif">{{ Lang::get('messages.moderator.menu.handle_comment_flags') }}</a>
+          @endpermission
+        </div>
+        @endpermission
 
-          <div class="list-group account-settings">
-            <p class="list-group-item"><strong>{{ Lang::get('messages.profile.menu.contribute') }}</strong></p>
-          <!--               <a href="#" class="list-group-item">{{ Lang::get('messages.profile.menu.translate') }} <i class="fa fa-external-link"></i></a> -->
-            <a href="https://github.com/pupcomesl1/onlinedemocracy" target="_blank"
-               class="list-group-item">{{ Lang::get('messages.profile.menu.github') }} <i
-                  class="fa fa-external-link"></i></a>
-            <a href="{{ tenantRoute('feedback') }}"
-               class="list-group-item @if(Route::current()->getName() == 'feedback') active @endif">{{ Lang::get('messages.profile.menu.feedback') }}</a>
-          </div>
+        <div class="list-group account-settings">
+          <p class="list-group-item"><strong>{{ Lang::get('messages.profile.menu.contribute') }}</strong></p>
+        <!--               <a href="#" class="list-group-item">{{ Lang::get('messages.profile.menu.translate') }} <i class="fa fa-external-link"></i></a> -->
+          <a href="https://github.com/pupcomesl1/onlinedemocracy" target="_blank"
+             class="list-group-item">{{ Lang::get('messages.profile.menu.github') }} <i
+                class="fa fa-external-link"></i></a>
+          <a href="{{ tenantRoute('feedback') }}"
+             class="list-group-item @if(Route::current()->getName() == 'feedback') active @endif">{{ Lang::get('messages.profile.menu.feedback') }}</a>
+        </div>
 
       </div>
 

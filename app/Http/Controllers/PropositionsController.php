@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Badge;
+use App\Jobs\AssignVotePoints;
+use App\PointsHistoryEntry;
+use App\UniquePageView;
 use Illuminate\Http\Request;
 
 use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Redis;
 use Laravel\Socialite\Contracts\Factory as Socialite;
 use Chencha\Share\ShareFacade as Share;
 
@@ -41,27 +47,13 @@ class PropositionsController extends Controller
     {
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
-    	$viewUser = [
-    			'displayName' => $user->displayName(),
-    			'firstName' => $user->firstName(),
-    			'lastName' => $user->lastName(),
-    			'contactEmail' => $user->contactEmail(),
-    			'email' => $user->email(),
-    			'avatar' => $user->avatar(),
-    			'belongsToSchool' => $user->belongsToSchool(),
-    			'belongsToSchool' => $user->belongsToSchool(),
-    			'schoolEmail' => $user->googleEmail(),
-    	];
 
     	$propositionFactory = new PropositionFactory();
     	$viewPropositions = array();
     	$endingSoonPropositions = array();
     	$votedPropositions = array();
 
-
-
     	foreach ($propositionFactory->getAcceptedPropositionsExeptExpired() as $proposition) {
-
     		$userHasVoted = $propositionFactory->getUserVoteStatus($proposition->id(), $user->userId());
     		$daysLeft = Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false);
 
@@ -81,7 +73,6 @@ class PropositionsController extends Controller
     					'comments' => $propositionFactory->getCommentsCount($proposition->id()),
     					'marker' => $propositionFactory->getMarker($proposition->id()),
     			];
-
     		} elseif (($userHasVoted == true) AND ($daysLeft > 0)) {
     			//Voted propositions
     			$votedPropositions[$proposition->id()] = [
@@ -98,7 +89,6 @@ class PropositionsController extends Controller
     					'comments' => $propositionFactory->getCommentsCount($proposition->id()),
     					'marker' => $propositionFactory->getMarker($proposition->id()),
     			];
-
     		} else {
     			$viewPropositions[$proposition->id()] = [
     					'id' => $proposition->id(),
@@ -115,35 +105,20 @@ class PropositionsController extends Controller
     					'marker' => $propositionFactory->getMarker($proposition->id()),
     			];
     		}
-
-
-
-
     	}
-
 
 		$modAlerts = array(
 			"approval" => $user->can('approveOrBlockPropositions') AND $propositionFactory->getQueuedPropositionsExceptUsersCount($user->userId()) > 0,
 			"flag" => $user->can('handleFlags') AND $propositionFactory->getGlobalFlagCount($user->userId()) > 0
 		);
 
-    	return view('propositions_new', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions, 'endingSoonPropositions' => $endingSoonPropositions, 'votedPropositions' => $votedPropositions, 'modAlerts' => $modAlerts]);
+    	return view('propositions_new', ['propositions' => $viewPropositions, 'endingSoonPropositions' => $endingSoonPropositions, 'votedPropositions' => $votedPropositions, 'modAlerts' => $modAlerts]);
     }
 
     public function archived()
     {
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
-    	$viewUser = [
-    			'displayName' => $user->displayName(),
-    			'firstName' => $user->firstName(),
-    			'lastName' => $user->lastName(),
-    			'contactEmail' => $user->contactEmail(),
-    			'email' => $user->email(),
-    			'avatar' => $user->avatar(),
-    			'belongsToSchool' => $user->belongsToSchool(),
-    			'schoolEmail' => $user->googleEmail(),
-    	];
 
     	$propositionFactory = new PropositionFactory();
     	$expiredPropositions = array();
@@ -166,7 +141,7 @@ class PropositionsController extends Controller
 
     	}
 
-    	return view('archived', ['displayName' => $user->displayName(), 'user' => $viewUser, 'expiredPropositions' => $expiredPropositions]);
+    	return view('archived', ['expiredPropositions' => $expiredPropositions]);
     }
 
 
@@ -185,19 +160,7 @@ class PropositionsController extends Controller
             abort(403, 'Unauthorised action.');
         }
 
-    	$viewUser = [
-    			'displayName' => $user->displayName(),
-    			'firstName' => $user->firstName(),
-    			'lastName' => $user->lastName(),
-    			'contactEmail' => $user->contactEmail(),
-    			'email' => $user->email(),
-    			'avatar' => $user->avatar(),
-    			'belongsToSchool' => $user->belongsToSchool(),
-    			'belongsToSchool' => $user->belongsToSchool(),
-    			'schoolEmail' => $user->googleEmail(),
-    	];
-
-    	return view('create_proposition_new', ['displayName' => $user->displayName(), 'user' => $viewUser]);
+    	return view('create_proposition_new');
     }
 
     /**
@@ -245,6 +208,7 @@ class PropositionsController extends Controller
     					"propositionLong" => $request->input('proposition_description'),
     					"deadline" => $deadline,
     			]);
+    			Cache::forget('propsCount:' . $user->userId());
 
     			// Register new tags
     			preg_match_all("/#([a-zA-Z0-9_]+)/", $request->input('proposition') . " " . $request->input('proposition_description'), $matches);
@@ -351,7 +315,7 @@ class PropositionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($tenant, $id)
+    public function show($tenant, $id, Request $request)
     {
 
     	$propositionFactory = new PropositionFactory();
@@ -368,7 +332,29 @@ class PropositionsController extends Controller
     		abort(404);
     	}
 
+        $key = 'prop_pageviews:' . $id;
+        if (Auth::check()) {
+            $selector = Auth::id();
+        } else {
+            $selector = $request->ip();
+        }
+        if (Redis::zscore($key, $selector) < Carbon::now()->subHours(3)->timestamp) {
+    	    $proposition->increment('views');
+    	    Redis::zadd($key, Carbon::now()->timestamp, $selector);
+        }
+
+        $referrer = parse_url($request->headers->get('referer'), PHP_URL_HOST);
+        $domain = parse_url($request->root(), PHP_URL_HOST);
+        if ($referrer != $domain) {
+            UniquePageView::firstOrCreate([
+                'proposition_id' => $id,
+                'ip' => $request->ip(),
+                'referrer' => $request->headers->get('referer') ?: ''
+            ]);
+        }
+
     	$proposer = $userFactory->getUser($proposition->proposerId());
+    	$badges = $proposer->badges;
 
     	$viewProposition = [
     			'id' => $proposition->id(),
@@ -376,6 +362,12 @@ class PropositionsController extends Controller
     					'id' => $proposition->proposerId(),
     					'displayName' => $proposer->displayName,
     					'avatar' => $proposer->avatar(),
+                        'points' => $userFactory->getPointsFor($proposer),
+                        'badges' => [
+                            'gold' => $badges->filter(filterGold())->count(),
+                            'silver' => $badges->filter(filterSilver())->count(),
+                            'bronze' => $badges->filter(filterBronze())->count(),
+                        ],
     			],
     			'propositionSort' => $proposition->propositionSort(),
     			'propositionLong' => $proposition->propositionLong(),
@@ -383,6 +375,7 @@ class PropositionsController extends Controller
     			'deadline' => $proposition->deadline(),
     			'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
     			'marker' => $propositionFactory->getMarker($proposition->id()),
+                'views' => $proposition->views,
     	];
 
     	$viewVotes = [
@@ -397,6 +390,7 @@ class PropositionsController extends Controller
         foreach ($propositionFactory->getComments($id) as $comment) {
 
     		$commentUser = $userFactory->getUser($comment->commenterId());
+    		$badges = $commentUser->badges;
 
     		if ($user and $user->can('distinguishAllComments')) {
     		    $canDistinguish = \App\Role::where('name', '!=', 'user')->get();
@@ -414,6 +408,12 @@ class PropositionsController extends Controller
     						'displayName' => $commentUser->displayName,
     						'avatar' => $commentUser->avatar(),
                             'userCanDelete' => $commentUser->can('deleteOwnComments'),
+                            'points' => $userFactory->getPointsFor($commentUser),
+                            'badges' => [
+                                'gold' => $badges->filter(filterGold())->count(),
+                                'silver' => $badges->filter(filterSilver())->count(),
+                                'bronze' => $badges->filter(filterBronze())->count(),
+                            ],
     				],
     				'likes' => $comment->likes(),
     				'people_likes' => null,
@@ -450,16 +450,16 @@ class PropositionsController extends Controller
 
     	if (Auth::check()) {
 			\App::setLocale($user->language());
-	    	$user = $user;
-	    	$viewUser = ['userId' => $user->userId(), 'displayName' => $user->displayName(),'firstName' => $user->firstName(),'lastName' => $user->lastName(),'contactEmail' => $user->contactEmail(),'email' => $user->email(),'avatar' => $user->avatar(),'belongsToSchool' => $user->belongsToSchool(),'schoolEmail' => $user->googleEmail(),];
 
 	    	$viewVotes = [
 	    			'upvotes' => $propositionFactory->getUpvotes($id),
 	    			'downvotes' => $propositionFactory->getDownvotes($id),
 	    			'userHasVoted' => $propositionFactory->getUserVoteStatus($id, $user->userId()),
+                    'voteNotLockedIn' => ($propositionFactory->getUserVoteStatus($id, $user->userId()) == false) || (Redis::get('votegrace:' . $user->userId() . ':' . $id) === '1'),
+                    'userVoteValue' => $propositionFactory->getUserVote($id, $user->userId()),
 	    	];
 
-	    	return view('proposition_new', ['displayName' => $user->displayName(), 'user' => $viewUser, 'proposition' => $viewProposition, 'votes' => $viewVotes, 'comments' => $viewComments,'shareLinks' => $viewShareLinks, 'tags' => $viewTags]);
+	    	return view('proposition_new', ['proposition' => $viewProposition, 'votes' => $viewVotes, 'comments' => $viewComments,'shareLinks' => $viewShareLinks, 'tags' => $viewTags]);
     	} else {
     		return view('proposition_public', ['proposition' => $viewProposition, 'votes' => $viewVotes, 'comments' => $viewComments,'shareLinks' => $viewShareLinks]);
     	}
@@ -483,11 +483,10 @@ class PropositionsController extends Controller
     		abort(403, $validator->errors()->first('commentBody'));
 
     	} else {
-    	    \Log::debug('Inside else statement: ' . $user->userId() . ', ' . $request->input('id'));
     	    $factory = new CommentFactory();
     	    $nc = $factory->createComment($user->userId(), $request->input('id'), $request->input('commentBody'));
 
-    	    \Log::debug($nc);
+            PointsHistoryEntry::add($user->id, 15, 'comment');
 
             return redirect()->route('proposition', tenantParams(['id' => $request->input('id')]));
     	}
@@ -501,10 +500,29 @@ class PropositionsController extends Controller
     	$comment = $commentsFactory->getComment($id);
 
     	if ($comment->commenterId() == $user->userId() && $user->can('deleteOwnComments')) {
+            $likes = $commentsFactory->getLikesByComment($id);
     		$commentsFactory->deleteComment($id);
+
+    		foreach ($likes as $like) {
+                PointsHistoryEntry::subtract($like->userId(), 1, 'comment_deleted_like_compensation_liker');
+            }
+
+    		PointsHistoryEntry::subtract($comment->commenterId(), 15, 'comment_deleted');
+    		PointsHistoryEntry::subtract($comment->commenterId(), 2 * count($likes), 'comment_deleted_like_compensation');
+
     		return redirect()->back();
     	} else if ($user->can('deleteComments')) {
+    	    $comment = $commentsFactory->getComment($id);
+            $likes = $commentsFactory->getLikesByComment($comment);
             $commentsFactory->moderatorDeleteComment($user->id, $id);
+
+            foreach ($likes as $like) {
+                PointsHistoryEntry::subtract($like->userId(), 1, 'comment_deleted_like_compensation_liker');
+            }
+
+            PointsHistoryEntry::subtract($comment->commenterId(), 20, 'comment_deleted_mod');
+            PointsHistoryEntry::subtract($comment->commenterId(), 2 * count($likes), 'comment_deleted_like_compensation');
+
             return redirect()->back();
         } else {
     		abort(403, trans('messages.unauthorized'));
@@ -519,6 +537,16 @@ class PropositionsController extends Controller
 
         if ($user->can('deleteComments')) {
             $commentsFactory->moderatorUndeleteComment($id);
+
+            $comment = Comments::find($id);
+            $likes = $commentsFactory->getLikesByComment($comment);
+
+            foreach ($likes as $like) {
+                PointsHistoryEntry::add($like->userId(), 1, 'comment_undeleted_like_compensation_liker');
+            }
+
+            PointsHistoryEntry::add($comment->commenterId(), 20, 'comment_undeleted_mod');
+            PointsHistoryEntry::add($comment->commenterId(), 2 * count($likes), 'comment_undeleted_like_compensation');
             return redirect()->back();
         } else {
             abort(403, trans('messages.unauthorized'));
@@ -543,7 +571,10 @@ class PropositionsController extends Controller
 
     		$comment = $commentsFactory->getComment($request->input('id'));
 
-    		return $commentsFactory->likeComment($user, $comment);
+    		$commentsFactory->likeComment($user, $comment);
+
+            PointsHistoryEntry::add($user->id, 1, 'like_comment');
+            PointsHistoryEntry::add($comment->commenter->id, 2, 'comment_liked');
     	}
     }
 
@@ -598,7 +629,10 @@ class PropositionsController extends Controller
 	    	$comment = $commentsFactory->getComment($request->input('id'));
 	    	$like = $commentsFactory->findLikeByUserAndComment($user, $comment);
 
-    		return $commentsFactory->removeLike($like);
+    		$commentsFactory->removeLike($like);
+
+            PointsHistoryEntry::subtract($user->id, 1, 'unlike_comment');
+            PointsHistoryEntry::subtract($comment->commenter->id, 2, 'comment_unliked');
     	}
     }
 
@@ -617,29 +651,32 @@ class PropositionsController extends Controller
     public function upvote($tenant, $id) {
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
+        $propositionFactory = new PropositionFactory();
 
-    	if ($user->belongsToSchool() == true) {
-	    	$propositionFactory = new PropositionFactory();
+        if (
+            Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
+            or (!$user->can('vote'))
+        ) {
+            abort(403, trans('messages.unauthorized'));
+        }
 
-            if (
-                Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
-                or (!$user->can('vote'))
-            ) {
-	    		abort(403, trans('messages.unauthorized'));
-	    	}
+        $key = 'votegrace:' . $user->id . ':' . $id;
+        $gracePeriod = Redis::get($key);
 
+        if ($propositionFactory->getUserVoteStatus($id, $user->userId()) == false || $gracePeriod === '1') {
 
-	    	if ($propositionFactory->getUserVoteStatus($id, $user->userId()) == false) {
+            $propositionFactory->upvote($id, $user->userId());
 
-	    		$propositionFactory->upvote($id, $user->userId(), $user->googleEmail());
+            if ($gracePeriod == null) {
+                Redis::set($key, '1');
+                $job = (new AssignVotePoints($user->id, $id, 1))->delay(60 * 5);
+                dispatch($job);
+            }
 
-	    		return redirect()->route('proposition', tenantParams(['id' => $id]));
-	    	} else {
-	    		abort(403, trans('messages.unauthorized'));
-	    	}
-    	} else {
-    		abort(403, trans('messages.unauthorized'));
-    	}
+            return redirect()->route('proposition', tenantParams(['id' => $id]));
+        } else {
+            abort(403, trans('messages.unauthorized'));
+        }
     }
 
     public function downvote($tenant, $id) {
@@ -654,9 +691,18 @@ class PropositionsController extends Controller
     		abort(403, trans('messages.unauthorized'));
     	}
 
-    	if ($propositionFactory->getUserVoteStatus($id, $user->userId()) == false) {
+        $key = 'votegrace:' . $user->id . ':' . $id;
+        $gracePeriod = Redis::get($key);
+
+    	if ($propositionFactory->getUserVoteStatus($id, $user->userId()) == false || $gracePeriod === '1') {
 
     		$propositionFactory->downvote($id, $user->userId());
+
+            if ($gracePeriod == null) {
+                Redis::set($key, '1');
+                $job = (new AssignVotePoints($user->id, $id, 0))->delay(60 * 5);
+                dispatch($job);
+            }
 
     		return redirect()->route('proposition', tenantParams(['id' => $id]));
     	} else {
@@ -680,8 +726,10 @@ class PropositionsController extends Controller
             abort(403, trans('messages.unauthorized') . ' (1)');
         }
 
-		\Debugbar::info([$id, $propositionFactory->getUserVoteStatus($id, $user->userId())]);
-        if ($propositionFactory->getUserVoteStatus($id, $user->userId())) {
+        $key = 'votegrace:' . $user->id . ':' . $id;
+        $gracePeriod = Redis::get($key);
+
+        if ($propositionFactory->getUserVoteStatus($id, $user->userId()) && $gracePeriod) {
 
             $propositionFactory->unvote($id, $user->userId());
 
@@ -732,7 +780,20 @@ class PropositionsController extends Controller
 
 	    	} else {
 
-	    		with(new PropositionFactory())->createMarker($request->input('type'), $request->input('message'), $id);
+                $type = $request->input('type');
+                with(new PropositionFactory())->createMarker($type, $request->input('message'), $id);
+
+	    		$prop = Proposition::find($id);
+                if ($type == Marker::SUCCESS) {
+                    PointsHistoryEntry::add($prop->proposerId(), 30, 'prop_success');
+                    Badge::tryAward($prop->proposer()->id, 'great_idea', $prop);
+                    Badge::tryAward($prop->proposer()->id, 'resolute', $prop);
+                } elseif ($type == Marker::UNDER_DISCUSSION) {
+                    PointsHistoryEntry::add($prop->proposerId(), 15, 'prop_under_discussion');
+                    Badge::tryAward($prop->proposer()->id, 'good_idea', $prop);
+                    Badge::tryAward($prop->proposer()->id, 'tireless', $prop);
+                }
+
 				return 'success';
 
 	    	}
@@ -793,17 +854,6 @@ class PropositionsController extends Controller
     public function search(Request $request)
     {
     	\App::setLocale(Auth::user()->language());
-    	$user = Auth::user();
-    	$viewUser = [
-    			'displayName' => $user->displayName(),
-    			'firstName' => $user->firstName(),
-    			'lastName' => $user->lastName(),
-    			'contactEmail' => $user->contactEmail(),
-    			'email' => $user->email(),
-    			'avatar' => $user->avatar(),
-    			'belongsToSchool' => $user->belongsToSchool(),
-    			'schoolEmail' => $user->googleEmail(),
-    	];
 
     	$results = array();
     	$pages = null;
@@ -821,8 +871,8 @@ class PropositionsController extends Controller
 
     			$proposer = with(new userFactory)->getUser($proposition->proposerId());
 
-    			$results[$proposition->id()] = [
-    					'id' => $proposition->id(),
+    			$results[$proposition->id] = [
+    					'id' => $proposition->id,
     					'propositionSort' => $proposition->propositionSort(),
     					'proposer' => [
     							'id' => $proposition->proposerId(),
@@ -833,15 +883,15 @@ class PropositionsController extends Controller
     					'deadline' => $proposition->deadline(),
     					'statusId' => $proposition->status(),
     					'ending_in' => Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($proposition->deadline())), false),
-    					'upvotes' => $propositionFactory->getUpvotes($proposition->id()),
-    					'downvotes' => $propositionFactory->getDownvotes($proposition->id()),
-    					'comments' => $propositionFactory->getCommentsCount($proposition->id()),
-    					'marker' => $propositionFactory->getMarker($proposition->id()),
+    					'upvotes' => $propositionFactory->getUpvotes($proposition->id),
+    					'downvotes' => $propositionFactory->getDownvotes($proposition->id),
+    					'comments' => $propositionFactory->getCommentsCount($proposition->id),
+    					'marker' => $propositionFactory->getMarker($proposition->id),
     			];
     		}
     	}
 
-    	return view('search', ['displayName' => $user->displayName(), 'user' => $viewUser, 'results' => $results, 'pages' => $pages]);
+    	return view('search', ['results' => $results, 'pages' => $pages]);
     }
 
 }

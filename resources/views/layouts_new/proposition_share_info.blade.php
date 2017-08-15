@@ -1,4 +1,4 @@
-<meta property="fb:app_id" content="{{ env('FACEBOOK_CLIENT_ID') }}" />
+<meta property="fb:app_id" content="{{ config('app.fb_client_id') }}" />
 <meta property="og:url" content="{{ tenantRoute('proposition', [$proposition['id']]) }}" />
 <meta property="og:title" content="{{ $proposition['propositionSort'] }}" />
 @if (empty($proposition['propositionLong']) == false)

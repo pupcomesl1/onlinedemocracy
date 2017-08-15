@@ -15,18 +15,9 @@
 	<h3 class="propositions-section">{{ Lang::get('messages.propositions.ending_soon') }}</h3>
 	<div class="pinBoot" id="expiring">
 		@foreach($endingSoonPropositions as $proposition)
-		<a class="thumbnail" href="{{ tenantRoute('proposition', [$proposition['id']]) }}">
-         	<div class="caption">
-	          	<p>@if (empty($proposition['marker']) == false) 
-	          		 @if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span class="label label-success label-icon"><i class="material-icons">check</i></span>
-	          		 @elseif ($proposition['marker']->relationMarkerId() == \App\Marker::UNDER_DISCUSSION) <span class="label label-info label-icon"><i class="material-icons">speaker_notes</i></span>
-	          		 @elseif ($proposition['marker']->relationMarkerId() == \App\Marker::FAILED) <span class="label label-warning label-icon"><i class="material-icons">announcement</i></span>
-	          		 @endif
-	          		{{{ $proposition['propositionSort'] }}} @else {{{ $proposition['propositionSort'] }}} @endif</p>
-       			<small class="text-muted">{{ Lang::choice('messages.proposition.voting.stats.upvotes', $proposition['upvotes'], ['votes' => $proposition['upvotes']]) }} | {{ Lang::choice('messages.proposition.voting.stats.downvotes', $proposition['downvotes'], ['votes' => $proposition['downvotes']]) }} | {{ Lang::choice('messages.proposition.voting.stats.comments', $proposition['comments'], ['comments' => $proposition['comments']]) }}</small>
-       		</div>
-        </a>
-      	@endforeach
+			@component('components.proposition', ['proposition' => $proposition])
+			@endcomponent
+		@endforeach
 	</div>
 	@endif
 	
@@ -34,17 +25,8 @@
     <h3 class="propositions-section" >{{ Lang::get('messages.propositions.new_propositions') }}</h3>
 	<div class="pinBoot" id="recent">
 		@foreach($propositions as $proposition)
-		<a class="thumbnail" href="{{ tenantRoute('proposition', [$proposition['id']]) }}">
-         	<div class="caption">
-	          	<p>@if (empty($proposition['marker']) == false) 
-	          		 @if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span class="label label-success label-icon"><i class="material-icons">check</i></span>
-	          		 @elseif ($proposition['marker']->relationMarkerId() == \App\Marker::UNDER_DISCUSSION) <span class="label label-info label-icon"><i class="material-icons">speaker_notes</i></span>
-	          		 @elseif ($proposition['marker']->relationMarkerId() == \App\Marker::FAILED) <span class="label label-warning label-icon"><i class="material-icons">announcement</i></span>
-	          		 @endif
-	          		{{{ $proposition['propositionSort'] }}} @else {{{ $proposition['propositionSort'] }}} @endif</p>
-       			<small class="text-muted">{{ Lang::choice('messages.proposition.voting.stats.upvotes', $proposition['upvotes'], ['votes' => $proposition['upvotes']]) }} | {{ Lang::choice('messages.proposition.voting.stats.downvotes', $proposition['downvotes'], ['votes' => $proposition['downvotes']]) }} | {{ Lang::choice('messages.proposition.voting.stats.comments', $proposition['comments'], ['comments' => $proposition['comments']]) }}</small>
-       		</div>
-       	</a>
+			@component('components.proposition', ['proposition' => $proposition])
+			@endcomponent
 		@endforeach
 	</div>
 	@endif
@@ -53,17 +35,8 @@
 	<h3 class="propositions-section">{{ Lang::get('messages.propositions.voted_propositions') }}</h3>
 	<div class="pinBoot" id="voted">
 		@foreach($votedPropositions as $proposition)
-  	    	<a class="thumbnail" href="{{ tenantRoute('proposition', [$proposition['id']]) }}">
-	         	<div class="caption">
-		          	<p>@if (empty($proposition['marker']) == false) 
-		          		 @if ($proposition['marker']->relationMarkerId() == \App\Marker::SUCCESS)<span class="label label-success label-icon"><i class="material-icons">check</i></span>
-		          		 @elseif ($proposition['marker']->relationMarkerId() == \App\Marker::UNDER_DISCUSSION) <span class="label label-info label-icon"><i class="material-icons">speaker_notes</i></span>
-		          		 @elseif ($proposition['marker']->relationMarkerId() == \App\Marker::FAILED) <span class="label label-warning label-icon"><i class="material-icons">announcement</i></span>
-		          		 @endif
-		          		{{{ $proposition['propositionSort'] }}} @else {{{ $proposition['propositionSort'] }}} @endif</p>
-	       			<small class="text-muted">{{ Lang::choice('messages.proposition.voting.stats.upvotes', $proposition['upvotes'], ['votes' => $proposition['upvotes']]) }} | {{ Lang::choice('messages.proposition.voting.stats.downvotes', $proposition['downvotes'], ['votes' => $proposition['downvotes']]) }} | {{ Lang::choice('messages.proposition.voting.stats.comments', $proposition['comments'], ['comments' => $proposition['comments']]) }}</small>
-	       		</div>
-       		</a>
+			@component('components.proposition', ['proposition' => $proposition])
+			@endcomponent
 		@endforeach
 	</div>
 	@endif

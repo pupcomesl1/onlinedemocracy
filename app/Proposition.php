@@ -95,7 +95,23 @@ class Proposition extends Model implements AuthenticatableContract
     	return $this->attributes['updated_at'];
     }
 
+    public function votes() {
+        return $this->hasMany('App\Votes');
+    }
+
     public function comments() {
         return $this->hasMany('App\Comments');
+    }
+
+    public function pointsHistoryEntries() {
+        return $this->morphMany('App\PointsHistoryEntry', 'from');
+    }
+
+    public function badges() {
+        return $this->morphMany('App\Badge', 'from');
+    }
+
+    function uniquePageViews() {
+        return $this->hasMany('App\UniquePageView');
     }
 }

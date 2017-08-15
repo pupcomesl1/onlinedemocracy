@@ -1,5 +1,7 @@
 <div class="list-group scrollable">
   @foreach ($likes as $like)
-  <a href="{{ tenantRoute('search') . '?q=' . $like->user()->firstName() . ' ' . $like->user()->lastName() }}" class="list-group-item"><img class="img-circle text-sized-picture" src="{{ $like->user()->avatar() }}"> {{ $like->user()->firstName() . ' ' . $like->user()->lastName() }}</a>
+  <a href="{{ tenantRoute('public_profile', ['id' => $like->user()->id]) }}" class="list-group-item">
+    <img class="img-circle text-sized-picture" src="{{ $like->user()->avatar() }}"> {{ $like->user()->displayName }}
+  </a>
   @endforeach
 </div>

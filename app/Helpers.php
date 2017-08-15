@@ -2,6 +2,8 @@
 
 use HipsterJazzbo\Landlord\Facades\Landlord;
 
+require_once 'BadgeHelpers.php';
+
 function forAllTenants(Closure $func) {
 	$ten = \App\Tenant::all();
 	foreach ($ten as $tenant) {

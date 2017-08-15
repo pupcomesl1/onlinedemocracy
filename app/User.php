@@ -15,8 +15,6 @@ use HipsterJazzbo\Landlord\BelongsToTenants;
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword, Notifiable, EntrustUserTrait, BelongsToTenants;
-    const ROLE_MODERATOR = 2;
-    const ROLE_ADMINISTRATOR = 3;
 
     public function getAuthIdentifier()
     {
@@ -161,6 +159,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function tenant() {
         return $this->belongsTo('App\Tenant');
+    }
+
+    public function pointsHistoryEntries() {
+        return $this->hasMany('App\PointsHistoryEntry');
+    }
+
+    public function badges() {
+        return $this->hasMany('App\Badge');
     }
     
 }

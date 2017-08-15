@@ -63,6 +63,7 @@ return [
 				'voting' => [
 						'expired' => "Cette proposition est expirée, tu ne peux plus voter",
 						'already_voted' => "Tu as déjà voté pour cette proposition. Cliques ici pour changer ton vote.",
+                        'already_voted_locked' => "Tu as déjà voté pour cette proposition, mais tu ne peux plus changer ton vote.",
 						'already_voted_sort' => "Tu as voté, félicitations !",
 						'link' => "Lies ce compte avec l'email de ton école pour pouvoir voter et commenter !",
 						'credits' => "Ecrit par",

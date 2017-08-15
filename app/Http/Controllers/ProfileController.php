@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Badge;
+use App\PointsHistoryEntry;
 use Illuminate\Http\Request;
 
 use Auth;
@@ -40,8 +42,10 @@ class ProfileController extends Controller
     {
     	$user = Auth::user();
     	$propositionFactory = new PropositionFactory();
+    	$userFactory = new UserFactory();
     	$propositionsCount = $propositionFactory->getPropositionsCountByUser($user->userId());
-    	
+    	$badges = Badge::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+
     	$viewUser = [
     			'displayName' => $user->displayName(),
     			'contactEmail' => $user->contactEmail(),
@@ -50,13 +54,24 @@ class ProfileController extends Controller
     			'belongsToSchool' => $user->belongsToSchool(),
     			'schoolEmail' => $user->googleEmail(),
     			'lang' => $user->language(),
+                'points' => $userFactory->getPointsFor($user),
     			'propositionsCount' => $propositionsCount,
+                'badges' => [
+                    'gold' => $badges->filter(filterGold())->all(),
+                    'silver' => $badges->filter(filterSilver())->all(),
+                    'bronze' => $badges->filter(filterBronze())->all(),
+                ]
     	];
 
 		$highlight = array();
 		$highlight[session('highlight')] = true;
     	
-    	return view('account_new.profile', ['displayName' => $user->displayName(), 'user' => $viewUser, 'highlight' => $highlight]);
+    	return view('account_new.profile', [
+    	    'displayName' => $user->displayName(),
+            'user' => $viewUser,
+            'highlight' => $highlight,
+            'badges' => getBadges()
+        ]);
     }
 
     public function language()
@@ -114,19 +129,6 @@ class ProfileController extends Controller
     public function propositions() {
     	$user = Auth::user();
 		Carbon::setLocale($user->language());
-    	$propositionFactory = new PropositionFactory();
-    	$propositionsCount = $propositionFactory->getPropositionsCountByUser($user->userId());
-    	$viewUser = [
-    			'displayName' => $user->displayName(),
-    			'firstName' => $user->firstName(),
-    			'lastName' => $user->lastName(),
-    			'contactEmail' => $user->contactEmail(),
-    			'email' => $user->email(),
-    			'avatar' => $user->avatar(),
-    			'belongsToSchool' => $user->belongsToSchool(),
-    			'schoolEmail' => $user->googleEmail(),
-    			'propositionsCount' => $propositionsCount,
-    	];
     	
     	$propositionFactory = new PropositionFactory();
     	$userPropositions = $propositionFactory->getPropositionsByUser($user->userId());
@@ -152,7 +154,26 @@ class ProfileController extends Controller
     		];
     	}
     	
-    	return view('account_new.propositions', ['displayName' => $user->displayName(), 'user' => $viewUser, 'propositions' => $viewPropositions]);
+    	return view('account_new.propositions', ['displayName' => $user->displayName(), 'propositions' => $viewPropositions]);
+    }
+
+    public function pointsHistory() {
+        $user = Auth::user();
+
+        $accumulator = 0;
+
+        $history = PointsHistoryEntry::where('user_id', $user->id)
+            ->orderBy('created_at', 'asc')
+            ->get()
+            ->transform(function($item) use (&$accumulator) {
+                $accumulator = $accumulator + $item->value;
+                return array_merge($item->toArray(),
+                    ['running_total' => $accumulator, 'timeUnix' => $item->created_at->timestamp]
+                );
+            })
+            ->reverse();
+
+        return view('account_new.pointsHistory', ['history' => $history]);
     }
 
     /**

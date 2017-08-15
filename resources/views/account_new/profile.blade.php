@@ -48,4 +48,36 @@
 		</div>
 	</div>
 </form>
+
+<div class="row">
+	<div class="col-md-9 col-md-offset-2">
+		<h2>Badges</h2>
+		<div class="row">
+			<div class="col-md-4">
+				<h3>Gold</h3>
+				@foreach ($user['badges']['gold'] as $badge)
+					@component('components.badge', ['type' => 'gold', 'name' => $badge->type, 'title' => trans('badges.' . $badge->type . '.condition')])
+						@lang('badges.' . $badge->type . '.name')
+					@endcomponent
+				@endforeach
+			</div>
+			<div class="col-md-4">
+				<h3>Silver</h3>
+				@foreach ($user['badges']['silver'] as $badge)
+					@component('components.badge', ['type' => 'silver', 'name' => $badge->type, 'title' => trans('badges.' . $badge->type . '.condition')])
+						@lang('badges.' . $badge->type . '.name')
+					@endcomponent
+				@endforeach
+			</div>
+			<div class="col-md-4">
+				<h3>Bronze</h3>
+				@foreach ($user['badges']['bronze'] as $badge)
+					@component('components.badge', ['type' => 'bronze', 'name' => $badge->type, 'title' => trans('badges.' . $badge->type . '.condition')])
+						@lang('badges.' . $badge->type . '.name')
+					@endcomponent
+				@endforeach
+			</div>
+		</div>
+	</div>
+</div>
 @stop

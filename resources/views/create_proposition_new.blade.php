@@ -2,6 +2,8 @@
 
 @section('title', Lang::get('messages.profile.create_proposition.create_proposition'))
 
+@section('body-class', 'no-sidebar')
+
 @section('content')
 
 @if ($user['belongsToSchool'] == true)

@@ -30,6 +30,8 @@ return [
 
     'name' => env('APP_NAME', 'DirectDemocracy'),
 
+    'domain' => env('APP_DOMAIN', 'directdemocracy.online'),
+
     'url' => 'http://' . env('APP_DOMAIN', 'directdemocracy.online'),
 
     /*
@@ -100,6 +102,11 @@ return [
     */
 
     'log' => 'single',
+
+    // Misc
+
+    'feedback_email' => env('FEEDBACK_EMAIL'),
+    'fb_client_id' => env('FACEBOOK_CLIENT_ID'),
 
     /*
     |--------------------------------------------------------------------------

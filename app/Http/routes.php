@@ -39,6 +39,8 @@ Route::get('/tenant', ['uses' => 'MainController@tenant']);
 Route::group(['domain' => '{tenant}.' . env('APP_DOMAIN'), 'middleware' => 'tenant'], function() {
 	Route::get('/comment-guidelines', ['as' => 'guidelines', 'uses' => 'MainController@guidelines']);
 
+	Route::get('/badge/{name}', ['as' => 'badge', 'uses' => 'MainController@badge']);
+
 	//Profile-related routes
 	Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
 		Route::get('/profile', ['as' => 'profile.main', 'uses' => 'ProfileController@index']);
@@ -46,20 +48,25 @@ Route::group(['domain' => '{tenant}.' . env('APP_DOMAIN'), 'middleware' => 'tena
 		Route::get('/profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 		Route::post('/profile/password', ['as' => 'profile.password.update', 'uses' => 'ProfileController@password_update']);
 		Route::get('/propositions', ['as' => 'profile.propositions', 'uses' => 'ProfileController@propositions']);
-		Route::get('/propositions/create', ['as' => 'profile.propositions.create', 'uses' => 'PropositionsController@create']);
-		Route::post('/propositions/create', ['as' => 'profile.propositions.store', 'uses' => 'PropositionsController@store']);
-		Route::get('/profile/language', ['as' => 'profile.language', 'uses' => 'ProfileController@language']);
-		
-		Route::get('/profile/language/{code}', ['as' => 'profile.language.set', 'uses' => 'ProfileController@setLanguage']);
+        Route::get('/propositions/create', ['as' => 'profile.propositions.create', 'uses' => 'PropositionsController@create']);
+        Route::post('/propositions/create', ['as' => 'profile.propositions.store', 'uses' => 'PropositionsController@store']);
+        Route::get('/profile/language', ['as' => 'profile.language', 'uses' => 'ProfileController@language']);
+        Route::get('/profile/score_history', ['as' => 'profile.points_history', 'uses' => 'ProfileController@pointsHistory']);
+
+        Route::get('/profile/language/{code}', ['as' => 'profile.language.set', 'uses' => 'ProfileController@setLanguage']);
 	});
+
+	Route::get('/profile/{id}', ['as' => 'public_profile', 'uses' => 'PublicProfileController@show']);
 
 	Route::get('/feedback', ['middleware' => 'auth', 'as' => 'feedback', 'uses' => 'MainController@feedback']);
 	Route::post('/feedback', ['middleware' => 'auth', 'as' => 'feedback.send', 'uses' => 'MainController@feedback_send']);
 
 	//School link routes
-	Route::get('/profile/link',['middleware' => 'auth','uses' => 'ProfileController@getLinkAuth','as'   => 'getLinkAuth']);
-	Route::get('/profile/link/callback',['middleware' => 'auth','uses' => 'ProfileController@getLinkAuthCallback','as'   => 'getLinkAuthCallback']);
-	Route::get('/profile/unlink',['middleware' => 'auth','uses' => 'ProfileController@unlinkGoogle','as'   => 'unlinkGoogle']);
+//	Route::get('/profile/link',['middleware' => 'auth','uses' => 'ProfileController@getLinkAuth','as'   => 'getLinkAuth']);
+//	Route::get('/profile/link/callback',['middleware' => 'auth','uses' => 'ProfileController@getLinkAuthCallback','as'   => 'getLinkAuthCallback']);
+//	Route::get('/profile/unlink',['middleware' => 'auth','uses' => 'ProfileController@unlinkGoogle','as'   => 'unlinkGoogle']);
+
+	Route::get('/leaderboard', ['middleware' => 'auth', 'as' => 'leaderboard','uses' => 'LeaderboardController@index']);
 
 	//Propositions routes
 	Route::get('/home', ['middleware' => 'auth', 'as' => 'propositions','uses' => 'PropositionsController@index']);
