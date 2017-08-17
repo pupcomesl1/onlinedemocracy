@@ -69,13 +69,14 @@ class MigrationController extends Controller
 
             $tenant = null;
             if (preg_match('/.+\([A-Z]{3}-S[1-7][A-Z]+\)/', $graphUser->displayName)) {
-
-                if (preg_match('/.+\(LUX-/', $graphUser->displayName)) {
-                    $tenant = \App\Tenant::where('prefix', 'kirch')->first();
-                } else if (preg_match('/.+\(MAM-/', $graphUser->displayName)) {
-                    $tenant = \App\Tenant::where('prefix', 'mam')->first();
+                if (config('app.multitenant')) {
+                    if (preg_match('/.+\(LUX-/', $graphUser->displayName)) {
+                        $tenant = \App\Tenant::where('prefix', 'kirch')->first();
+                    } else if (preg_match('/.+\(MAM-/', $graphUser->displayName)) {
+                        $tenant = \App\Tenant::where('prefix', 'mam')->first();
+                    }
+                    Landlord::addTenant($tenant);
                 }
-                Landlord::addTenant($tenant);
 
             } else {
                 return abort(500, 'No tenant. This isn\'t supposed to happen.');
@@ -89,7 +90,9 @@ class MigrationController extends Controller
             }
             $user->setBelongsToSchool(true);
             $user->attachRole(Role::find(1));
-            $user->tenant_id = $tenant->id;
+            if (config('app.multitenant')) {
+                $user->tenant_id = $tenant->id;
+            }
             $user->save();
             Badge::tryAward($user->id, "veteran");
 

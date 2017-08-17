@@ -15,6 +15,9 @@ class ViewDisplayer extends \GrahamCampbell\Exceptions\Displayers\ViewDisplayer
 {
     public function render(Exception $exception, array $info, int $code)
     {
+        if (view()->exists('errors.' . $code)) {
+            return view('errors.' . $code)->with($info);
+        }
         return view('errors.500')->with($info);
     }
 

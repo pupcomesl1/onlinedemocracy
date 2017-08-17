@@ -138,12 +138,14 @@ class SessionController extends Controller
                         $user = User::where('msgraphId', '=', $graphUser->id)->first();
                         $tenant = null;
                         if (preg_match('/.+\([A-Z]{3}-S[1-7][A-Z]+\)/', $graphUser->displayName)) {
-                            if (preg_match('/.+\(LUX-/', $graphUser->displayName)) {
-                                $tenant = \App\Tenant::where('prefix', 'kirch')->first();
-                            } else if (preg_match('/.+\(MAM-/', $graphUser->displayName)) {
-                                $tenant = \App\Tenant::where('prefix', 'mam')->first();
+                            if (config('app.multitenant')) {
+                                if (preg_match('/.+\(LUX-/', $graphUser->displayName)) {
+                                    $tenant = \App\Tenant::where('prefix', 'kirch')->first();
+                                } else if (preg_match('/.+\(MAM-/', $graphUser->displayName)) {
+                                    $tenant = \App\Tenant::where('prefix', 'mam')->first();
+                                }
+                                Landlord::addTenant($tenant);
                             }
-                            Landlord::addTenant($tenant);
                         } else {
                             return abort(500, 'No tenant. This isn\'t supposed to happen.');
                         }
