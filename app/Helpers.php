@@ -48,7 +48,7 @@ function tenantId() {
 function tenant() {
 	$id = tenantId();
 	return \Cache::remember('tenant-' . $id, 60, function() use ($id) {
-		return \App\Tenant::findOrFail($id);
+		return \App\Tenant::find($id);
 	});
 }
 
@@ -57,5 +57,6 @@ function userTenant() {
 }
 
 function tenantParams($params = []) {
-	return array_merge($params, ['tenant' => tenant()->prefix]);
+    $tenant = tenant();
+	return array_merge($params, ['tenant' => $tenant ? $tenant->prefix : '']);
 }

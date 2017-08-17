@@ -16,6 +16,11 @@ return [
         'type' => 'bronze'
     ],
 
+    'veteran' => [
+        'type' => 'bronze',
+        'once' => true
+    ],
+
     'contributor' => [
         'type' => 'bronze',
         'check' => function(int $uid) use ($propositionFactory) {

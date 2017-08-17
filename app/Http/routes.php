@@ -27,6 +27,17 @@ Route::get('/logout', ['as' => 'logout', 'uses' => 'SessionController@logout']);
 
 Route::get('/secretmoderatorlogin', 'SessionController@loginAsTestmod');
 
+// User migration
+
+Route::group(['prefix' => 'migrate'], function() {
+   Route::get('/', 'MigrationController@init')->name('migrate.init');
+   Route::get('/facebook', 'MigrationController@facebook')->name('migrate.facebook');
+   Route::get('/facebook-redirect', 'MigrationController@facebookRedirect')->name('migrate.facebook.redirect');
+   Route::post('/email', 'MigrationController@email')->name('migrate.email');
+   Route::get('/o365', 'MigrationController@o365')->name('migrate.o365');
+   Route::get('/finish', 'MigrationController@finish')->name('migrate.finish');
+});
+
 //Social Login
 Route::get('/login/{provider?}',['uses' => 'SessionController@getSocialAuth','as'   => 'auth.getSocialAuth']);
 Route::get('/login/callback/{provider?}',['uses' => 'SessionController@getSocialAuthCallback','as'   => 'auth.getSocialAuthCallback']);

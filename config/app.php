@@ -167,6 +167,11 @@ return [
 
         Laravel\Tinker\TinkerServiceProvider::class,
         'Barryvdh\Debugbar\ServiceProvider',
+
+        GrahamCampbell\Exceptions\ExceptionsServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
+
+        App\Providers\ExceptionOverridesProvider::class,
     ],
 
     /*
@@ -222,6 +227,7 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Landlord'   => HipsterJazzbo\Landlord\Facades\Landlord::class,
         'Debugbar' => 'Barryvdh\Debugbar\Facade',
+        'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
 
     ],
 

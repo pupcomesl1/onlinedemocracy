@@ -17,7 +17,7 @@ return [
 				],
 				'return' => "Return to the app",
 				'terms' => "Terms of service",
-				'footer' => "DirectDemocracy is developed and mantained by Marks Polakovs. Copyright © 2015-2017 Photis Avrilionis © 2017 - " . date("Y") . " Marks Polakovs",
+				'footer' => "DirectDemocracy is developed and maintained by Pupils' Committee ESL 1. Portions of copyright are held by © Photis Avrilionis, 2015-" . date("Y") . " as part of pavril/onlinedemocracy, licensed under the MIT License, all other copyrights © 2017 - " . date("Y") . " Pupils' Committee ESL 1",
 		],
 
 		'proposition' => [
@@ -279,7 +279,7 @@ return [
 		'session' => [
 				"login" => [
 						'wrong_pass' => 'Wrong password',
-						'facebook_connection_error' => "Something went wrong while connectin with Facebook",
+						'facebook_connection_error' => "Something went wrong while connecting with Facebook",
 						'error' => 'Something went wrong',
 						'forgot_pass' => "Forgot password",
 						'login' => "Login",
@@ -291,7 +291,7 @@ return [
 						'use_fb' => "Sign in with Facebook",
 						'use_fb_login' => "Login with Facebook",
 						'sign_up' => "Sign up",
-                        'use_msgraph' => "Log In With Office 365",
+                        'use_msgraph' => "Sign In With Office 365",
 				],
 				"sign_up" => [
 						'sign_up' => "Sign up",
@@ -321,6 +321,9 @@ return [
 						'submit' => "Reset password",
 				],
 				'return_to_login' => "Return to the login screen",
+                'errors' => [
+                        'emailOrPassword' => "Incorrect email or password."
+                ]
 		],
 		
 		'form' => [
@@ -403,6 +406,12 @@ return [
                 'prop_under_discussion' => 'Proposition marked as under discussion',
                 'prop_success' => 'Proposition successful',
             ]
-        ]
+        ],
+
+    'migration' => [
+        'migrate' => "Migrate",
+        'finish' => "Finish",
+        'try_again' => "Try Again"
+    ]
 
 ];

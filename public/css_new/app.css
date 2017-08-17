@@ -582,3 +582,7 @@ fieldset[disabled] .btn-teal.active {
 @media (max-width: 480px) {
 	
 }
+
+.text h1 {
+	color: #212121;
+}

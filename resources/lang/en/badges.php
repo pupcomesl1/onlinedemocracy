@@ -6,6 +6,11 @@ return [
         'condition' => 'Welcome to DirectDemocracy!'
     ],
 
+    'veteran' => [
+        'name' => 'Veteran',
+        'condition' => 'Been a user of DirectDemocracy before September 2017. Thank you!'
+    ],
+
     'contributor' => [
         'name' => 'Contributor',
         'condition' => 'Post a proposition'

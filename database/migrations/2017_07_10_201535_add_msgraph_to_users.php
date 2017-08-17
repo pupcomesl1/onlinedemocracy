@@ -14,8 +14,8 @@ class AddMsgraphToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('displayName');
-            $table->string('msgraphId');
+            $table->string('displayName')->nullable();
+            $table->string('msgraphId')->nullable();
         });
     }
 
