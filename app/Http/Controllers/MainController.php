@@ -75,7 +75,8 @@ class MainController extends Controller
 		}
 	}
 
-	public function badge($tenant, $name) {
+	public function badge(Request $request) {
+        $name = $request->route('name');
 	    $badge = getBadges()[$name];
 
 	    $userCount = User::all()->count();

@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 class PublicProfileController extends Controller
 {
-    function show($tenant, $id) {
+    function show(Request $request) {
+        $id = $request->route('id');
         $user = \Auth::user();
         $userFactory = new \App\UserFactory();
         $profile = $userFactory->getUser($id);

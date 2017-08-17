@@ -34,6 +34,8 @@ return [
 
     'url' => 'http://' . env('APP_DOMAIN', 'directdemocracy.online'),
 
+    'multitenant' => env('APP_ENABLE_MULTITENANT', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

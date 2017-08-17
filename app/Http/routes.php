@@ -47,7 +47,7 @@ Route::get('/o365login', ['as' => 'o365login', 'uses' => 'SessionController@msgr
 
 Route::get('/tenant', ['uses' => 'MainController@tenant']);
 
-Route::group(['domain' => '{tenant}.' . env('APP_DOMAIN'), 'middleware' => 'tenant'], function() {
+$tenantRoutes = function() {
 	Route::get('/comment-guidelines', ['as' => 'guidelines', 'uses' => 'MainController@guidelines']);
 
 	Route::get('/badge/{name}', ['as' => 'badge', 'uses' => 'MainController@badge']);
@@ -120,4 +120,10 @@ Route::group(['domain' => '{tenant}.' . env('APP_DOMAIN'), 'middleware' => 'tena
 		Route::get('proposition', ['as' => 'api.proposition', 'uses' => 'ApiController@proposition']);
 	});
 
-});
+};
+
+if (config('app.multitenant')) {
+    Route::group(['domain' => '{tenant}.' . env('APP_DOMAIN'), 'middleware' => 'tenant'], $tenantRoutes);
+} else {
+    $tenantRoutes();
+}

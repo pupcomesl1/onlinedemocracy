@@ -278,8 +278,9 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function delete($tenant, $id)
+    public function delete(Request $request)
     {
+        $id = $request->route('id');
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
 
@@ -315,9 +316,9 @@ class PropositionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($tenant, $id, Request $request)
+    public function show(Request $request)
     {
-
+        $id = $request->route('id');
     	$propositionFactory = new PropositionFactory();
     	$userFactory = new UserFactory();
         $user = Auth::user();
@@ -492,7 +493,8 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function delete_comment($tenant, $id) {
+    public function delete_comment(Request $request) {
+        $id = $request->route('id');
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
 
@@ -529,7 +531,8 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function undelete_comment($tenant, $id) {
+    public function undelete_comment(Request $request) {
+        $id = $request->route('id');
         \App::setLocale(Auth::user()->language());
         $user = Auth::user();
 
@@ -636,7 +639,8 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function comment_flag($tenant, $id) {
+    public function comment_flag(Request $request) {
+        $id = $request->route('id');
         \App::setLocale(Auth::user()->language());
         $factory = new CommentFactory();
         $comment = $factory->getComment($id);
@@ -648,7 +652,8 @@ class PropositionsController extends Controller
     }
 
 
-    public function upvote($tenant, $id) {
+    public function upvote(Request $request) {
+        $id = $request->route('id');
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
         $propositionFactory = new PropositionFactory();
@@ -681,7 +686,8 @@ class PropositionsController extends Controller
         }
     }
 
-    public function downvote($tenant, $id) {
+    public function downvote(Request $request) {
+        $id = $request->route('id');
 		\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
     	$propositionFactory = new PropositionFactory();
@@ -714,7 +720,8 @@ class PropositionsController extends Controller
     	}
     }
 
-    public function unvote($tenant, $id) {
+    public function unvote(Request $request) {
+        $id = $request->route('id');
         \App::setLocale(Auth::user()->language());
         $user = Auth::user();
         $propositionFactory = new PropositionFactory();
@@ -754,7 +761,9 @@ class PropositionsController extends Controller
      * @param  int  $flag_type
      * @return \Illuminate\Http\Response
      */
-    public function flag($tenant, $id, $flag_type) {
+    public function flag(Request $request) {
+        $id = $request->route('id');
+        $flag_type = $request->route('flag_type');
 		\App::setLocale(Auth::user()->language());
         if ($flag_type == 1 OR $flag_type == 3) {
         	with(new PropositionFactory())->flag($flag_type, $id);
@@ -771,8 +780,8 @@ class PropositionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create_marker($tenant, $id, Request $request) {
-
+    public function create_marker(Request $request) {
+        $id = $request->route('id');
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
 
@@ -811,8 +820,8 @@ class PropositionsController extends Controller
 
     }
 
-    public function edit_marker($tenant, $id, Request $request) {
-
+    public function edit_marker(Request $request) {
+        $id = $request->route('id');
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
 
@@ -842,8 +851,8 @@ class PropositionsController extends Controller
 
     }
 
-    public function delete_marker($tenant, $id) {
-
+    public function delete_marker(Request $request) {
+        $id = $request->route('id');
     	\App::setLocale(Auth::user()->language());
     	$user = Auth::user();
 

@@ -17,7 +17,10 @@ function tenantRoute($name, $parameters = [], $absolute = true) {
 	// 	array_merge($parameters, [ 'tenant' => 'kirch' ]),
 	// 	$absolute
 	// );
-	if (is_array($parameters)) {
+    if (!config('app.multitenant')) {
+        return route($name, $parameters, $absolute);
+    }
+    if (is_array($parameters)) {
 		return route(
 			$name,
 			tenantParams($parameters),
@@ -33,6 +36,9 @@ function tenantRoute($name, $parameters = [], $absolute = true) {
 }
 
 function redirectToUserTenant() {
+    if (!config('app.multitenant')) {
+        return redirect()->route('propositions');
+    }
 	if (!Auth::check()) {
 		return redirect()->route('guest.home');
 	}
@@ -42,10 +48,16 @@ function redirectToUserTenant() {
 }
 
 function tenantId() {
+    if (!config('app.multitenant')) {
+        return 0;
+    }
 	return Landlord::getTenants()->first();
 }
 
 function tenant() {
+    if (!config('app.multitenant')) {
+        return null;
+    }
 	$id = tenantId();
 	return \Cache::remember('tenant-' . $id, 60, function() use ($id) {
 		return \App\Tenant::find($id);
@@ -53,10 +65,16 @@ function tenant() {
 }
 
 function userTenant() {
+    if (!config('app.multitenant')) {
+        return null;
+    }
 	return Auth::user()->tenant;
 }
 
 function tenantParams($params = []) {
+    if (!config('app.multitenant')) {
+        return $params;
+    }
     $tenant = tenant();
 	return array_merge($params, ['tenant' => $tenant ? $tenant->prefix : '']);
 }
