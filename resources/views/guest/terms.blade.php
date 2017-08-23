@@ -19,10 +19,10 @@
         use of Petitions after any such changes shall constitute your consent to such changes. You can review the most
         current version of the Terms of Service at any time at: <a href="{{ route('terms') }}">{{ route('terms') }}</a>
       </p>
-      <p>Violation of any of the terms below will result in the termination of your Account. While Petitions prohibits
-        such conduct and Content on Petitions, you understand and agree that Petitions cannot be responsible for the
-        Content posted on Petitions by Third Parties and you nonetheless may be exposed to such materials. You agree to
-        use Petitions at your own risk.</p>
+      <p>Violation of any of the terms below may result in the termination of your Account. While Pupils' Committee ESL
+        1 prohibits such conduct and Content on Petitions, you understand and agree that Pupils' Committee ESL 1 cannot
+        be responsible for the Content posted on Petitions by Third Parties and you nonetheless may be exposed to such
+        materials. You agree to use Petitions at your own risk.</p>
 
       <h3>Terminology</h3>
       <p><strong>Petitions</strong>: The online platform, accessible at {{ Request::root() }}, provided by Pupils'
