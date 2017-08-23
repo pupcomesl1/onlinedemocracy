@@ -137,7 +137,12 @@ class SessionController extends Controller
                 if ($graphUser = Socialite::driver($provider)->user()){
                         $user = User::where('msgraphId', '=', $graphUser->id)->first();
                         $tenant = null;
-                        if (preg_match('/.+\([A-Z]{3}-S[1-7][A-Z]+\)/', $graphUser->displayName)) {
+                        if (config('app.multitenant')) {
+                            $pattern = '/.+\([A-Z]{3}-S[1-7][A-Z]+\)/';
+                        } else {
+                            $pattern = '/.+\(LUX-S[1-7][A-Z]+\)/';
+                        }
+                        if (preg_match($pattern, $graphUser->displayName)) {
                             if (config('app.multitenant')) {
                                 if (preg_match('/.+\(LUX-/', $graphUser->displayName)) {
                                     $tenant = \App\Tenant::where('prefix', 'kirch')->first();
