@@ -137,17 +137,17 @@
       <div class="container">
         <p class="text-center" style="display: none;" id="footer-app-iphone-link"><a href="#">Save on your home
             screen.</a></p>
-        <p class="text-center">
-          <small>
-            <small class="text-muted">@lang('messages.website.footer')</small>
-          </small>
-        </p>
       </div>
     </div>
 
     @include('homescreen_link.iphone')
 
   </div>
+  <p class="text-center">
+    <small>
+      <small class="text-muted">@lang('messages.website.footer')</small>
+    </small>
+  </p>
 @stop()
 
 @section('cookies')
