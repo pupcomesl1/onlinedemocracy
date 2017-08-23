@@ -145,7 +145,11 @@
   </div>
   <p class="text-center">
     <small>
-      <small class="text-muted">@lang('messages.website.footer')</small>
+      <small class="text-muted">
+        @lang('messages.website.footer.1')
+        <a href="{{ route('license') }}">@lang('messages.website.footer.2')</a>
+        @lang('messages.website.footer.3')
+      </small>
     </small>
   </p>
 @stop()

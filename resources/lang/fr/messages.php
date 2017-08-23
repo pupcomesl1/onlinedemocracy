@@ -5,19 +5,24 @@ return [
 		'website' => [
 				'home' => [
 						'title' => "Le pouvoir de changer!",
-						'subtitle' => "Participes aux décisions de ton école en moins de 5 secondes. Rejoins DirectDemocracy !",
+						'subtitle' => "Participes aux décisions de ton école en moins de 5 secondes. Rejoins Petitions !",
 
 						'able_to' => "Tu peux",
 						'vote' => "Voter",
-						'vote_text' => "Avec DirectDemocracy tu peux voter les pétitions des autres élèves concernant la vie de l'école.",
+						'vote_text' => "Avec Petitions tu peux voter les pétitions des autres élèves concernant la vie de l'école.",
 						'suggest' => "Suggèrer",
-						'suggest_text' => "Avec DirectDemocracy tu peux proposer tes propes pétitions pour tout ce qui concerne la vie de l'école. Tous les autres élèves pouvent voter pour tes propositions.",
+						'suggest_text' => "Avec Petitions tu peux proposer tes propes pétitions pour tout ce qui concerne la vie de l'école. Tous les autres élèves pouvent voter pour tes propositions.",
 						'comment' => "Commenter",
-						'comment_text' => "Avec DirectDemocracy tu peux commenter les pétitions des autres élèves et aider à l'amélioration de la vie de l'école.",
+						'comment_text' => "Avec Petitions tu peux commenter les pétitions des autres élèves et aider à l'amélioration de la vie de l'école.",
 				],
 				'return' => "Retour à l'application",
 				'terms' => "Conditions d'utilisation",
-				'footer' => "DirectDemocracy est développpé et maintenu par Marks Polakovs. Copyright © 2015-2017 Photis Avrilionis © 2017 - " . date("Y") . " Marks Polakovs",
+//				'footer' => "Petitions est développpé et maintenu par Marks Polakovs. Copyright © 2015-2017 Photis Avrilionis © 2017 - " . date("Y") . " Marks Polakovs",
+                'footer' => [
+                    '1' => "Petitions est développé et maintenu par Pupils' Committee ESL 1. Portions de copyright sont tenu par © Photis Avrilionis, 2015-" . date("Y") . " comme partie de pavril/onlinedemocracy, sous ",
+                    '2' => "MIT License, ",
+                    '3' => "toutes autres copyrights © 2017 - " . date("Y") . " Pupils' Committee ESL 1."
+                ]
 		],
 
 		'proposition' => [
@@ -220,7 +225,7 @@ return [
 				'thanks' => "Merci pour ton avis",
 				'error' => "Une erreur s'est produite. Veuillez réessayer plus tard.",
 				'placeholder' => "Saisis ton commentaire",
-				'reason' => "DirectDemocracy est encore en développement et peut faire mieux ! N'hésites pas à nous dire ce que l'on peut améliorer ou rajouter ! Ton aide sera beaucoup appréciée.",
+				'reason' => "Petitions est encore en développement et peut faire mieux ! N'hésites pas à nous dire ce que l'on peut améliorer ou rajouter ! Ton aide sera beaucoup appréciée.",
 				'feedback' => "Ton avis",
 				'submit' => "Donnes-nous ton avis",
 		],
@@ -352,9 +357,9 @@ return [
 		],
 		
 		'notifications' => [
-				'available_in_en' => "DirectDemocracy is also available in",
-				'not_belongs_to_school' => "Bienvenue à DirectDemocracy ! Il nous semble que vous n'étes pas étudiant de :school, donc vous ne pourrez pas voter ou commenter. Si c'est un erreur, veuillez nous contacter.",
-				'welcome_link_alert_1' => "Bienvenue à DirectDemocracy ! Pour acceder à tous les fonctionnalités de DirectDemocracy,",
+				'available_in_en' => "Petitions is also available in",
+				'not_belongs_to_school' => "Bienvenue à Petitions ! Il nous semble que vous n'étes pas étudiant de :school, donc vous ne pourrez pas voter ou commenter. Si c'est un erreur, veuillez nous contacter.",
+				'welcome_link_alert_1' => "Bienvenue à Petitions ! Pour acceder à tous les fonctionnalités de Petitions,",
 				'welcome_link_alert_2' => "lies ton compte avec l'email de ton école",
 				'welcome_link_alert_3' => "!",
 				'moderator_approval_queue' => "Ahoy, modérateur! Il y a des propositions en attente de votre approbation.",

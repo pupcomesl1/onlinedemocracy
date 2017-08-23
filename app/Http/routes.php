@@ -14,6 +14,8 @@
 //Website routes
 Route::get('/', ['as' => 'home', 'uses' => 'MainController@home']);
 Route::get('/terms', ['as' => 'terms', 'uses' => 'MainController@terms']);
+Route::get('/comment-guidelines', ['as' => 'guidelines', 'uses' => 'MainController@guidelines']);
+Route::get('/license', ['as' => 'license', 'uses' => 'MainController@license']);
 
 // GitHub Deploy webhook
 Route::post('/deploy', ['uses' => 'DeployController@deploy']);
@@ -48,7 +50,6 @@ Route::get('/o365login', ['as' => 'o365login', 'uses' => 'SessionController@msgr
 Route::get('/tenant', ['uses' => 'MainController@tenant']);
 
 $tenantRoutes = function() {
-	Route::get('/comment-guidelines', ['as' => 'guidelines', 'uses' => 'MainController@guidelines']);
 
 	Route::get('/badge/{name}', ['as' => 'badge', 'uses' => 'MainController@badge']);
 

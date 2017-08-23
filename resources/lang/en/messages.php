@@ -5,19 +5,23 @@ return [
 		'website' => [
 				'home' => [
 						'title' => "You have finally got the power to change things!",
-						'subtitle' => "Take part in your school's decision making in less than 5 seconds. Join DirectDemocracy!",
+						'subtitle' => "Take part in your school's decision making in less than 5 seconds. Join Petitions!",
 
 						'able_to' => "You can",
 						'vote' => "Vote",
-						'vote_text' => "With DirectDemocracy, you are able to vote on petitions made by other pupils concerning the school life.",
+						'vote_text' => "With Petitions, you are able to vote on petitions made by other pupils concerning the school life.",
 						'suggest' => "Suggest",
-						'suggest_text' => "With DirectDemocracy, you can propose your own petitions for everything concerning the school life. Everyone can vote on your propositions.",
+						'suggest_text' => "With Petitions, you can propose your own petitions for everything concerning the school life. Everyone can vote on your propositions.",
 						'comment' => "Comment",
-						'comment_text' => "With DirectDemocracy, you can comment on suggestions made by other pupils and help improve your school life.",
+						'comment_text' => "With Petitions, you can comment on suggestions made by other pupils and help improve your school life.",
 				],
 				'return' => "Return to the app",
 				'terms' => "Terms of service",
-				'footer' => "DirectDemocracy is developed and maintained by Pupils' Committee ESL 1. Portions of copyright are held by © Photis Avrilionis, 2015-" . date("Y") . " as part of pavril/onlinedemocracy, licensed under the MIT License, all other copyrights © 2017 - " . date("Y") . " Pupils' Committee ESL 1",
+                'footer' => [
+                    '1' => "Petitions is developed and maintained by Pupils' Committee ESL 1. Portions of copyright are held by © Photis Avrilionis, 2015-" . date("Y") . " as part of pavril/onlinedemocracy, licensed under the ",
+                    '2' => "MIT License, ",
+                    '3' => "all other copyrights © 2017 - " . date("Y") . " Pupils' Committee ESL 1."
+                ]
 		],
 
 		'proposition' => [
@@ -225,7 +229,7 @@ return [
 				'thanks' => "Thank you for your feedback",
 				'error' => "An error occurred when submitting your feedback. Please try again later.",
 				'placeholder' => "Enter your feedback",
-				'reason' => "DirectDemocracy is still in its development phase. Feel free to tell us what you think we could improve or add! Your help is much appreciated.",
+				'reason' => "Petitions is still in its development phase. Feel free to tell us what you think we could improve or add! Your help is much appreciated.",
 				'feedback' => "Feedback",
 				'submit' => "Send feedback",
 		],
@@ -361,11 +365,11 @@ return [
 		],
 
 		'notifications' => [
-				'available_in_fr' => "DirectDemocracy est aussi disponible en",
-                'not_belongs_to_school' => "Welcome to DirectDemocracy! It seems like you are not a student from :school, so you will not be able to vote or comment. If this is a mistake, please contact us.",
-				'welcome_link_alert_1' => "Welcome to DirectDemocracy! You need to",
+				'available_in_fr' => "Petitions est aussi disponible en",
+                'not_belongs_to_school' => "Welcome to Petitions! It seems like you are not a student from :school, so you will not be able to vote or comment. If this is a mistake, please contact us.",
+				'welcome_link_alert_1' => "Welcome to Petitions! You need to",
 				'welcome_link_alert_2' => "connect your account with your school email",
-				'welcome_link_alert_3' => "to unlock all the features of DirectDemocracy!",
+				'welcome_link_alert_3' => "to unlock all the features of Petitions!",
 				'moderator_approval_queue' => "Ahoy, moderator! There are propositions waiting for your approval.",
 				'moderator_flag_queue' => "Ahoy, moderator! There are flagged propositions waiting for your review."
 		],

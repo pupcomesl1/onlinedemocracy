@@ -8,7 +8,6 @@
     'https://bighugelabs.com/output/lolcat55b875caeb638ae0f3c6a2e8e30592a591981656.jpg',
     'https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/e15/11296629_1655470038017896_122128900_n.jpg',
     'https://s-media-cache-ak0.pinimg.com/736x/c8/26/25/c8262522fba28be1d6f5261028c7b0d2--online-pet-supplies-pets-online.jpg',
-    'https://bighugelabs.com/output/lolcat4434a9c9101adf89d372c56cd756a1d5a8155ea9.jpg',
     'https://stackoverflow.blog/wp-content/uploads/2017/02/error-lolcat-problemz.jpg'
   ];
 $image = $images[array_rand($images, 1)];
