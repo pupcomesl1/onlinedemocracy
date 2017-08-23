@@ -74,7 +74,7 @@
         All rights reserved. These intellectual property rights are related to the protection of software in particular
         as defined in article 1, paragraph 1 as well as article 31 of the <i>loi modifiée du 18 avril 2001 sur les
           droits d’auteur, les droits voisins et les bases de données</i> of the Grand Duchy of Luxembourg. The software
-        is licensed under the MIT license.</p>
+        is licensed under the <a href="{{ route('license') }}">MIT license</a>.</p>
       <p>You may not duplicate, copy, or reuse any portion of the HTML/CSS, Javascript, or visual design elements or
         concepts without express written permission from Pupils' Committee ESL 1.</p>
 
