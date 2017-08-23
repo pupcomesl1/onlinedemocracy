@@ -10,7 +10,7 @@
 		<div class="row" style="margin-top:110px">
 			<div class="col-md-6 col-md-offset-3">
 				<div class="panel panel-default">
-					<div class="panel-heading"><h1 class="panel-title"><strong><center><a href="{{ tenantRoute('home') }}">DirectDemocracy.online</a></center></strong></h1></div>
+					<div class="panel-heading"><h1 class="panel-title"><strong><center><a href="{{ tenantRoute('home') }}">Petitions.online</a></center></strong></h1></div>
 					<div class="panel-body">
 						<form role="form" action="{{ tenantRoute('registrate') }}" method="POST">
 							<div class="form-group @if ($errors->has('first_name')) has-error @endif @if ($errors->has('last_name')) has-error @endif">

@@ -12,8 +12,8 @@
               <span class="sr-only">{{ Lang::get('messages.navigation.nav_toggle') }}</span><span
                   class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
             <a class="navbar-brand" href="{{ tenantRoute('propositions') }}">
-              <img src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">
-              DirectDemocracy
+              <img src="{{ asset('img/logo.svg') }}" alt="Petitions logo">
+              Petitions
             </a>
           </div>
 

@@ -126,7 +126,7 @@ class SessionController extends Controller
 
     public function msgraphLogin()
     {
-        return Socialite::driver('graph')->scopes(['User.Read'])->redirect();
+        return Socialite::driver('graph')->scopes(['User.Read'])->stateless()->redirect();
     }
     
     public function getSocialAuthCallback($provider=null)
@@ -134,7 +134,7 @@ class SessionController extends Controller
 
 	    switch ($provider) {
             case 'graph':
-                if ($graphUser = Socialite::driver($provider)->user()){
+                if ($graphUser = Socialite::driver($provider)->stateless()->user()){
                         $user = User::where('msgraphId', '=', $graphUser->id)->first();
                         $tenant = null;
                         if (config('app.multitenant')) {

@@ -89,7 +89,7 @@ class PropositionsController extends Controller
     					'comments' => $propositionFactory->getCommentsCount($proposition->id()),
     					'marker' => $propositionFactory->getMarker($proposition->id()),
     			];
-    		} else {
+    		} elseif ($daysLeft > 0) {
     			$viewPropositions[$proposition->id()] = [
     					'id' => $proposition->id(),
     					'propositionSort' => $proposition->propositionSort(),
@@ -660,7 +660,7 @@ class PropositionsController extends Controller
         $proposerId = $propositionFactory->getProposition($id)->proposer()->id;
 
         if (
-            Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
+            Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) < 0
             or (!$user->can('vote'))
             or ($user->id === $proposerId)
         ) {
@@ -694,7 +694,7 @@ class PropositionsController extends Controller
         $proposerId = $propositionFactory->getProposition($id)->proposer()->id;
 
     	if (
-    	    Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
+    	    Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) < 0
             or (!$user->can('vote'))
             or ($user->id === $proposerId)
         ) {
@@ -727,14 +727,8 @@ class PropositionsController extends Controller
         $propositionFactory = new PropositionFactory();
         $proposerId = $propositionFactory->getProposition($id)->proposer()->id;
 
-		\Debugbar::info(
-			Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
-            or (!$user->can('vote'))
-            or ($user->id === $proposerId)
-		);
-
         if (
-            Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) <= 0
+            Carbon::now()->diffInDays(Carbon::createFromTimestamp(strtotime($propositionFactory->getProposition($id)->deadline())), false) < 0
             or (!$user->can('vote'))
             or ($user->id === $proposerId)
         ) {

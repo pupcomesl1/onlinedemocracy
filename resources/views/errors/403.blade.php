@@ -35,7 +35,7 @@
 	
 	<div class="container">
 		
-		<img src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">
+		<img src="{{ asset('img/logo.svg') }}" alt="Petitions logo">
 		<h1 class="text-center"><strong>403</strong> - Unauthorized action.</h1>
 		
 	</div>

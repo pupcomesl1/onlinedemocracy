@@ -7,4 +7,4 @@
 <meta property="og:description" content="You have finally got the power to change things! Take part in your school's decision making" />
 @endif
 <meta property="og:image" content="{{ asset('img/logo.png') }}" />
-<meta property="og:site_name" content="DirectDemocracy.Online">
+<meta property="og:site_name" content="Petitions.Online">

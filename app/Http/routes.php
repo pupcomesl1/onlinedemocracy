@@ -92,18 +92,18 @@ $tenantRoutes = function() {
 	Route::post('/proposition/comment', ['middleware' => 'auth', 'as' => 'comment', 'uses' => 'PropositionsController@comment']);
 	Route::post('/proposition/comment/like', ['middleware' => 'auth', 'as' => 'comment.like', 'uses' => 'PropositionsController@like_comment']);
 	Route::post('/proposition/comment/remove_like', ['middleware' => 'auth', 'as' => 'comment.remove_like', 'uses' => 'PropositionsController@remove_like_comment']);
-	Route::get('/proposition/comment/{id}/flag/', ['middleware' => 'auth', 'as' => 'comment.flag', 'uses' => 'PropositionsController@comment_flag']);
-	Route::get('/proposition/comment/delete/{id}', ['middleware' => 'auth', 'as' => 'comment.delete', 'uses' => 'PropositionsController@delete_comment']);
-	Route::get('/proposition/comment/undelete/{id}', ['middleware' => 'auth', 'as' => 'comment.undelete', 'uses' => 'PropositionsController@undelete_comment']);
+	Route::post('/proposition/comment/{id}/flag/', ['middleware' => 'auth', 'as' => 'comment.flag', 'uses' => 'PropositionsController@comment_flag']);
+	Route::post('/proposition/comment/delete/{id}', ['middleware' => 'auth', 'as' => 'comment.delete', 'uses' => 'PropositionsController@delete_comment']);
+	Route::post('/proposition/comment/undelete/{id}', ['middleware' => 'auth', 'as' => 'comment.undelete', 'uses' => 'PropositionsController@undelete_comment']);
 	Route::post('/proposition/comment/distinguish', ['middleware' => 'auth', 'as' => 'distinguish', 'uses' => 'PropositionsController@distinguish_comment']);
-	Route::get('/proposition/{id}/upvote', ['middleware' => 'auth', 'as' => 'upvote', 'uses' => 'PropositionsController@upvote']);
-	Route::get('/proposition/{id}/downvote', ['middleware' => 'auth', 'as' => 'downvote', 'uses' => 'PropositionsController@downvote']);
-	Route::get('/proposition/{id}/unvote', ['middleware' => 'auth', 'as' => 'unvote', 'uses' => 'PropositionsController@unvote']);
-	Route::get('/proposition/{id}/flag/{flag_type}', ['middleware' => 'auth', 'as' => 'flag', 'uses' => 'PropositionsController@flag']);
+	Route::post('/proposition/{id}/upvote', ['middleware' => 'auth', 'as' => 'upvote', 'uses' => 'PropositionsController@upvote']);
+	Route::post('/proposition/{id}/downvote', ['middleware' => 'auth', 'as' => 'downvote', 'uses' => 'PropositionsController@downvote']);
+	Route::post('/proposition/{id}/unvote', ['middleware' => 'auth', 'as' => 'unvote', 'uses' => 'PropositionsController@unvote']);
+	Route::post('/proposition/{id}/flag/{flag_type}', ['middleware' => 'auth', 'as' => 'flag', 'uses' => 'PropositionsController@flag']);
 
 	Route::post('/proposition/{id}/marker/create', ['middleware' => 'auth', 'as' => 'marker.create', 'uses' => 'PropositionsController@create_marker']);
 	Route::post('/proposition/{id}/marker/edit', ['middleware' => 'auth', 'as' => 'marker.edit', 'uses' => 'PropositionsController@edit_marker']);
-	Route::get('/proposition/{id}/marker/delete', ['middleware' => 'auth', 'as' => 'marker.delete', 'uses' => 'PropositionsController@delete_marker']);
+	Route::post('/proposition/{id}/marker/delete', ['middleware' => 'auth', 'as' => 'marker.delete', 'uses' => 'PropositionsController@delete_marker']);
 
 	//Moderator routes
 	Route::group(['prefix' => 'moderator', 'middleware' => ['auth', 'role:moderator']], function () {

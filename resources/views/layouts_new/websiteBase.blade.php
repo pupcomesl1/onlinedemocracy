@@ -158,7 +158,7 @@
             <span class="sr-only">{{ Lang::get('messages.navigation.nav_toggle') }}</span><span class="icon-bar"></span><span
                 class="icon-bar"></span><span class="icon-bar"></span></button>
           <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('img/logo.svg') }}"
-                                                                  alt="DirectDemocracy logo">DirectDemocracy</a></div>
+                                                                  alt="Petitions logo">Petitions</a></div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="topFixedNavbar1">
 

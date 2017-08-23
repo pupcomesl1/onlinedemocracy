@@ -3,7 +3,7 @@
 return [
     'initiate' => [
         'name' => 'Initiate',
-        'caption' => 'Bienvenue à DirectDemocracy !',
+        'caption' => 'Bienvenue à Petitions !',
         'condition' => 'Se connecter avec Office 365'
     ],
 
@@ -62,15 +62,15 @@ return [
 
     'publicist' => [
         'name' => 'Publicist',
-        'condition' => 'Share a proposition outside DirectDemocracy and receive 25 views from unique IP addresses'
+        'condition' => 'Share a proposition outside Petitions and receive 25 views from unique IP addresses'
     ],
     'socialite' => [
         'name' => 'Socialite',
-        'condition' => 'Share a proposition outside DirectDemocracy and receive 40 views from unique IP addresses'
+        'condition' => 'Share a proposition outside Petitions and receive 40 views from unique IP addresses'
     ],
     'activist' => [
         'name' => 'Activist',
-        'condition' => 'Share a proposition outside DirectDemocracy and receive 100 views from unique IP addresses'
+        'condition' => 'Share a proposition outside Petitions and receive 100 views from unique IP addresses'
     ],
 
     'supported' => [
@@ -124,10 +124,10 @@ return [
         
     'helped_make_this_thing' => [
         'name' => 'Helped Make This Thing',
-        'condition' => 'Provide useful feedback to the DirectDemocracy team'
+        'condition' => 'Provide useful feedback to the Petitions team'
     ],
     'literally_made_this_thing' => [
         'name' => 'Literally Made This Thing',
-        'condition' => 'Contribute to the DirectDemocracy source code on GitHub'
+        'condition' => 'Contribute to the Petitions source code on GitHub'
     ]
 ];

@@ -8,7 +8,7 @@
 
     <p>Thank you for migrating your account!</p>
 
-    <p>From now on, use your Office 365 account to sign in to DirectDemocracy.</p>
+    <p>From now on, use your Office 365 account to sign in to Petitions.</p>
 
     <p>As a thank you, we've awarded a
       @component('components.badge', ['type' => 'bronze', 'name' => 'veteran', 'title' => trans('badges.veteran.condition')])
@@ -17,7 +17,7 @@
       badge to your account.
     </p>
 
-    <p>Enjoy DirectDemocracy!</p>
+    <p>Enjoy Petitions!</p>
 
     <a href="{{ tenantRoute('propositions') }}" class="btn btn-primary">@lang('messages.migration.finish')</a>
   </div>

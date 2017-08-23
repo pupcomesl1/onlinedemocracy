@@ -12,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
 class AssignVotePoints implements ShouldQueue
@@ -44,10 +45,10 @@ class AssignVotePoints implements ShouldQueue
     public function handle()
     {
         $factory = new PropositionFactory();
+        // Bail out if the user has deleted their vote in the meantime
         if ($factory->getUserVoteStatus($this->propId, $this->uid)) {
             Redis::del('votegrace:' . $this->uid . ':' . $this->propId);
 
-            PointsHistoryEntry::add($this->uid, 2, 'vote');
             $prop = Proposition::find($this->propId);
             if ($this->value === 1) {
                 PointsHistoryEntry::add($prop->proposer()->id, 15, 'receive_upvote');
@@ -56,6 +57,7 @@ class AssignVotePoints implements ShouldQueue
                 Badge::tryAward($prop->proposer()->id, 'empowered', $prop);
                 Badge::tryAward($prop->proposer()->id, 'well_received', $prop);
             }
+            Cache::forget('leaderboard');
         }
         $this->delete();
     }

@@ -51,7 +51,7 @@ $image = $images[array_rand($images, 1)];
 
   <div class="container">
 
-    <img class="logo" src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">
+    <img class="logo" src="{{ asset('img/logo.svg') }}" alt="Petitions logo">
     <h1 class="text-center"><strong>{{ $code }}</strong> - {{ $summary }}</h1>
 
     <small>{{ $detail }}</small>
@@ -83,7 +83,7 @@ $image = $images[array_rand($images, 1)];
       </script>
     @endunless
 
-    <p>Thank you for using DirectDemocracy!</p>
+    <p>Thank you for using Petitions!</p>
 
   </div>
 

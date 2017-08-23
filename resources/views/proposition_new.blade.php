@@ -63,14 +63,14 @@
               <i class="material-icons" style="transform: translateY(3px); font-size: 16px;">flag</i>
             </button>
             <ul class="dropdown-menu">
-              <li><a href="{{ tenantRoute('flag', ['id' => $proposition['id'], 1]) }}">
+              <li><a data-method="POST" href="{{ tenantRoute('flag', ['id' => $proposition['id'], 1]) }}">
                   @lang('messages.proposition.flagging.offensive')
                 </a></li>
-              <li><a href="{{ tenantRoute('flag', ['id' => $proposition['id'], 3]) }}">
+              <li><a data-method="POST" href="{{ tenantRoute('flag', ['id' => $proposition['id'], 3]) }}">
                   @lang('messages.proposition.flagging.incomprehensible')
                 </a></li>
             </ul>
-                  @endpermission
+          @endpermission
 				</div>
                 
             </span>
@@ -136,7 +136,7 @@
 
         </div>
 
-        @if ($proposition['ending_in'] <= 0)
+        @if ($proposition['ending_in'] < 0)
           <div class="btn-group btn-group-justified section">
             <a href="#" class="btn btn-primary" disabled>{{ Lang::get('messages.proposition.voting.expired') }}</a>
           </div>
@@ -149,6 +149,7 @@
                 @if ($votes['userHasVoted'] == false)
                   <div class="btn-group btn-group-justified section">
                     <a href="{{ tenantRoute('upvote', ['id' => $proposition['id']]) }}"
+                       data-method="POST"
                        class="btn btn-success btn-text-lg"><i
                           class="material-icons"
                           style="vertical-align: inherit;">thumb_up</i> {{ Lang::get('messages.proposition.voting.actions.upvote') }}
@@ -156,12 +157,14 @@
                     <a href="{{ tenantRoute('downvote', ['id' => $proposition['id']]) }}"
                        class="btn btn-danger btn-text-lg"><i
                           class="material-icons"
+                          data-method="POST"
                           style="vertical-align: middle;">thumb_down</i> {{ Lang::get('messages.proposition.voting.actions.downvote') }}
                     </a>
                   </div>
                 @else
                   <div class="btn-group btn-group-justified section">
                     <a href="{{ tenantRoute('unvote', ['id' => $proposition['id']]) }}"
+                       data-method="POST"
                        class="btn btn-success disabled-dark-success btn-text-lg">{{ Lang::get('messages.proposition.voting.already_voted') }}</a>
                   </div>
                 @endif
@@ -270,15 +273,16 @@
                       <small class="pull-right text-muted" style="font-size: 90%">
                         @if (!$comment['modDeleted'])
                           @if ((($comment['commenter']['id'] == $user['id'] and Auth::user()->can('deleteOwnComments')) or Auth::user()->can('deleteComments')))
-                            <a href="{{ tenantRoute('comment.delete', ['comment' => $comment['id']]) }}"
+                            <a data-method="POST" href="{{ tenantRoute('comment.delete', ['comment' => $comment['id']]) }}"
                                class="text-muted">{{ Lang::get('messages.proposition.comments.delete') }}</a>
                           @endif
                           @if ($comment['userCanFlag'])
-                            <a href="{{ tenantRoute('comment.flag', [$comment['id']]) }}">@lang('messages.proposition.comments.flag')</a>
+                            <a date-method="POST" href="{{ tenantRoute('comment.flag', [$comment['id']]) }}">@lang('messages.proposition.comments.flag')</a>
                           @endif
                         @else
                           @permission('deleteComments')
-                          <a href="{{ tenantRoute('comment.undelete', ['comment' => $comment['id']]) }}"
+                          <a data-method="POST"
+                             href="{{ tenantRoute('comment.undelete', ['comment' => $comment['id']]) }}"
                              class="text-muted">{{ Lang::get('messages.proposition.comments.undelete') }}</a>
                           @endpermission
                         @endif
@@ -434,7 +438,7 @@
           <div class="modal-footer">
             <button type="button" id="marker_save"
                     class="btn btn-primary btn-block">@lang('messages.proposition.marker.modal.update')</button>
-            <a href="{{ tenantRoute('marker.delete', ['id' => $proposition['id']]) }}"
+            <a data-method="POST" href="{{ tenantRoute('marker.delete', ['id' => $proposition['id']]) }}"
                class="btn btn-danger btn-block">@lang('messages.proposition.marker.modal.delete')</a>
           </div>
         </div>

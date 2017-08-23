@@ -16,7 +16,7 @@
             	<a href="{{ route('o365login') }}" class="btn btn-info btn-lg btn-block">@lang('messages.session.login.use_msgraph')</a>
             </div>
           </div>
-          <div class="col-md-5 visible-lg visible-md"><img src="{{ asset('img/screenshot.png') }}" class="img-header" alt="DirectDemocracy screenshot"></div>
+          <div class="col-md-5 visible-lg visible-md"><img src="{{ asset('img/screenshot.png') }}" class="img-header" alt="Petitions screenshot"></div>
         </div>
   	</div>
   </div>

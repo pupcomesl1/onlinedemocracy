@@ -34,7 +34,7 @@
 	
 	<div class="container">
 		
-		<img src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">
+		<img src="{{ asset('img/logo.svg') }}" alt="Petitions logo">
 		<h1 class="text-center"><strong>404</strong> - Not found.</h1>
 		
 		

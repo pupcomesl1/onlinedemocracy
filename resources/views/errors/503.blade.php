@@ -43,7 +43,7 @@ if (!$update) {
 	
 	<div class="container">
 		
-		<img src="{{ asset('img/logo.svg') }}" alt="DirectDemocracy logo">
+		<img src="{{ asset('img/logo.svg') }}" alt="Petitions logo">
 		<h1 class="text-center">Be right back.</h1>
 		@if ($update)
 			<p class="lead text-center">We're updating our code.</p>
