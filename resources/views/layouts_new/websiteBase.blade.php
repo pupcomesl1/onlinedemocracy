@@ -183,6 +183,7 @@
     <div class="container">
       <p>
         <small class="text-muted"><a href="{{ route('terms') }}" class="text-muted">@lang('messages.website.terms')</a>
+          | <a href="{{ route('privacy') }}" target="_blank" class="text-muted">@lang('messages.website.privacy')</a>
           | <a href="https://github.com/pupcomesl1/onlinedemocracy" target="_blank" class="text-muted">GitHub</a>
         </small>
       </p>

@@ -17,6 +17,7 @@ return [
 				],
 				'return' => "Return to the app",
 				'terms' => "Terms of service",
+				'privacy' => "Privacy Policy",
                 'footer' => [
                     '1' => "Petitions is developed and maintained by Pupils' Committee ESL 1. Portions of copyright are held by © Photis Avrilionis, 2015-" . date("Y") . " as part of pavril/onlinedemocracy, licensed under the ",
                     '2' => "MIT License, ",

@@ -17,6 +17,7 @@ return [
 				],
 				'return' => "Retour à l'application",
 				'terms' => "Conditions d'utilisation",
+				'privacy' => "Privacy Policy",
 //				'footer' => "Petitions est développpé et maintenu par Marks Polakovs. Copyright © 2015-2017 Photis Avrilionis © 2017 - " . date("Y") . " Marks Polakovs",
                 'footer' => [
                     '1' => "Petitions est développé et maintenu par Pupils' Committee ESL 1. Portions de copyright sont tenu par © Photis Avrilionis, 2015-" . date("Y") . " comme partie de pavril/onlinedemocracy, sous ",

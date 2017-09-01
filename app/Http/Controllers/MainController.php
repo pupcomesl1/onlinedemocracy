@@ -28,6 +28,9 @@ class MainController extends Controller
 	public function terms() {
 		return view('guest.terms');
 	}
+	public function privacy() {
+	    return view('guest.privacy');
+    }
 	public function license() {
 	    return view('guest.license');
     }

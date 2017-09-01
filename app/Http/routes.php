@@ -14,6 +14,7 @@
 //Website routes
 Route::get('/', ['as' => 'home', 'uses' => 'MainController@home']);
 Route::get('/terms', ['as' => 'terms', 'uses' => 'MainController@terms']);
+Route::get('/privacy', ['as' => 'privacy', 'uses' => 'MainController@privacy']);
 Route::get('/comment-guidelines', ['as' => 'guidelines', 'uses' => 'MainController@guidelines']);
 Route::get('/license', ['as' => 'license', 'uses' => 'MainController@license']);
 
